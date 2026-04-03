@@ -416,4 +416,7 @@ export const INITIAL_PLAYER = {
   currentXp: 2800,
   nextLevelXp: 4500,
   completedLessons: [] as number[],
+  sectionProgress: {} as Record<string, number[]>,
+  chestsOpened: {} as Record<string, boolean>,
+  testsCompleted: {} as Record<string, boolean>,
 };
