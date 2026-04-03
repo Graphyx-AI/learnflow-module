@@ -203,7 +203,7 @@ function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
   const nodeStyles = {
     completed: 'bg-green shadow-[0_4px_20px_rgba(34,197,94,.3),0_0_0_4px_rgba(34,197,94,.15)] hover:scale-110 active:scale-95 cursor-pointer',
     current: 'bg-green shadow-[0_4px_25px_rgba(34,197,94,.35),0_0_0_5px_rgba(34,197,94,.2)] animate-pulse-glow hover:scale-110 active:scale-95 cursor-pointer',
-    locked: 'bg-locked shadow-[0_0_0_4px_rgba(42,42,66,.4)] cursor-default',
+    locked: 'bg-muted border-2 border-border shadow-[0_2px_8px_rgba(0,0,0,.06)] cursor-default',
   };
 
   return (
