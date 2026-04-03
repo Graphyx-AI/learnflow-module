@@ -13,6 +13,12 @@ export default function LearningModule() {
   const [player, setPlayer] = useState<PlayerState>({ ...INITIAL_PLAYER });
   const [selectedLesson, setSelectedLesson] = useState<{ sectionIdx: number; lessonIdx: number } | null>(null);
   const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
+  const [selectedAvatar, setSelectedAvatar] = useState(() => localStorage.getItem('selectedAvatar') || 'robot');
+
+  const handleSelectAvatar = useCallback((id: string) => {
+    setSelectedAvatar(id);
+    localStorage.setItem('selectedAvatar', id);
+  }, []);
 
   const handleSelectLesson = useCallback((sectionIdx: number, lessonIdx: number) => {
     setSelectedLesson({ sectionIdx, lessonIdx });
@@ -57,7 +63,7 @@ export default function LearningModule() {
   const renderContent = () => {
     switch (screen) {
       case 'map':
-        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} />;
+        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} selectedAvatar={selectedAvatar} />;
       case 'intro':
         return lesson ? <LessonIntro lesson={lesson} lessonNumber={(selectedLesson?.lessonIdx ?? 0) + 1} onStart={handleStartQuiz} onClose={handleBackToMap} /> : null;
       case 'quiz':
@@ -65,7 +71,7 @@ export default function LearningModule() {
       case 'victory':
         return quizResult ? <VictoryScreen result={quizResult} player={player} onContinue={handleBackToMap} /> : null;
       case 'profile':
-        return <ProfileScreen player={player} onClose={handleBackToMap} />;
+        return <ProfileScreen player={player} selectedAvatar={selectedAvatar} onSelectAvatar={handleSelectAvatar} onClose={handleBackToMap} />;
       default:
         return null;
     }

@@ -1,10 +1,12 @@
 import { PlayerState, Section } from './types';
+import { AVATARS } from './ProfileScreen';
 
 interface MapScreenProps {
   sections: Section[];
   player: PlayerState;
   onSelectLesson: (sectionIdx: number, lessonIdx: number) => void;
   onOpenProfile?: () => void;
+  selectedAvatar?: string;
 }
 
 const MAP_NODES = [
@@ -17,8 +19,9 @@ const MAP_NODES = [
   { id: -2, icon: '🏆', label: 'Teste', x: 50, type: 'trophy' as const },
 ];
 
-export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile }: MapScreenProps) {
+export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, selectedAvatar }: MapScreenProps) {
   const section = sections[0];
+  const avatarData = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
   const levelProgress = (player.currentXp / player.nextLevelXp) * 100;
 
   const getStatus = (id: number) => {
@@ -36,9 +39,8 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <button onClick={onOpenProfile}
-              className="w-10 h-10 rounded-2xl flex items-center justify-center text-lg shadow-lg cursor-pointer transition-transform hover:scale-105 active:scale-95"
-              style={{ background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))' }}>
-              🤖
+              className="w-10 h-10 rounded-2xl overflow-hidden shadow-lg cursor-pointer transition-transform hover:scale-105 active:scale-95 bg-muted">
+              <img src={avatarData.src} alt={avatarData.name} width={40} height={40} className="w-full h-full object-cover" />
             </button>
             <div>
               <span className="font-display text-base font-bold text-foreground block leading-tight">NexSkill AI</span>

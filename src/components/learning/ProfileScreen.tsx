@@ -1,5 +1,25 @@
 import { useState } from 'react';
 
+import avatarRobot from '@/assets/avatars/avatar-robot.png';
+import avatarCat from '@/assets/avatars/avatar-cat.png';
+import avatarOwl from '@/assets/avatars/avatar-owl.png';
+import avatarFox from '@/assets/avatars/avatar-fox.png';
+import avatarPanda from '@/assets/avatars/avatar-panda.png';
+import avatarAstro from '@/assets/avatars/avatar-astro.png';
+import avatarDragon from '@/assets/avatars/avatar-dragon.png';
+import avatarBunny from '@/assets/avatars/avatar-bunny.png';
+
+export const AVATARS = [
+  { id: 'robot', src: avatarRobot, name: 'Robô' },
+  { id: 'cat', src: avatarCat, name: 'Gatinho' },
+  { id: 'owl', src: avatarOwl, name: 'Coruja' },
+  { id: 'fox', src: avatarFox, name: 'Raposa' },
+  { id: 'panda', src: avatarPanda, name: 'Panda' },
+  { id: 'astro', src: avatarAstro, name: 'Astronauta' },
+  { id: 'dragon', src: avatarDragon, name: 'Dragão' },
+  { id: 'bunny', src: avatarBunny, name: 'Coelha' },
+];
+
 export interface Achievement {
   id: string;
   icon: string;
@@ -36,13 +56,16 @@ interface ProfileScreenProps {
     levelTitle: string;
     completedLessons: number[];
   };
+  selectedAvatar: string;
+  onSelectAvatar: (id: string) => void;
   onClose: () => void;
 }
 
-export default function ProfileScreen({ player, onClose }: ProfileScreenProps) {
-  const [tab, setTab] = useState<'badges' | 'stats'>('badges');
+export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, onClose }: ProfileScreenProps) {
+  const [tab, setTab] = useState<'badges' | 'stats' | 'avatar'>('avatar');
 
-  // Derive unlocked achievements
+  const currentAvatar = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
+
   const achievements: Achievement[] = ACHIEVEMENTS.map(a => {
     let unlocked = false;
     if (a.id === 'a1') unlocked = player.completedLessons.length >= 1;
@@ -65,9 +88,8 @@ export default function ProfileScreen({ player, onClose }: ProfileScreenProps) {
         {/* Profile card */}
         <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
           <div className="flex items-center gap-4 mb-5">
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg"
-              style={{ background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))' }}>
-              🤖
+            <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg bg-muted flex items-center justify-center">
+              <img src={currentAvatar.src} alt={currentAvatar.name} width={64} height={64} className="w-full h-full object-cover" />
             </div>
             <div>
               <h2 className="font-display text-xl font-bold text-foreground">Estudante IA</h2>
@@ -93,6 +115,14 @@ export default function ProfileScreen({ player, onClose }: ProfileScreenProps) {
       <div className="w-full max-w-[460px] px-5 mt-2 relative z-10">
         <div className="flex bg-muted rounded-xl p-1">
           <button
+            onClick={() => setTab('avatar')}
+            className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${
+              tab === 'avatar' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
+            }`}
+          >
+            🎭 Avatar
+          </button>
+          <button
             onClick={() => setTab('badges')}
             className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${
               tab === 'badges' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
@@ -106,14 +136,54 @@ export default function ProfileScreen({ player, onClose }: ProfileScreenProps) {
               tab === 'stats' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
             }`}
           >
-            📊 Estatísticas
+            📊 Stats
           </button>
         </div>
       </div>
 
       {/* Content */}
       <div className="w-full max-w-[460px] px-5 mt-4 pb-10 relative z-10">
-        {tab === 'badges' ? (
+        {tab === 'avatar' ? (
+          <>
+            <p className="text-[13px] text-muted-foreground font-semibold mb-4 text-center">
+              Escolha seu companheiro de estudos!
+            </p>
+            <div className="grid grid-cols-4 gap-3">
+              {AVATARS.map(avatar => (
+                <button
+                  key={avatar.id}
+                  onClick={() => onSelectAvatar(avatar.id)}
+                  className={`group relative rounded-2xl border-[2.5px] p-2 transition-all cursor-pointer hover:scale-105 ${
+                    selectedAvatar === avatar.id
+                      ? 'border-primary bg-primary/5 shadow-md'
+                      : 'border-border bg-card hover:border-primary/40'
+                  }`}
+                >
+                  <div className="aspect-square rounded-xl overflow-hidden bg-muted/30">
+                    <img
+                      src={avatar.src}
+                      alt={avatar.name}
+                      loading="lazy"
+                      width={512}
+                      height={512}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <p className={`text-[11px] font-bold text-center mt-1.5 ${
+                    selectedAvatar === avatar.id ? 'text-primary' : 'text-muted-foreground'
+                  }`}>
+                    {avatar.name}
+                  </p>
+                  {selectedAvatar === avatar.id && (
+                    <div className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                      <span className="text-[10px] text-primary-foreground">✓</span>
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          </>
+        ) : tab === 'badges' ? (
           <>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[12px] font-bold text-muted-foreground uppercase tracking-wider">
