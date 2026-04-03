@@ -276,7 +276,7 @@ function TrophyNode({ status, onClick }: { status: 'completed' | 'current' | 'lo
         isCompleted
           ? 'border-amber-400/50 bg-amber-50 shadow-[0_6px_28px_rgba(245,158,11,0.25)] cursor-pointer hover:scale-110'
           : isCurrent
-          ? 'border-amber-300/40 bg-amber-50/50 cursor-pointer hover:scale-110 animate-bobble shadow-lg ring-4 ring-amber-200/20'
+          ? 'border-amber-300/40 bg-amber-50/50 cursor-pointer hover:scale-110 animate-bobble shadow-lg ring-4 ring-amber-200/20 animate-node-glow'
           : 'border-dashed border-border/60 bg-muted/40 cursor-default shadow-sm'
       }`}>
         <span className={`text-[34px] ${isLocked ? 'opacity-25 grayscale' : 'drop-shadow-md'}`}>🏆</span>
