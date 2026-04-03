@@ -12,7 +12,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [lives, setLives] = useState(3);
+  const [lives, setLives] = useState(5);
   const [xp, setXp] = useState(0);
   const [streak, setStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
@@ -58,7 +58,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
         setStreak(0);
         // Lose a heart
         const nextDead = [...deadHearts];
-        for (let i = 2; i >= 0; i--) {
+        for (let i = 4; i >= 0; i--) {
           if (!nextDead.includes(i)) { nextDead.push(i); setShakingHeart(i); setTimeout(() => setShakingHeart(null), 600); break; }
         }
         setDeadHearts(nextDead);
@@ -115,7 +115,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
 
         {/* Hearts */}
         <div className="flex gap-1 items-center flex-shrink-0">
-          {[0, 1, 2].map(i => (
+          {[0, 1, 2, 3, 4].map(i => (
             <span key={i} className={`text-[22px] transition-transform duration-300 ${deadHearts.includes(i) ? 'grayscale opacity-30 scale-[0.8]' : ''} ${shakingHeart === i ? 'animate-heart-shake' : ''}`}>
               ❤️
             </span>
