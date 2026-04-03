@@ -115,7 +115,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
 
         {/* Hearts */}
         <div className="flex gap-1 items-center flex-shrink-0">
-          {[0, 1, 2].map(i => (
+          {[0, 1, 2, 3, 4].map(i => (
             <span key={i} className={`text-[22px] transition-transform duration-300 ${deadHearts.includes(i) ? 'grayscale opacity-30 scale-[0.8]' : ''} ${shakingHeart === i ? 'animate-heart-shake' : ''}`}>
               ❤️
             </span>
