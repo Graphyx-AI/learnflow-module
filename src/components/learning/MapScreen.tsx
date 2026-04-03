@@ -346,6 +346,13 @@ function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJust
         )}
       </button>
 
+      {/* Perfect badge */}
+      {isCompleted && isPerfect && (
+        <div className="absolute -top-1.5 -right-1.5 z-10 flex items-center justify-center w-7 h-7 rounded-full bg-gold shadow-[0_2px_8px_rgba(251,191,36,0.5)] border-2 border-background animate-bounce-in">
+          <span className="text-[14px] leading-none">⭐</span>
+        </div>
+      )}
+
       {/* Unlock glow ring */}
       {isJustUnlocked && (
         <div className="absolute inset-[-10px] rounded-full animate-unlock-ring z-[-1]" style={{ background: `radial-gradient(circle, ${colors.ring}40 0%, transparent 70%)` }} />
