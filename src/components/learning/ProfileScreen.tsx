@@ -271,7 +271,7 @@ function BadgeCard({ achievement }: { achievement: Achievement }) {
       <p className="text-[11px] text-muted-foreground leading-relaxed">{achievement.description}</p>
       {achievement.unlocked && achievement.unlockedAt && (
         <div className="mt-2 text-[10px] font-semibold text-green flex items-center gap-1">
-          ✅ {achievement.unlockedAt}
+          <CheckCircle className="w-3 h-3" /> {achievement.unlockedAt}
         </div>
       )}
     </div>
