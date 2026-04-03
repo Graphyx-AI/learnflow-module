@@ -74,10 +74,10 @@ export default function LessonIntro({ lesson, lessonNumber, onStart, onClose }: 
 
 function IntroStat({ icon, label, value, valueColor = 'text-foreground' }: { icon: string; label: string; value: string; valueColor?: string }) {
   return (
-    <div className="bg-foreground/[0.04] border border-border rounded-xl p-3 text-center">
-      <div className="text-lg mb-1">{icon}</div>
-      <div className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">{label}</div>
-      <div className={`text-xl font-black ${valueColor}`}>{value}</div>
+    <div className="bg-foreground/[0.04] border border-border rounded-lg p-2.5 text-center">
+      <div className="text-sm mb-0.5">{icon}</div>
+      <div className="text-[9px] text-muted-foreground font-bold uppercase tracking-wider">{label}</div>
+      <div className={`text-base font-black ${valueColor}`}>{value}</div>
     </div>
   );
 }
