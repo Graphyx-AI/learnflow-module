@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Home, Target, User, Trophy, Award, Zap, Shield } from 'lucide-react';
 import { Screen, QuizResult, PlayerState, ChestReward } from './types';
-import { SECTIONS, INITIAL_PLAYER, FINAL_TEST_QUESTIONS } from './data';
+import { SECTIONS, INITIAL_PLAYER, FINAL_TEST_QUESTIONS, SECTION_FINAL_TESTS } from './data';
 import MapScreen from './MapScreen';
 import DailyMissions from './DailyMissions';
 import LessonIntro from './LessonIntro';
