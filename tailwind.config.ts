@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        display: ['Space Grotesk', 'sans-serif'],
+        body: ['Nunito', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -46,6 +50,16 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+        },
+        surface: "hsl(var(--surface))",
+        gold: "hsl(var(--gold))",
+        green: {
+          DEFAULT: "hsl(var(--green))",
+          bright: "hsl(var(--green-bright))",
+        },
+        locked: {
+          DEFAULT: "hsl(var(--locked))",
+          text: "hsl(var(--locked-text))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
