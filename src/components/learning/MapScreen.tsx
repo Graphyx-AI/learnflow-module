@@ -42,6 +42,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
   const section = sections[0];
   const avatarData = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
   const levelProgress = (player.currentXp / player.nextLevelXp) * 100;
+  const league = getLeagueTier(player.xp);
 
   const getStatus = (id: number) => {
     if (id === -1) return player.completedLessons.length >= 2 ? (chestOpened ? 'completed' as const : 'current' as const) : 'locked' as const;
