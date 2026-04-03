@@ -650,7 +650,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🎮', title: 'IA em Games', description: 'Como a IA transforma jogos e experiências interativas.',
+        icon: '🕹️', title: 'IA em Games', description: 'Como a IA transforma jogos e experiências interativas.',
         topics: ['NPCs inteligentes', 'Geração procedural', 'IA adaptativa', 'Narrativa dinâmica'],
         questions: [
           { icon: '🎮', category: 'Games', difficulty: 'Fácil' as const, text: 'Como IA é usada em NPCs?', options: ['Só movimentação', 'Comportamento adaptativo que reage ao jogador', 'Gráficos melhores', 'Som surround'], correctIndex: 1, explanation: 'NPCs com IA aprendem e se adaptam ao estilo do jogador.' },
