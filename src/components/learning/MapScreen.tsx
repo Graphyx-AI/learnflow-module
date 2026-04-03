@@ -48,13 +48,13 @@ interface MapScreenProps {
 
 function buildMapNodes(section: Section) {
   const lessons = section.lessons;
-  const nodes: { id: number; icon: string; label: string; x: number; type: 'lesson' | 'chest' | 'trophy' }[] = [];
+  const nodes: { id: number; icon: string; label: string; title: string; x: number; type: 'lesson' | 'chest' | 'trophy' }[] = [];
   const xPositions = [50, 30, 70, 35, 65];
   lessons.forEach((l, i) => {
-    nodes.push({ id: i, icon: l.icon, label: `Lição ${i + 1}`, x: xPositions[i % xPositions.length], type: 'lesson' });
-    if (i === 1) nodes.push({ id: -1, icon: '📦', label: 'Bônus', x: 55, type: 'chest' });
+    nodes.push({ id: i, icon: l.icon, label: `Lição ${i + 1}`, title: l.title, x: xPositions[i % xPositions.length], type: 'lesson' });
+    if (i === 1) nodes.push({ id: -1, icon: '📦', label: 'Bônus', title: 'Recompensa Bônus', x: 55, type: 'chest' });
   });
-  nodes.push({ id: -2, icon: '🏆', label: 'Prova Final', x: 50, type: 'trophy' });
+  nodes.push({ id: -2, icon: '🏆', label: 'Prova Final', title: 'Prova Final da Seção', x: 50, type: 'trophy' });
   return nodes;
 }
 
@@ -223,18 +223,18 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
                     <div key={i} className="absolute z-[2]" style={{ top: `${i * NODE_SPACING}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
                       {node.type === 'chest' ? (
                         <DuoChestNode locked={status === 'locked'} opened={sectionChestOpened} colors={colors}
-                          isJustUnlocked={isJustUnlocked}
+                          isJustUnlocked={isJustUnlocked} tooltip={node.title}
                           onClick={() => { if (status !== 'locked' && onOpenChest) { onSectionChange?.(sIdx); onOpenChest(); } }} />
                       ) : node.type === 'trophy' ? (
                         <DuoTrophyNode status={status} colors={colors}
-                          isJustUnlocked={isJustUnlocked}
+                          isJustUnlocked={isJustUnlocked} tooltip={node.title}
                           onClick={() => { if (status !== 'locked' && onOpenFinalTest) { onSectionChange?.(sIdx); onOpenFinalTest(); } }} />
                       ) : (
                         <DuoLessonNode
                           icon={node.icon} label={node.label} status={status} colors={colors}
                           isFirst={i === 0 && status === 'current'}
                           isPerfect={(player.perfectLessons[section.id] || []).includes(node.id)}
-                          isJustUnlocked={isJustUnlocked}
+                          isJustUnlocked={isJustUnlocked} tooltip={node.title}
                           onClick={() => { if (status !== 'locked' && node.id >= 0) { onSectionChange?.(sIdx); onSelectLesson(sIdx, node.id); } }}
                         />
                       )}
@@ -301,14 +301,28 @@ interface DuoColors {
   ring: string;
 }
 
-function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJustUnlocked, onClick }: {
-  icon: string; label: string; status: 'completed' | 'current' | 'locked'; colors: DuoColors; isFirst: boolean; isPerfect?: boolean; isJustUnlocked?: boolean; onClick: () => void;
+function MapTooltip({ text, children }: { text: string; children: React.ReactNode }) {
+  return (
+    <div className="group/tip relative">
+      {children}
+      <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-2 -translate-y-full opacity-0 group-hover/tip:opacity-100 transition-all duration-200 scale-90 group-hover/tip:scale-100 z-50">
+        <div className="bg-foreground text-background text-[11px] font-bold px-3 py-1.5 rounded-lg whitespace-nowrap shadow-lg max-w-[200px] text-center truncate">
+          {text}
+        </div>
+        <div className="w-2.5 h-2.5 bg-foreground rotate-45 mx-auto -mt-1.5" />
+      </div>
+    </div>
+  );
+}
+
+function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJustUnlocked, tooltip, onClick }: {
+  icon: string; label: string; status: 'completed' | 'current' | 'locked'; colors: DuoColors; isFirst: boolean; isPerfect?: boolean; isJustUnlocked?: boolean; tooltip?: string; onClick: () => void;
 }) {
   const isCompleted = status === 'completed';
   const isCurrent = status === 'current';
   const isLocked = status === 'locked';
 
-  return (
+  const content = (
     <div className={`relative flex flex-col items-center ${isJustUnlocked ? 'animate-node-unlock' : ''}`}>
 
       <button
@@ -365,10 +379,12 @@ function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJust
       </span>
     </div>
   );
+
+  return tooltip ? <MapTooltip text={tooltip}>{content}</MapTooltip> : content;
 }
 
-function DuoChestNode({ locked, opened, colors, isJustUnlocked, onClick }: { locked: boolean; opened?: boolean; colors: DuoColors; isJustUnlocked?: boolean; onClick?: () => void }) {
-  return (
+function DuoChestNode({ locked, opened, colors, isJustUnlocked, tooltip, onClick }: { locked: boolean; opened?: boolean; colors: DuoColors; isJustUnlocked?: boolean; tooltip?: string; onClick?: () => void }) {
+  const content = (
     <div className={`flex flex-col items-center ${isJustUnlocked ? 'animate-node-unlock' : ''}`} onClick={!locked ? onClick : undefined}>
       <div
         className={`duo-node-chest ${!locked && !opened ? 'animate-duo-bounce' : ''}`}
@@ -393,14 +409,15 @@ function DuoChestNode({ locked, opened, colors, isJustUnlocked, onClick }: { loc
       </span>
     </div>
   );
+  return tooltip ? <MapTooltip text={tooltip}>{content}</MapTooltip> : content;
 }
 
-function DuoTrophyNode({ status, colors, isJustUnlocked, onClick }: { status: 'completed' | 'current' | 'locked'; colors: DuoColors; isJustUnlocked?: boolean; onClick?: () => void }) {
+function DuoTrophyNode({ status, colors, isJustUnlocked, tooltip, onClick }: { status: 'completed' | 'current' | 'locked'; colors: DuoColors; isJustUnlocked?: boolean; tooltip?: string; onClick?: () => void }) {
   const isLocked = status === 'locked';
   const isCompleted = status === 'completed';
   const isCurrent = status === 'current';
 
-  return (
+  const content = (
     <div className={`flex flex-col items-center ${isJustUnlocked ? 'animate-node-unlock' : ''}`} onClick={!isLocked ? onClick : undefined}>
       <div
         className={`duo-node ${isCurrent && !isJustUnlocked ? 'animate-duo-bounce' : ''}`}
@@ -433,4 +450,5 @@ function DuoTrophyNode({ status, colors, isJustUnlocked, onClick }: { status: 'c
       </span>
     </div>
   );
+  return tooltip ? <MapTooltip text={tooltip}>{content}</MapTooltip> : content;
 }
