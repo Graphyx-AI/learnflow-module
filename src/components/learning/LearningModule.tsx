@@ -51,14 +51,22 @@ export default function LearningModule() {
 
   const handleQuizComplete = useCallback((result: QuizResult) => {
     setQuizResult(result);
-    setPlayer(prev => ({
-      ...prev,
-      xp: prev.xp + result.xpGained,
-      currentXp: prev.currentXp + result.xpGained,
-      completedLessons: selectedLesson
-        ? [...prev.completedLessons, selectedLesson.lessonIdx]
-        : prev.completedLessons,
-    }));
+    setPlayer(prev => {
+      const sectionId = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.id : '';
+      const prevSectionLessons = prev.sectionProgress[sectionId] || [];
+      const newSectionLessons = selectedLesson && !prevSectionLessons.includes(selectedLesson.lessonIdx)
+        ? [...prevSectionLessons, selectedLesson.lessonIdx]
+        : prevSectionLessons;
+      return {
+        ...prev,
+        xp: prev.xp + result.xpGained,
+        currentXp: prev.currentXp + result.xpGained,
+        completedLessons: selectedLesson
+          ? [...prev.completedLessons, selectedLesson.lessonIdx]
+          : prev.completedLessons,
+        sectionProgress: { ...prev.sectionProgress, [sectionId]: newSectionLessons },
+      };
+    });
     setScreen('victory');
   }, [selectedLesson]);
 
