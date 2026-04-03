@@ -25,6 +25,7 @@ interface SidebarProps {
   playerBadges?: number;
   playerName?: string;
   achievements?: Achievement[];
+  lightningAvailable?: boolean;
 }
 
 export default function RightSidebar({ completedLessons, activeTab, onNavigate, playerXp = 0, playerStreak = 0, playerBadges = 0, playerName = 'Você', achievements = [] }: SidebarProps) {
