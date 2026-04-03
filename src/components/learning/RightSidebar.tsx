@@ -97,7 +97,7 @@ export default function RightSidebar({ completedLessons, activeTab, onNavigate, 
           onClick={() => setRankingExpanded(v => !v)}
           className="w-full flex items-center justify-between py-2.5 px-1 text-[12px] font-extrabold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
         >
-          <span className="flex items-center gap-1.5">🏆 RANKING</span>
+          <span className="flex items-center gap-1.5">RANKING</span>
           <span className="text-primary text-[14px]">{rankingExpanded ? '▲' : '▼'}</span>
         </button>
         {rankingExpanded && <SidebarRanking playerXp={playerXp} playerName={playerName} playerRank={playerRank} />}
