@@ -62,6 +62,41 @@ export function playSelectSound() {
   osc.stop(ctx.currentTime + 0.08);
 }
 
+export function playVictorySound() {
+  const ctx = getCtx();
+  const notes = [523, 659, 784, 1047]; // C5 E5 G5 C6
+  notes.forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = 'sine';
+    const t = ctx.currentTime + i * 0.15;
+    osc.frequency.setValueAtTime(freq, t);
+    gain.gain.setValueAtTime(0.2, t);
+    gain.gain.exponentialRampToValueAtTime(0.01, t + 0.3);
+    osc.start(t);
+    osc.stop(t + 0.3);
+  });
+  // Triumphant chord at the end
+  setTimeout(() => {
+    const chord = [523, 659, 784, 1047];
+    chord.forEach(freq => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'triangle';
+      const t = ctx.currentTime;
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.12, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.8);
+      osc.start(t);
+      osc.stop(t + 0.8);
+    });
+  }, 600);
+}
+
 // Persist sound preference
 const SOUND_KEY = 'soundEnabled';
 
