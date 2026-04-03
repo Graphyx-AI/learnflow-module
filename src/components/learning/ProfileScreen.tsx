@@ -278,11 +278,13 @@ function BadgeCard({ achievement }: { achievement: Achievement }) {
   );
 }
 
-function StatRow({ icon, label, value }: { icon: string; label: string; value: string | number }) {
+function StatRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string | number }) {
   return (
     <div className="bg-card border border-border rounded-xl p-4 flex items-center justify-between">
       <div className="flex items-center gap-3">
-        <span className="text-lg">{icon}</span>
+        <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
+          {icon}
+        </div>
         <span className="text-[13px] font-semibold text-foreground">{label}</span>
       </div>
       <span className="text-[14px] font-extrabold text-primary">{value}</span>
