@@ -48,13 +48,13 @@ interface MapScreenProps {
 
 function buildMapNodes(section: Section) {
   const lessons = section.lessons;
-  const nodes: { id: number; icon: string; label: string; x: number; type: 'lesson' | 'chest' | 'trophy' }[] = [];
+  const nodes: { id: number; icon: string; label: string; title: string; x: number; type: 'lesson' | 'chest' | 'trophy' }[] = [];
   const xPositions = [50, 30, 70, 35, 65];
   lessons.forEach((l, i) => {
-    nodes.push({ id: i, icon: l.icon, label: `Lição ${i + 1}`, x: xPositions[i % xPositions.length], type: 'lesson' });
-    if (i === 1) nodes.push({ id: -1, icon: '📦', label: 'Bônus', x: 55, type: 'chest' });
+    nodes.push({ id: i, icon: l.icon, label: `Lição ${i + 1}`, title: l.title, x: xPositions[i % xPositions.length], type: 'lesson' });
+    if (i === 1) nodes.push({ id: -1, icon: '📦', label: 'Bônus', title: 'Recompensa Bônus', x: 55, type: 'chest' });
   });
-  nodes.push({ id: -2, icon: '🏆', label: 'Prova Final', x: 50, type: 'trophy' });
+  nodes.push({ id: -2, icon: '🏆', label: 'Prova Final', title: 'Prova Final da Seção', x: 50, type: 'trophy' });
   return nodes;
 }
 
