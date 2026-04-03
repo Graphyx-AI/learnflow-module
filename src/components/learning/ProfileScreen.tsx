@@ -136,9 +136,9 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
 
           {/* Quick stats */}
           <div className="grid grid-cols-3 gap-3">
-            <QuickStat icon="⚡" value={player.xp} label="XP Total" />
-            <QuickStat icon="🔥" value={player.streak} label="Streak" />
-            <QuickStat icon="🏅" value={unlockedCount} label="Badges" />
+            <QuickStat icon={<Zap className="w-4 h-4 text-primary" />} value={player.xp} label="XP Total" />
+            <QuickStat icon={<Flame className="w-4 h-4 text-orange-500" />} value={player.streak} label="Streak" />
+            <QuickStat icon={<Award className="w-4 h-4 text-amber-500" />} value={unlockedCount} label="Badges" />
           </div>
         </div>
       </div>
