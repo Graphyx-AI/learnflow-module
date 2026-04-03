@@ -146,14 +146,24 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
               className="mx-4 rounded-2xl px-5 py-4 flex items-center justify-between transition-opacity"
               style={{ background: biome.bannerGradient, opacity: unlocked ? 1 : 0.5 }}
             >
-              <div>
+              <div className="flex-1 min-w-0">
                 <div className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-white/60">
                   {biome.icon} {section.label}
                 </div>
-                <div className="text-[17px] font-extrabold text-white mt-0.5">{section.title}</div>
+                <div className="text-[17px] font-extrabold text-white mt-0.5 truncate">{section.title}</div>
               </div>
-              <div className="rounded-xl bg-white/20 hover:bg-white/30 transition-colors px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-wider text-white cursor-pointer">
-                {unlocked ? '📋 Guia' : '🔒'}
+              <div className="flex items-center gap-2 shrink-0">
+                {unlocked && getSectionStatus(section.id, 0) === 'current' && (
+                  <button
+                    onClick={() => { onSectionChange?.(sIdx); onSelectLesson(sIdx, 0); }}
+                    className="rounded-xl bg-white/30 hover:bg-white/40 active:scale-95 transition-all px-4 py-2 text-[12px] font-extrabold uppercase tracking-wider text-white"
+                  >
+                    COMEÇAR
+                  </button>
+                )}
+                <div className="rounded-xl bg-white/20 hover:bg-white/30 transition-colors px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-wider text-white cursor-pointer">
+                  {unlocked ? '📋 Guia' : '🔒'}
+                </div>
               </div>
             </div>
 
