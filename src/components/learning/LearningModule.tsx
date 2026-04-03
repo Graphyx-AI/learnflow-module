@@ -58,8 +58,8 @@ export default function LearningModule() {
   const lesson = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.lessons[selectedLesson.lessonIdx] : null;
 
   // Sidebar only shows on map and profile screens
-  const showSidebar = screen === 'map' || screen === 'profile';
-  const activeTab = screen === 'profile' ? 'profile' : 'map';
+  const showSidebar = screen === 'map' || screen === 'profile' || screen === 'missions';
+  const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : 'map';
 
   const renderContent = () => {
     switch (screen) {
