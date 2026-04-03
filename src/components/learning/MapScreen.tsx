@@ -1,5 +1,6 @@
 import { PlayerState, Section } from './types';
 import { AVATARS } from './ProfileScreen';
+import FloatingParticles from './FloatingParticles';
 import { Flame, Zap } from 'lucide-react';
 
 const LEAGUE_TIERS = [
