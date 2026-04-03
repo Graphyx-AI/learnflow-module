@@ -65,6 +65,43 @@ export default function RightSidebar({ completedLessons, activeTab, onNavigate, 
           );
         })}
 
+        {/* Divider */}
+        <div className="border-t border-border my-2" />
+
+        {/* Missões Diárias */}
+        <button
+          onClick={() => setMissionsExpanded(v => !v)}
+          className="w-full flex items-center justify-between py-2.5 px-1 text-[12px] font-extrabold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        >
+          MISSÕES DIÁRIAS
+          <span className="text-primary text-[14px]">{missionsExpanded ? '▲' : '▼'}</span>
+        </button>
+        {missionsExpanded && <SidebarMissions completedLessons={completedLessons} />}
+
+        <div className="border-t border-border my-2" />
+
+        {/* Conquistas */}
+        <button
+          onClick={() => setAchievementsExpanded(v => !v)}
+          className="w-full flex items-center justify-between py-2.5 px-1 text-[12px] font-extrabold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        >
+          CONQUISTAS
+          <span className="text-primary text-[14px]">{achievementsExpanded ? '▲' : '▼'}</span>
+        </button>
+        {achievementsExpanded && <SidebarAchievements achievements={ACHIEVEMENTS} onViewAll={() => onNavigate('achievements')} />}
+
+        <div className="border-t border-border my-2" />
+
+        {/* Ranking */}
+        <button
+          onClick={() => setRankingExpanded(v => !v)}
+          className="w-full flex items-center justify-between py-2.5 px-1 text-[12px] font-extrabold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        >
+          <span className="flex items-center gap-1.5">🏆 RANKING</span>
+          <span className="text-primary text-[14px]">{rankingExpanded ? '▲' : '▼'}</span>
+        </button>
+        {rankingExpanded && <SidebarRanking playerXp={playerXp} playerName={playerName} playerRank={playerRank} />}
+
       </div>
     </div>
   );
