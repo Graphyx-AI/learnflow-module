@@ -140,7 +140,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
               {node.type === 'chest' ? (
                 <ChestNode locked={status === 'locked'} opened={chestOpened} onClick={() => { if (status !== 'locked' && onOpenChest) onOpenChest(); }} />
               ) : node.type === 'trophy' ? (
-                <TrophyNode />
+                <TrophyNode status={status} onClick={() => { if (status !== 'locked' && onOpenFinalTest) onOpenFinalTest(); }} />
               ) : (
                 <LessonNodeButton
                   icon={node.icon}
