@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Home, Target, User, Trophy, Award } from 'lucide-react';
+import { Home, Target, User, Trophy, Award, Zap, Shield } from 'lucide-react';
 import { Screen, QuizResult, PlayerState, ChestReward } from './types';
 import { SECTIONS, INITIAL_PLAYER, FINAL_TEST_QUESTIONS } from './data';
 import MapScreen from './MapScreen';
@@ -11,6 +11,9 @@ import ProfileScreen, { ACHIEVEMENTS } from './ProfileScreen';
 import RightSidebar, { RankingScreen } from './RightSidebar';
 import ChestScreen from './ChestScreen';
 import FinalTestScreen, { FinalTestResultScreen } from './FinalTestScreen';
+import LeagueScreen from './LeagueScreen';
+import LightningChallenge from './LightningChallenge';
+import StreakNotification from './StreakNotification';
 
 export default function LearningModule() {
   const [screen, setScreen] = useState<Screen>('map');
