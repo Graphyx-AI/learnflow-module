@@ -159,12 +159,12 @@ export default function MapScreen({ sections, player, onSelectLesson }: MapScree
       </div>
 
       {/* Section 2 Banner (locked) */}
-      <div className="w-[calc(100%-40px)] max-w-[440px] mx-5 rounded-2xl p-4 px-5 flex items-center justify-between border-2 border-blue-500/30 bg-blue-900/20 opacity-50 pointer-events-none">
+      <div className="w-[calc(100%-40px)] max-w-[440px] mx-5 rounded-2xl p-4 px-5 flex items-center justify-between border-2 border-border bg-muted/60 pointer-events-none">
         <div>
-          <div className="text-[10px] font-extrabold uppercase tracking-[0.1em] opacity-60 mb-0.5">Seção 2 · Unidade 2</div>
-          <div className="font-display text-lg font-bold text-foreground/60">Prompting Avançado</div>
+          <div className="text-[10px] font-extrabold uppercase tracking-[0.1em] text-muted-foreground mb-0.5">Seção 2 · Unidade 2</div>
+          <div className="font-display text-lg font-bold text-muted-foreground">Prompting Avançado</div>
         </div>
-        <div className="flex items-center gap-1.5 bg-foreground/5 rounded-xl py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider opacity-50">
+        <div className="flex items-center gap-1.5 bg-muted rounded-xl py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
           🔒 Bloqueado
         </div>
       </div>
@@ -203,7 +203,7 @@ function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
   const nodeStyles = {
     completed: 'bg-green shadow-[0_4px_20px_rgba(34,197,94,.3),0_0_0_4px_rgba(34,197,94,.15)] hover:scale-110 active:scale-95 cursor-pointer',
     current: 'bg-green shadow-[0_4px_25px_rgba(34,197,94,.35),0_0_0_5px_rgba(34,197,94,.2)] animate-pulse-glow hover:scale-110 active:scale-95 cursor-pointer',
-    locked: 'bg-locked shadow-[0_0_0_4px_rgba(42,42,66,.4)] cursor-default',
+    locked: 'bg-muted border-2 border-border shadow-[0_2px_8px_rgba(0,0,0,.06)] cursor-default',
   };
 
   return (
@@ -260,11 +260,11 @@ function ChestNode({ locked }: { locked: boolean }) {
   return (
     <div className={`w-[66px] h-[56px] rounded-2xl flex flex-col items-center justify-center gap-1 border-2 transition-transform duration-150 ${
       locked
-        ? 'bg-locked border-locked-text/30 cursor-default'
+        ? 'bg-muted border-border shadow-[0_2px_8px_rgba(0,0,0,.06)] cursor-default'
         : 'bg-gold/10 border-gold/30 cursor-pointer hover:scale-105'
     }`}>
-      <span className={`text-[24px] ${locked ? 'opacity-25 grayscale' : 'drop-shadow-md'}`}>📦</span>
-      <span className={`text-[8px] font-black uppercase tracking-[0.08em] ${locked ? 'text-locked-text' : 'text-gold'}`}>
+      <span className={`text-[24px] ${locked ? 'opacity-40 grayscale' : 'drop-shadow-md'}`}>📦</span>
+      <span className={`text-[8px] font-black uppercase tracking-[0.08em] ${locked ? 'text-muted-foreground' : 'text-gold'}`}>
         Bônus
       </span>
     </div>
@@ -273,10 +273,9 @@ function ChestNode({ locked }: { locked: boolean }) {
 
 function TrophyNode() {
   return (
-    <div className="w-[76px] h-[76px] rounded-full flex flex-col items-center justify-center gap-1 cursor-default"
-      style={{ background: 'rgba(251,191,36,.06)', border: '2px dashed rgba(251,191,36,.2)' }}>
-      <span className="text-[26px] opacity-25 grayscale">🏆</span>
-      <span className="text-[8px] font-black uppercase tracking-[0.08em] text-locked-text">Teste</span>
+    <div className="w-[76px] h-[76px] rounded-full flex flex-col items-center justify-center gap-1 cursor-default bg-gold/[0.08] border-2 border-dashed border-gold/25 shadow-[0_2px_8px_rgba(0,0,0,.04)]">
+      <span className="text-[26px] opacity-40 grayscale">🏆</span>
+      <span className="text-[8px] font-black uppercase tracking-[0.08em] text-muted-foreground">Teste</span>
     </div>
   );
 }
