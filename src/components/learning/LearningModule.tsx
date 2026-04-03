@@ -158,6 +158,8 @@ export default function LearningModule() {
             </div>
           </div>
         );
+      case 'chest':
+        return <ChestScreen onClaim={handleClaimChest} onClose={handleBackToMap} alreadyOpened={chestOpened} />;
       default:
         return null;
     }
