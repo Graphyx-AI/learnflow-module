@@ -8,9 +8,11 @@ interface MapScreenProps {
   onSelectLesson: (sectionIdx: number, lessonIdx: number) => void;
   onOpenProfile?: () => void;
   onOpenChest?: () => void;
+  onOpenFinalTest?: () => void;
   selectedAvatar?: string;
   playerName?: string;
   chestOpened?: boolean;
+  testCompleted?: boolean;
 }
 
 const MAP_NODES = [
@@ -25,14 +27,17 @@ const MAP_NODES = [
 
 const NODE_SPACING = 130;
 
-export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, selectedAvatar, playerName, chestOpened }: MapScreenProps) {
+export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted }: MapScreenProps) {
   const section = sections[0];
   const avatarData = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
   const levelProgress = (player.currentXp / player.nextLevelXp) * 100;
 
   const getStatus = (id: number) => {
     if (id === -1) return player.completedLessons.length >= 2 ? (chestOpened ? 'completed' as const : 'current' as const) : 'locked' as const;
-    if (id === -2) return 'locked' as const;
+    if (id === -2) {
+      const allLessons = [0, 1, 2, 3, 4].every(l => player.completedLessons.includes(l));
+      return allLessons ? (testCompleted ? 'completed' as const : 'current' as const) : 'locked' as const;
+    }
     if (player.completedLessons.includes(id)) return 'completed' as const;
     if (id === 0 && !player.completedLessons.includes(0)) return 'current' as const;
     if (id > 0 && player.completedLessons.includes(id - 1)) return 'current' as const;
@@ -135,7 +140,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
               {node.type === 'chest' ? (
                 <ChestNode locked={status === 'locked'} opened={chestOpened} onClick={() => { if (status !== 'locked' && onOpenChest) onOpenChest(); }} />
               ) : node.type === 'trophy' ? (
-                <TrophyNode />
+                <TrophyNode status={status} onClick={() => { if (status !== 'locked' && onOpenFinalTest) onOpenFinalTest(); }} />
               ) : (
                 <LessonNodeButton
                   icon={node.icon}
@@ -264,13 +269,27 @@ function ChestNode({ locked, opened, onClick }: { locked: boolean; opened?: bool
   );
 }
 
-function TrophyNode() {
+function TrophyNode({ status, onClick }: { status: 'completed' | 'current' | 'locked'; onClick?: () => void }) {
+  const isLocked = status === 'locked';
+  const isCompleted = status === 'completed';
+  const isCurrent = status === 'current';
+
   return (
-    <div className="flex flex-col items-center">
-      <div className="w-[76px] h-[76px] rounded-full flex items-center justify-center border-2 border-dashed border-border bg-muted/30">
-        <span className="text-[28px] opacity-20 grayscale">🏆</span>
+    <div className="flex flex-col items-center" onClick={!isLocked ? onClick : undefined}>
+      <div className={`w-[76px] h-[76px] rounded-full flex items-center justify-center border-2 transition-all duration-200 ${
+        isCompleted
+          ? 'border-gold/40 bg-gold/10 shadow-[0_0_20px_rgba(var(--gold-rgb),0.2)] cursor-pointer hover:scale-110'
+          : isCurrent
+          ? 'border-gold/30 bg-gold/5 cursor-pointer hover:scale-110 animate-bobble shadow-md'
+          : 'border-dashed border-border bg-muted/30 cursor-default'
+      }`}>
+        <span className={`text-[28px] ${isLocked ? 'opacity-20 grayscale' : 'drop-shadow-sm'}`}>🏆</span>
       </div>
-      <span className="mt-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">Teste</span>
+      <span className={`mt-2.5 text-[10px] font-bold uppercase tracking-wider ${
+        isCompleted ? 'text-gold' : isCurrent ? 'text-gold' : 'text-muted-foreground/60'
+      }`}>
+        {isCompleted ? 'Aprovado!' : 'Prova Final'}
+      </span>
     </div>
   );
 }

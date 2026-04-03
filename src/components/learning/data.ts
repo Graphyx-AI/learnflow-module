@@ -87,6 +87,79 @@ export const SECTIONS: Section[] = [
   },
 ];
 
+export const FINAL_TEST_QUESTIONS = [
+  {
+    icon: '🤖', category: 'Fundamentos', difficulty: 'Médio' as const,
+    text: 'Qual a principal diferença entre IA simbólica e IA conexionista?',
+    options: ['Velocidade de processamento', 'Regras explícitas vs. aprendizado por padrões', 'Linguagem de programação usada', 'Custo de hardware'],
+    correctIndex: 1,
+    explanation: 'IA simbólica usa regras lógicas explícitas, enquanto IA conexionista (redes neurais) aprende padrões a partir de dados.',
+  },
+  {
+    icon: '🧠', category: 'Machine Learning', difficulty: 'Médio' as const,
+    text: 'Qual tipo de aprendizado é usado quando não temos dados rotulados?',
+    options: ['Supervisionado', 'Não supervisionado', 'Por reforço', 'Transfer Learning'],
+    correctIndex: 1,
+    explanation: 'O aprendizado não supervisionado encontra padrões em dados sem rótulos, como agrupamentos e associações.',
+  },
+  {
+    icon: '📊', category: 'Dados', difficulty: 'Fácil' as const,
+    text: 'O que é "overfitting" em Machine Learning?',
+    options: ['Modelo muito simples', 'Modelo que memoriza os dados de treino sem generalizar', 'Excesso de dados de treino', 'Modelo com poucos parâmetros'],
+    correctIndex: 1,
+    explanation: 'Overfitting ocorre quando o modelo aprende demais os detalhes dos dados de treino e falha em dados novos.',
+  },
+  {
+    icon: '🔗', category: 'Deep Learning', difficulty: 'Difícil' as const,
+    text: 'O que é uma função de ativação em redes neurais?',
+    options: ['Função que liga o computador', 'Função que introduz não-linearidade nas camadas', 'Algoritmo de otimização', 'Método de coleta de dados'],
+    correctIndex: 1,
+    explanation: 'Funções de ativação como ReLU e Sigmoid permitem que redes neurais aprendam relações complexas e não-lineares.',
+  },
+  {
+    icon: '💬', category: 'NLP', difficulty: 'Médio' as const,
+    text: 'O que significa "tokenização" em Processamento de Linguagem Natural?',
+    options: ['Criptografar texto', 'Dividir texto em unidades menores (tokens)', 'Traduzir entre idiomas', 'Comprimir arquivos de texto'],
+    correctIndex: 1,
+    explanation: 'Tokenização divide texto em pedaços (palavras, subpalavras ou caracteres) para que modelos de IA possam processá-los.',
+  },
+  {
+    icon: '🎯', category: 'Modelos', difficulty: 'Difícil' as const,
+    text: 'O que é o mecanismo de "Attention" em Transformers?',
+    options: ['Filtro de spam', 'Mecanismo que permite o modelo focar em partes relevantes da entrada', 'Sistema de cache de memória', 'Técnica de compressão'],
+    correctIndex: 1,
+    explanation: 'O mecanismo de Attention permite que o modelo pondere a importância de cada parte da entrada, revolucionando o NLP.',
+  },
+  {
+    icon: '⚡', category: 'Prática', difficulty: 'Fácil' as const,
+    text: 'Qual dessas é uma aplicação real de IA generativa?',
+    options: ['Calculadora simples', 'Geração de imagens a partir de texto', 'Planilha de Excel', 'Envio de e-mails automáticos'],
+    correctIndex: 1,
+    explanation: 'IA generativa como DALL-E e Midjourney criam imagens originais a partir de descrições em texto.',
+  },
+  {
+    icon: '⚖️', category: 'Ética', difficulty: 'Médio' as const,
+    text: 'O que é "explicabilidade" (XAI) em IA?',
+    options: ['Manual de instrução do software', 'Capacidade de entender e justificar decisões do modelo', 'Velocidade de resposta', 'Interface do usuário'],
+    correctIndex: 1,
+    explanation: 'XAI busca tornar as decisões de modelos de IA transparentes e compreensíveis para humanos.',
+  },
+  {
+    icon: '🔄', category: 'MLOps', difficulty: 'Difícil' as const,
+    text: 'O que é "model drift" em produção?',
+    options: ['Bug no código', 'Degradação do modelo quando dados reais mudam ao longo do tempo', 'Modelo que roda devagar', 'Erro de deploy'],
+    correctIndex: 1,
+    explanation: 'Model drift acontece quando a distribuição dos dados muda com o tempo, fazendo o modelo perder performance.',
+  },
+  {
+    icon: '🚀', category: 'Futuro', difficulty: 'Médio' as const,
+    text: 'O que é AGI (Artificial General Intelligence)?',
+    options: ['IA específica para jogos', 'IA com capacidade cognitiva geral equivalente à humana', 'Um tipo de GPU', 'Framework de Machine Learning'],
+    correctIndex: 1,
+    explanation: 'AGI seria uma IA capaz de realizar qualquer tarefa intelectual humana. Ainda é um objetivo teórico e não foi alcançado.',
+  },
+];
+
 export const INITIAL_PLAYER = {
   xp: 2800,
   streak: 3,
