@@ -81,10 +81,22 @@ export default function LearningModule() {
   }, [selectedLesson]);
 
   const handleBackToMap = useCallback(() => {
+    // Determine which node just got unlocked
+    if (selectedLesson) {
+      const sectionId = SECTIONS[selectedLesson.sectionIdx]?.id || '';
+      const nextLessonIdx = selectedLesson.lessonIdx + 1;
+      const sectionLessons = SECTIONS[selectedLesson.sectionIdx]?.lessons || [];
+      if (nextLessonIdx < sectionLessons.length) {
+        setJustUnlockedKey(`${sectionId}:${nextLessonIdx}`);
+      } else if (nextLessonIdx >= sectionLessons.length) {
+        // Chest or trophy might unlock
+        setJustUnlockedKey(`${sectionId}:-2`);
+      }
+    }
     setScreen('map');
     setSelectedLesson(null);
     setQuizResult(null);
-  }, []);
+  }, [selectedLesson]);
 
   const handleOpenProfile = useCallback(() => setScreen('profile'), []);
   const handleOpenChest = useCallback(() => setScreen('chest'), []);
