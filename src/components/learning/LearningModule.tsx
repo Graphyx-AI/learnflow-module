@@ -174,6 +174,10 @@ export default function LearningModule() {
         );
       case 'chest':
         return <ChestScreen onClaim={handleClaimChest} onClose={handleBackToMap} alreadyOpened={chestOpened} />;
+      case 'finaltest':
+        return <FinalTestScreen questions={FINAL_TEST_QUESTIONS} onComplete={handleFinalTestComplete} onQuit={handleBackToMap} />;
+      case 'finaltest-result':
+        return testResult ? <FinalTestResultScreen score={testResult.score} total={testResult.total} passed={testResult.passed} xpGained={testResult.xpGained} onClose={handleBackToMap} /> : null;
       default:
         return null;
     }
