@@ -38,6 +38,8 @@ const mockLesson: Lesson = {
 };
 
 describe('VictoryScreen', () => {
+  beforeEach(() => { vi.useFakeTimers(); });
+  afterEach(() => { vi.runOnlyPendingTimers(); vi.useRealTimers(); });
   it('renders with result data', () => {
     render(<VictoryScreen result={mockResult} player={mockPlayer} onContinue={vi.fn()} />);
     expect(screen.getByText('Lição concluída!')).toBeInTheDocument();
