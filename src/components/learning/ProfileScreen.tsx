@@ -143,47 +143,7 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
 
       {/* Content */}
       <div className="w-full max-w-[460px] px-5 mt-4 pb-10 relative z-10">
-        {tab === 'avatar' ? (
-          <>
-            <p className="text-[13px] text-muted-foreground font-semibold mb-4 text-center">
-              Escolha seu companheiro de estudos!
-            </p>
-            <div className="grid grid-cols-4 gap-3">
-              {AVATARS.map(avatar => (
-                <button
-                  key={avatar.id}
-                  onClick={() => onSelectAvatar(avatar.id)}
-                  className={`group relative rounded-2xl border-[2.5px] p-2 transition-all cursor-pointer hover:scale-105 ${
-                    selectedAvatar === avatar.id
-                      ? 'border-primary bg-primary/5 shadow-md'
-                      : 'border-border bg-card hover:border-primary/40'
-                  }`}
-                >
-                  <div className="aspect-square rounded-xl overflow-hidden bg-muted/30">
-                    <img
-                      src={avatar.src}
-                      alt={avatar.name}
-                      loading="lazy"
-                      width={512}
-                      height={512}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <p className={`text-[11px] font-bold text-center mt-1.5 ${
-                    selectedAvatar === avatar.id ? 'text-primary' : 'text-muted-foreground'
-                  }`}>
-                    {avatar.name}
-                  </p>
-                  {selectedAvatar === avatar.id && (
-                    <div className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                      <span className="text-[10px] text-primary-foreground">✓</span>
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          </>
-        ) : tab === 'badges' ? (
+        {tab === 'badges' ? (
           <>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[12px] font-bold text-muted-foreground uppercase tracking-wider">
