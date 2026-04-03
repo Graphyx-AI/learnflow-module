@@ -14,6 +14,7 @@ import FinalTestScreen, { FinalTestResultScreen } from './FinalTestScreen';
 import LeagueScreen from './LeagueScreen';
 import LightningChallenge from './LightningChallenge';
 import StreakNotification from './StreakNotification';
+import CourseCompletionScreen from './CourseCompletionScreen';
 
 export default function LearningModule() {
   const [screen, setScreen] = useState<Screen>('map');
@@ -104,9 +105,30 @@ export default function LearningModule() {
     if (result.passed) {
       setTestCompleted(true);
       localStorage.setItem('testCompleted', 'true');
+
+      // Check if ALL sections are complete
+      const updatedTests = { ...player.testsCompleted, [sectionId]: true };
+      const allDone = SECTIONS.every(s => updatedTests[s.id]);
+      if (allDone) {
+        setTestResult(result);
+        setScreen('course-complete');
+        return;
+      }
     }
     setScreen('finaltest-result');
-  }, [activeSectionIdx]);
+  }, [activeSectionIdx, player.testsCompleted]);
+
+  const handleRestartCourse = useCallback(() => {
+    const fresh = { ...INITIAL_PLAYER };
+    setPlayer(fresh);
+    setChestOpened(false);
+    setTestCompleted(false);
+    setTestResult(null);
+    setActiveSectionIdx(0);
+    localStorage.removeItem('chestOpened');
+    localStorage.removeItem('testCompleted');
+    setScreen('map');
+  }, []);
 
   const handleNavigate = useCallback((tab: string) => {
     if (tab === 'map') setScreen('map');
@@ -220,6 +242,8 @@ export default function LearningModule() {
         return <LeagueScreen playerXp={player.xp} playerName={playerName} onClose={handleBackToMap} />;
       case 'lightning':
         return <LightningChallenge onComplete={handleLightningComplete} onClose={handleBackToMap} playerLevel={player.level} />;
+      case 'course-complete':
+        return <CourseCompletionScreen player={player} playerName={playerName} onRestart={handleRestartCourse} />;
       default:
         return null;
     }
