@@ -156,7 +156,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
 
             {/* Map nodes */}
             {unlocked ? (
-              <div className="relative mt-1 pb-4 px-4" style={{ minHeight: `${mapNodes.length * NODE_SPACING + 30}px` }}>
+              <div className="relative mt-1 pt-16 pb-4 px-4" style={{ minHeight: `${mapNodes.length * NODE_SPACING + 90}px` }}>
                 {/* Dotted path lines */}
                 <svg className="absolute inset-0 w-full h-full pointer-events-none z-[0]" preserveAspectRatio="none">
                   {mapNodes.map((node, i) => {
