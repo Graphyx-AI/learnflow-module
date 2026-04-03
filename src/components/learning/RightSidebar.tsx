@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Home, Target, User, Trophy } from 'lucide-react';
+import { Home, Target, User, Trophy, Award } from 'lucide-react';
 import DailyMissions from './DailyMissions';
+import { ACHIEVEMENTS, Achievement } from './ProfileScreen';
 
 const FAKE_LEADERBOARD = [
   { rank: 1, name: 'Luna Silva', xp: 4200, streak: 14, badges: 7, avatar: '🦊' },
