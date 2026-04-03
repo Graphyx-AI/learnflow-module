@@ -245,6 +245,33 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
           +{xpPopup.value} XP{xpPopup.value > 10 ? ' 🔥' : ''}
         </div>
       )}
+
+      {/* Quit Modal */}
+      {showQuitModal && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setShowQuitModal(false)} />
+          <div className="relative bg-surface border border-border rounded-2xl p-6 w-full max-w-[340px] animate-slide-up">
+            <div className="text-center text-4xl mb-3">🚪</div>
+            <h3 className="font-display text-lg font-bold text-foreground text-center mb-2">Sair da lição?</h3>
+            <p className="text-sm text-muted-foreground text-center mb-6">Seu progresso será perdido.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowQuitModal(false)}
+                className="flex-1 py-3 rounded-xl border border-border bg-card text-foreground font-bold text-sm transition-all hover:bg-muted cursor-pointer"
+              >
+                Continuar
+              </button>
+              <button
+                onClick={onQuit}
+                className="flex-1 py-3 rounded-xl font-bold text-sm text-primary-foreground transition-all hover:brightness-110 cursor-pointer"
+                style={{ background: 'linear-gradient(135deg, hsl(var(--destructive)), #b91c1c)' }}
+              >
+                Sair
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
