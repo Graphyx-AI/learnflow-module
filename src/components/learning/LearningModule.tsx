@@ -13,6 +13,12 @@ export default function LearningModule() {
   const [player, setPlayer] = useState<PlayerState>({ ...INITIAL_PLAYER });
   const [selectedLesson, setSelectedLesson] = useState<{ sectionIdx: number; lessonIdx: number } | null>(null);
   const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
+  const [selectedAvatar, setSelectedAvatar] = useState(() => localStorage.getItem('selectedAvatar') || 'robot');
+
+  const handleSelectAvatar = useCallback((id: string) => {
+    setSelectedAvatar(id);
+    localStorage.setItem('selectedAvatar', id);
+  }, []);
 
   const handleSelectLesson = useCallback((sectionIdx: number, lessonIdx: number) => {
     setSelectedLesson({ sectionIdx, lessonIdx });
