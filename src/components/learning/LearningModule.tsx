@@ -128,10 +128,10 @@ export default function LearningModule() {
                   const rarityLabels: Record<string, string> = { common: 'Comum', rare: 'Raro', epic: 'Épico', legendary: 'Lendário' };
                   return (
                     <div key={a.id} className={`rounded-2xl border-[1.5px] p-4 flex items-center gap-4 transition-all ${
-                      a.unlocked ? rarityColors[a.rarity] : 'border-border bg-muted/20 opacity-50 grayscale'
+                      a.unlocked ? rarityColors[a.rarity] : 'border-border bg-muted/20 opacity-50'
                     }`}>
-                      <div className="w-12 h-12 rounded-xl bg-muted/50 flex items-center justify-center text-2xl flex-shrink-0">
-                        {a.unlocked ? a.icon : '🔒'}
+                      <div className={`w-14 h-14 rounded-xl overflow-hidden shadow-md flex-shrink-0 ${a.unlocked ? '' : 'grayscale opacity-40'}`}>
+                        <img src={a.badgeImg} alt={a.title} width={56} height={56} loading="lazy" className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-0.5">

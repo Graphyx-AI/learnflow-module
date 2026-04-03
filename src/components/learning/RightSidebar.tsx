@@ -148,8 +148,8 @@ function SidebarAchievements({ achievements, onViewAll }: { achievements: Achiev
     <div className="flex flex-col gap-2 mt-1 animate-slide-up">
       {shown.map(a => (
         <div key={a.id} className={`flex items-center gap-2.5 py-2 px-2.5 rounded-lg ${a.unlocked ? '' : 'opacity-50'}`}>
-          <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-base ${RARITY_COLORS[a.rarity]}`}>
-            {a.unlocked ? a.icon : '🔒'}
+          <div className={`w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 ${a.unlocked ? 'shadow-sm' : 'grayscale opacity-40'}`}>
+            <img src={a.badgeImg} alt={a.title} width={36} height={36} loading="lazy" className="w-full h-full object-cover" />
           </div>
           <div className="flex-1 min-w-0">
             <div className={`text-[11px] font-bold leading-tight ${a.unlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
