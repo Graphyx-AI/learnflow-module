@@ -7,6 +7,7 @@ interface MapScreenProps {
   onSelectLesson: (sectionIdx: number, lessonIdx: number) => void;
   onOpenProfile?: () => void;
   selectedAvatar?: string;
+  playerName?: string;
 }
 
 const MAP_NODES = [
