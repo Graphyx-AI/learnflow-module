@@ -79,24 +79,34 @@ export default function LearningModule() {
   const handleOpenProfile = useCallback(() => setScreen('profile'), []);
   const handleOpenChest = useCallback(() => setScreen('chest'), []);
   const handleClaimChest = useCallback((reward: ChestReward) => {
+    const sectionId = SECTIONS[activeSectionIdx]?.id || 'section-1';
+    setPlayer(prev => ({
+      ...prev,
+      xp: reward.type === 'xp' && reward.amount ? prev.xp + reward.amount : prev.xp,
+      currentXp: reward.type === 'xp' && reward.amount ? prev.currentXp + reward.amount : prev.currentXp,
+      chestsOpened: { ...prev.chestsOpened, [sectionId]: true },
+    }));
     setChestOpened(true);
     localStorage.setItem('chestOpened', 'true');
-    if (reward.type === 'xp' && reward.amount) {
-      setPlayer(prev => ({ ...prev, xp: prev.xp + reward.amount!, currentXp: prev.currentXp + reward.amount! }));
-    }
     setScreen('map');
-  }, []);
+  }, [activeSectionIdx]);
 
   const handleOpenFinalTest = useCallback(() => setScreen('finaltest'), []);
   const handleFinalTestComplete = useCallback((result: { score: number; total: number; passed: boolean; xpGained: number }) => {
     setTestResult(result);
-    setPlayer(prev => ({ ...prev, xp: prev.xp + result.xpGained, currentXp: prev.currentXp + result.xpGained }));
+    const sectionId = SECTIONS[activeSectionIdx]?.id || 'section-1';
+    setPlayer(prev => ({
+      ...prev,
+      xp: prev.xp + result.xpGained,
+      currentXp: prev.currentXp + result.xpGained,
+      testsCompleted: result.passed ? { ...prev.testsCompleted, [sectionId]: true } : prev.testsCompleted,
+    }));
     if (result.passed) {
       setTestCompleted(true);
       localStorage.setItem('testCompleted', 'true');
     }
     setScreen('finaltest-result');
-  }, []);
+  }, [activeSectionIdx]);
 
   const handleNavigate = useCallback((tab: string) => {
     if (tab === 'map') setScreen('map');
