@@ -7,8 +7,10 @@ interface MapScreenProps {
   player: PlayerState;
   onSelectLesson: (sectionIdx: number, lessonIdx: number) => void;
   onOpenProfile?: () => void;
+  onOpenChest?: () => void;
   selectedAvatar?: string;
   playerName?: string;
+  chestOpened?: boolean;
 }
 
 const MAP_NODES = [
@@ -23,13 +25,14 @@ const MAP_NODES = [
 
 const NODE_SPACING = 130;
 
-export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, selectedAvatar, playerName }: MapScreenProps) {
+export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, selectedAvatar, playerName, chestOpened }: MapScreenProps) {
   const section = sections[0];
   const avatarData = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
   const levelProgress = (player.currentXp / player.nextLevelXp) * 100;
 
   const getStatus = (id: number) => {
-    if (id < 0) return 'locked' as const;
+    if (id === -1) return player.completedLessons.length >= 2 ? (chestOpened ? 'completed' as const : 'current' as const) : 'locked' as const;
+    if (id === -2) return 'locked' as const;
     if (player.completedLessons.includes(id)) return 'completed' as const;
     if (id === 0 && !player.completedLessons.includes(0)) return 'current' as const;
     if (id > 0 && player.completedLessons.includes(id - 1)) return 'current' as const;
@@ -130,7 +133,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
           return (
             <div key={i} className="absolute" style={{ top: `${i * NODE_SPACING}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
               {node.type === 'chest' ? (
-                <ChestNode locked={status === 'locked'} />
+                <ChestNode locked={status === 'locked'} opened={chestOpened} onClick={() => { if (status !== 'locked' && onOpenChest) onOpenChest(); }} />
               ) : node.type === 'trophy' ? (
                 <TrophyNode />
               ) : (
@@ -240,18 +243,22 @@ function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
   );
 }
 
-function ChestNode({ locked }: { locked: boolean }) {
+function ChestNode({ locked, opened, onClick }: { locked: boolean; opened?: boolean; onClick?: () => void }) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center" onClick={!locked ? onClick : undefined}>
       <div className={`w-[64px] h-[56px] rounded-2xl flex items-center justify-center border-2 transition-transform duration-150 ${
         locked
           ? 'bg-muted/60 border-border cursor-default'
-          : 'bg-amber-50 border-amber-200 cursor-pointer hover:scale-105 shadow-md'
+          : opened
+          ? 'bg-primary/10 border-primary/30 cursor-pointer hover:scale-105 shadow-md'
+          : 'bg-gold/10 border-gold/30 cursor-pointer hover:scale-105 shadow-md animate-bobble'
       }`}>
-        <span className={`text-[24px] ${locked ? 'opacity-25 grayscale' : 'drop-shadow-sm'}`}>📦</span>
+        <span className={`text-[24px] ${locked ? 'opacity-25 grayscale' : 'drop-shadow-sm'}`}>
+          {opened ? '📭' : '📦'}
+        </span>
       </div>
-      <span className={`mt-2 text-[9px] font-bold uppercase tracking-wider ${locked ? 'text-muted-foreground/60' : 'text-amber-500'}`}>
-        Bônus
+      <span className={`mt-2 text-[9px] font-bold uppercase tracking-wider ${locked ? 'text-muted-foreground/60' : opened ? 'text-primary' : 'text-gold'}`}>
+        {opened ? 'Coletado' : 'Bônus'}
       </span>
     </div>
   );

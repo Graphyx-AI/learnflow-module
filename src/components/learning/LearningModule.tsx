@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Home, Target, User, Trophy, Award } from 'lucide-react';
-import { Screen, QuizResult, PlayerState } from './types';
+import { Screen, QuizResult, PlayerState, ChestReward } from './types';
 import { SECTIONS, INITIAL_PLAYER } from './data';
 import MapScreen from './MapScreen';
 import DailyMissions from './DailyMissions';
@@ -9,6 +9,7 @@ import QuizScreen from './QuizScreen';
 import VictoryScreen from './VictoryScreen';
 import ProfileScreen, { ACHIEVEMENTS } from './ProfileScreen';
 import RightSidebar, { RankingScreen } from './RightSidebar';
+import ChestScreen from './ChestScreen';
 
 export default function LearningModule() {
   const [screen, setScreen] = useState<Screen>('map');
@@ -23,6 +24,7 @@ export default function LearningModule() {
   }, []);
 
   const [playerName, setPlayerName] = useState(() => localStorage.getItem('playerName') || 'Estudante IA');
+  const [chestOpened, setChestOpened] = useState(() => localStorage.getItem('chestOpened') === 'true');
   const handleChangeName = useCallback((name: string) => {
     setPlayerName(name);
     localStorage.setItem('playerName', name);
@@ -55,6 +57,15 @@ export default function LearningModule() {
   }, []);
 
   const handleOpenProfile = useCallback(() => setScreen('profile'), []);
+  const handleOpenChest = useCallback(() => setScreen('chest'), []);
+  const handleClaimChest = useCallback((reward: ChestReward) => {
+    setChestOpened(true);
+    localStorage.setItem('chestOpened', 'true');
+    if (reward.type === 'xp' && reward.amount) {
+      setPlayer(prev => ({ ...prev, xp: prev.xp + reward.amount!, currentXp: prev.currentXp + reward.amount! }));
+    }
+    setScreen('map');
+  }, []);
 
   const handleNavigate = useCallback((tab: string) => {
     if (tab === 'map') setScreen('map');
@@ -83,7 +94,7 @@ export default function LearningModule() {
   const renderContent = () => {
     switch (screen) {
       case 'map':
-        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} selectedAvatar={selectedAvatar} playerName={playerName} />;
+        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} onOpenChest={handleOpenChest} selectedAvatar={selectedAvatar} playerName={playerName} chestOpened={chestOpened} />;
       case 'intro':
         return lesson ? <LessonIntro lesson={lesson} lessonNumber={(selectedLesson?.lessonIdx ?? 0) + 1} onStart={handleStartQuiz} onClose={handleBackToMap} /> : null;
       case 'quiz':
@@ -147,6 +158,8 @@ export default function LearningModule() {
             </div>
           </div>
         );
+      case 'chest':
+        return <ChestScreen onClaim={handleClaimChest} onClose={handleBackToMap} alreadyOpened={chestOpened} />;
       default:
         return null;
     }
