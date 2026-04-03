@@ -88,6 +88,27 @@ export default function RightSidebar({ completedLessons, activeTab, onNavigate, 
 
         <div className="h-px bg-border my-2" />
 
+        {/* Conquistas preview */}
+        <div>
+          <button
+            onClick={() => setAchievementsExpanded(!achievementsExpanded)}
+            className="w-full flex items-center justify-between py-2 px-1 cursor-pointer"
+          >
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              Conquistas
+            </span>
+            <span className={`text-muted-foreground text-xs transition-transform duration-200 ${achievementsExpanded ? 'rotate-180' : ''}`}>
+              ▼
+            </span>
+          </button>
+
+          {achievementsExpanded && (
+            <SidebarAchievements achievements={achievements} onViewAll={() => onNavigate('achievements')} />
+          )}
+        </div>
+
+        <div className="h-px bg-border my-2" />
+
         {/* Ranking */}
         <div>
           <button
