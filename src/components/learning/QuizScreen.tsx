@@ -95,7 +95,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
 
       {/* Top bar */}
       <div className="w-full max-w-[680px] flex items-center gap-3 pt-5 pb-3 relative z-10">
-        <button onClick={() => { if (confirm('Sair da lição? Seu progresso será perdido.')) onQuit(); }}
+        <button onClick={() => setShowQuitModal(true)}
           className="w-9 h-9 bg-surface border border-border rounded-full flex items-center justify-center text-muted-foreground text-base cursor-pointer transition-all hover:border-foreground/20 hover:text-foreground flex-shrink-0">
           ✕
         </button>
