@@ -1,5 +1,4 @@
 import { PlayerState, Section } from './types';
-import DailyMissions from './DailyMissions';
 
 interface MapScreenProps {
   sections: Section[];
