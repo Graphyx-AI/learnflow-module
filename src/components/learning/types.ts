@@ -50,7 +50,7 @@ export interface PlayerState {
   testsCompleted: Record<string, boolean>;
 }
 
-export type Screen = 'map' | 'intro' | 'quiz' | 'victory' | 'profile' | 'missions' | 'ranking' | 'achievements' | 'chest' | 'finaltest' | 'finaltest-result' | 'league' | 'lightning';
+export type Screen = 'map' | 'intro' | 'quiz' | 'victory' | 'profile' | 'missions' | 'ranking' | 'achievements' | 'chest' | 'finaltest' | 'finaltest-result' | 'league' | 'lightning' | 'course-complete';
 
 export interface ChestReward {
   type: 'xp' | 'life' | 'achievement';
