@@ -126,122 +126,94 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
         </div>
       </div>
 
-      {/* Section 1 — Forest Biome */}
-      <div className="w-[calc(100%-40px)] max-w-[460px] mx-5 mt-5 rounded-2xl overflow-hidden shadow-md">
-        <div className="p-5 px-6 flex items-center justify-between"
-          style={{ background: BIOMES[0].bannerGradient }}>
-          <div>
-            <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-white/70 mb-1">
-              {BIOMES[0].icon} {section.label}
-            </div>
-            <div className="font-display text-xl font-bold text-white">{section.title}</div>
-          </div>
-          <div className="flex items-center gap-2 bg-white/20 rounded-xl py-2.5 px-4 text-[11px] font-extrabold uppercase tracking-wider text-white cursor-pointer hover:bg-white/30 transition-all">
-            📋 Guia
-          </div>
-        </div>
-      </div>
+      {/* ═══ ALL SECTIONS ═══ */}
+      {sections.map((section, sIdx) => {
+        const unlocked = isSectionUnlocked(sIdx);
+        const biome = BIOMES[sIdx % BIOMES.length];
+        const mapNodes = buildMapNodes(section);
+        const sectionChestOpened = player.chestsOpened[section.id] || false;
+        const sectionTestCompleted = player.testsCompleted[section.id] || false;
 
-      {/* ═══ MAP — FOREST ═══ */}
-      <div className="w-full max-w-[460px] relative mt-4 pb-8 px-5 rounded-3xl overflow-hidden" style={{ minHeight: `${MAP_NODES.length * NODE_SPACING + 40}px` }}>
-        <BiomeBackground biomeId="forest" height={MAP_NODES.length * NODE_SPACING + 40} />
-
-        {/* SVG paths */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none z-[1]" preserveAspectRatio="none">
-          {MAP_NODES.map((node, i) => {
-            if (i === 0) return null;
-            const prev = MAP_NODES[i - 1];
-            const y0 = (i - 1) * NODE_SPACING + 44;
-            const y1 = i * NODE_SPACING + 10;
-            const x0 = (prev.x / 100) * 100;
-            const x1 = (node.x / 100) * 100;
-            const status = getStatus(prev.id);
-            const nextStatus = getStatus(node.id);
-            const done = status === 'completed';
-            const isCurrent = status === 'current' || (done && nextStatus === 'current');
-
-            const midY = (y0 + y1) / 2;
-            const d = `M ${x0}% ${y0} C ${x0}% ${midY}, ${x1}% ${midY}, ${x1}% ${y1}`;
-
-            return (
-              <path key={i} d={d} fill="none" strokeWidth="4" strokeLinecap="round"
-                strokeDasharray={!done && !isCurrent ? '8 12' : 'none'}
-                stroke={done ? BIOMES[0].pathColor : isCurrent ? BIOMES[0].pathColor : 'hsl(var(--border))'}
-                opacity={!done && !isCurrent ? 0.4 : done ? 0.7 : 0.5}
-              />
-            );
-          })}
-        </svg>
-
-        {/* Nodes */}
-        {MAP_NODES.map((node, i) => {
-          const status = getStatus(node.id);
-          return (
-            <div key={i} className="absolute z-[2]" style={{ top: `${i * NODE_SPACING}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
-              {node.type === 'chest' ? (
-                <ChestNode locked={status === 'locked'} opened={chestOpened} onClick={() => { if (status !== 'locked' && onOpenChest) onOpenChest(); }} />
-              ) : node.type === 'trophy' ? (
-                <TrophyNode status={status} onClick={() => { if (status !== 'locked' && onOpenFinalTest) onOpenFinalTest(); }} />
-              ) : (
-                <LessonNodeButton
-                  icon={node.icon}
-                  label={node.label}
-                  status={status}
-                  isFirst={i === 0 && status === 'current'}
-                  onClick={() => { if (status !== 'locked' && node.id >= 0) onSelectLesson(0, node.id); }}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Locked Sections with Biome Previews */}
-      {[
-        { biome: BIOMES[1], label: 'Seção 2 · Unidade 2', title: 'Prompting Avançado', desc: 'Chain-of-Thought, Few-Shot e RAG' },
-        { biome: BIOMES[2], label: 'Seção 3 · Unidade 3', title: 'IA Generativa', desc: 'GPT, DALL-E, Midjourney e Stable Diffusion' },
-        { biome: BIOMES[3], label: 'Seção 4 · Unidade 4', title: 'IA na Prática', desc: 'APIs, automações e projetos reais' },
-      ].map((s, i) => (
-        <div key={i} className="w-[calc(100%-40px)] max-w-[460px] mx-5 mt-5">
-          {/* Banner */}
-          <div className="rounded-2xl overflow-hidden relative">
-            <div className="p-5 px-6 flex items-center justify-between relative z-10"
-              style={{ background: s.biome.bannerGradient, opacity: 0.6 }}>
-              <div>
-                <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-white/70 mb-1">
-                  {s.biome.icon} {s.label}
+        return (
+          <div key={section.id} className="w-[calc(100%-40px)] max-w-[460px] mx-5 mt-5">
+            {/* Banner */}
+            <div className="rounded-2xl overflow-hidden shadow-md">
+              <div className="p-5 px-6 flex items-center justify-between"
+                style={{ background: biome.bannerGradient, opacity: unlocked ? 1 : 0.6 }}>
+                <div>
+                  <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-white/70 mb-1">
+                    {biome.icon} {section.label}
+                  </div>
+                  <div className="font-display text-xl font-bold text-white">{section.title}</div>
                 </div>
-                <div className="font-display text-lg font-bold text-white">{s.title}</div>
-              </div>
-              <div className="flex items-center gap-2 bg-white/20 rounded-xl py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider text-white">
-                🔒 Bloqueado
+                <div className="flex items-center gap-2 bg-white/20 rounded-xl py-2.5 px-4 text-[11px] font-extrabold uppercase tracking-wider text-white cursor-pointer hover:bg-white/30 transition-all">
+                  {unlocked ? '📋 Guia' : '🔒 Bloqueado'}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Locked preview nodes */}
-          <div className="relative rounded-2xl overflow-hidden mt-1" style={{ height: 180 }}>
-            <BiomeBackground biomeId={s.biome.id} height={180} />
-            <div className="absolute inset-0 z-[1] flex items-center justify-center">
-              <div className="flex flex-col items-center gap-2 bg-card/80 rounded-2xl p-5 border border-border/50 shadow-sm">
-                <div className="text-3xl">🔒</div>
-                <div className="text-[11px] font-bold text-muted-foreground text-center max-w-[200px]">
-                  Complete a seção anterior para desbloquear <strong className="text-foreground">{s.title}</strong>
-                </div>
-                <div className="text-[10px] text-muted-foreground/70">{s.desc}</div>
+            {/* Map or locked preview */}
+            {unlocked ? (
+              <div className="relative mt-2 pb-8 px-5 rounded-3xl overflow-hidden" style={{ minHeight: `${mapNodes.length * NODE_SPACING + 40}px` }}>
+                <BiomeBackground biomeId={biome.id} height={mapNodes.length * NODE_SPACING + 40} />
+                <svg className="absolute inset-0 w-full h-full pointer-events-none z-[1]" preserveAspectRatio="none">
+                  {mapNodes.map((node, i) => {
+                    if (i === 0) return null;
+                    const prev = mapNodes[i - 1];
+                    const y0 = (i - 1) * NODE_SPACING + 44;
+                    const y1 = i * NODE_SPACING + 10;
+                    const x0 = (prev.x / 100) * 100;
+                    const x1 = (node.x / 100) * 100;
+                    const status = getSectionStatus(section.id, prev.id);
+                    const nextStatus = getSectionStatus(section.id, node.id);
+                    const done = status === 'completed';
+                    const isCurrent = status === 'current' || (done && nextStatus === 'current');
+                    const midY = (y0 + y1) / 2;
+                    const d = `M ${x0}% ${y0} C ${x0}% ${midY}, ${x1}% ${midY}, ${x1}% ${y1}`;
+                    return (
+                      <path key={i} d={d} fill="none" strokeWidth="4" strokeLinecap="round"
+                        strokeDasharray={!done && !isCurrent ? '8 12' : 'none'}
+                        stroke={done ? biome.pathColor : isCurrent ? biome.pathColor : 'hsl(var(--border))'}
+                        opacity={!done && !isCurrent ? 0.4 : done ? 0.7 : 0.5}
+                      />
+                    );
+                  })}
+                </svg>
+                {mapNodes.map((node, i) => {
+                  const status = getSectionStatus(section.id, node.id);
+                  return (
+                    <div key={i} className="absolute z-[2]" style={{ top: `${i * NODE_SPACING}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
+                      {node.type === 'chest' ? (
+                        <ChestNode locked={status === 'locked'} opened={sectionChestOpened} onClick={() => { if (status !== 'locked' && onOpenChest) { onSectionChange?.(sIdx); onOpenChest(); } }} />
+                      ) : node.type === 'trophy' ? (
+                        <TrophyNode status={status} onClick={() => { if (status !== 'locked' && onOpenFinalTest) { onSectionChange?.(sIdx); onOpenFinalTest(); } }} />
+                      ) : (
+                        <LessonNodeButton
+                          icon={node.icon} label={node.label} status={status}
+                          isFirst={i === 0 && status === 'current'}
+                          onClick={() => { if (status !== 'locked' && node.id >= 0) { onSectionChange?.(sIdx); onSelectLesson(sIdx, node.id); } }}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-            </div>
-            {/* Ghost nodes */}
-            <div className="absolute inset-0 z-0 flex items-center justify-around px-8 opacity-20">
-              {['⭐', '🧠', '📦', '💬', '🏆'].map((e, j) => (
-                <div key={j} className="w-12 h-12 rounded-full bg-muted border-2 border-border/40 flex items-center justify-center text-lg grayscale">
-                  {e}
+            ) : (
+              <div className="relative rounded-2xl overflow-hidden mt-1" style={{ height: 160 }}>
+                <BiomeBackground biomeId={biome.id} height={160} />
+                <div className="absolute inset-0 z-[1] flex items-center justify-center">
+                  <div className="flex flex-col items-center gap-2 bg-card/80 rounded-2xl p-5 border border-border/50 shadow-sm">
+                    <div className="text-3xl">🔒</div>
+                    <div className="text-[11px] font-bold text-muted-foreground text-center max-w-[200px]">
+                      Complete a seção anterior para desbloquear <strong className="text-foreground">{section.title}</strong>
+                    </div>
+                  </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
           </div>
-        </div>
-      ))}
+        );
+      })}
 
       <div className="h-12" />
     </div>
