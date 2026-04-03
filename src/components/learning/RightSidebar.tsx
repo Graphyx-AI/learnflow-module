@@ -132,6 +132,44 @@ export default function RightSidebar({ completedLessons, activeTab, onNavigate, 
   );
 }
 
+const RARITY_COLORS: Record<string, string> = {
+  common: 'bg-muted',
+  rare: 'bg-primary/10',
+  epic: 'bg-secondary/10',
+  legendary: 'bg-gold/10',
+};
+
+function SidebarAchievements({ achievements, onViewAll }: { achievements: Achievement[]; onViewAll: () => void }) {
+  const unlocked = achievements.filter(a => a.unlocked);
+  const locked = achievements.filter(a => !a.unlocked);
+  const shown = [...unlocked.slice(0, 3), ...locked.slice(0, Math.max(0, 3 - unlocked.length))];
+
+  return (
+    <div className="flex flex-col gap-2 mt-1 animate-slide-up">
+      {shown.map(a => (
+        <div key={a.id} className={`flex items-center gap-2.5 py-2 px-2.5 rounded-lg ${a.unlocked ? '' : 'opacity-50'}`}>
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-base ${RARITY_COLORS[a.rarity]}`}>
+            {a.unlocked ? a.icon : '🔒'}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className={`text-[11px] font-bold leading-tight ${a.unlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
+              {a.title}
+            </div>
+            <div className="text-[9px] text-muted-foreground truncate">{a.description}</div>
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={onViewAll}
+        className="text-[10px] font-extrabold text-primary uppercase tracking-wider text-center py-1.5 hover:bg-primary/5 rounded-lg cursor-pointer transition-colors"
+      >
+        Ver todas →
+      </button>
+    </div>
+  );
+}
+
+
 function SidebarRanking({ playerXp, playerName, playerRank }: { playerXp: number; playerName: string; playerRank: number }) {
   return (
     <div className="flex flex-col gap-1.5 mt-1 animate-slide-up">
