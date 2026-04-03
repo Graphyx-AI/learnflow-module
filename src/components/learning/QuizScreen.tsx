@@ -176,7 +176,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
       </div>
 
       {/* Options */}
-      <div className="w-full max-w-[680px] grid gap-2.5 mt-4 relative z-10">
+      <div className={`w-full max-w-[680px] grid gap-2.5 mt-4 relative z-10 ${shaking ? 'animate-wrong-shake' : ''}`}>
         {q.options.map((opt, i) => {
           let optClass = 'bg-card border-border hover:border-primary hover:-translate-y-px';
           let letterClass = 'bg-muted border-border text-muted-foreground';

@@ -101,7 +101,7 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
         </div>
 
         {/* Options */}
-        <div className="flex flex-col gap-3 mb-6">
+        <div className={`flex flex-col gap-3 mb-6 ${shaking ? 'animate-wrong-shake' : ''}`}>
           {q.options.map((opt, i) => {
             const isSelected = selected === i;
             const isCorrectOpt = i === q.correctIndex;
