@@ -22,6 +22,7 @@ export default function LearningModule() {
   const [selectedLesson, setSelectedLesson] = useState<{ sectionIdx: number; lessonIdx: number } | null>(null);
   const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
   const [selectedAvatar, setSelectedAvatar] = useState(() => localStorage.getItem('selectedAvatar') || 'robot');
+  const [justUnlockedKey, setJustUnlockedKey] = useState<string | null>(null);
 
   const handleSelectAvatar = useCallback((id: string) => {
     setSelectedAvatar(id);
@@ -80,10 +81,22 @@ export default function LearningModule() {
   }, [selectedLesson]);
 
   const handleBackToMap = useCallback(() => {
+    // Determine which node just got unlocked
+    if (selectedLesson) {
+      const sectionId = SECTIONS[selectedLesson.sectionIdx]?.id || '';
+      const nextLessonIdx = selectedLesson.lessonIdx + 1;
+      const sectionLessons = SECTIONS[selectedLesson.sectionIdx]?.lessons || [];
+      if (nextLessonIdx < sectionLessons.length) {
+        setJustUnlockedKey(`${sectionId}:${nextLessonIdx}`);
+      } else if (nextLessonIdx >= sectionLessons.length) {
+        // Chest or trophy might unlock
+        setJustUnlockedKey(`${sectionId}:-2`);
+      }
+    }
     setScreen('map');
     setSelectedLesson(null);
     setQuizResult(null);
-  }, []);
+  }, [selectedLesson]);
 
   const handleOpenProfile = useCallback(() => setScreen('profile'), []);
   const handleOpenChest = useCallback(() => setScreen('chest'), []);
@@ -174,7 +187,7 @@ export default function LearningModule() {
   const renderContent = () => {
     switch (screen) {
       case 'map':
-        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} onOpenChest={handleOpenChest} onOpenFinalTest={handleOpenFinalTest} selectedAvatar={selectedAvatar} playerName={playerName} chestOpened={chestOpened} testCompleted={testCompleted} onSectionChange={setActiveSectionIdx} />;
+        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} onOpenChest={handleOpenChest} onOpenFinalTest={handleOpenFinalTest} selectedAvatar={selectedAvatar} playerName={playerName} chestOpened={chestOpened} testCompleted={testCompleted} onSectionChange={setActiveSectionIdx} justUnlockedKey={justUnlockedKey} />;
       case 'intro':
         return lesson ? <LessonIntro lesson={lesson} lessonNumber={(selectedLesson?.lessonIdx ?? 0) + 1} onStart={handleStartQuiz} onClose={handleBackToMap} /> : null;
       case 'quiz':

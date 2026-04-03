@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import { PlayerState, Section } from './types';
 import { AVATARS } from './ProfileScreen';
 import FloatingParticles from './FloatingParticles';
@@ -41,6 +42,8 @@ interface MapScreenProps {
   chestOpened?: boolean;
   testCompleted?: boolean;
   onSectionChange?: (idx: number) => void;
+  /** Recently unlocked node key e.g. "section-1:2" */
+  justUnlockedKey?: string | null;
 }
 
 function buildMapNodes(section: Section) {
@@ -57,10 +60,23 @@ function buildMapNodes(section: Section) {
 
 const NODE_SPACING = 130;
 
-export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted, onSectionChange }: MapScreenProps) {
+export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted, onSectionChange, justUnlockedKey }: MapScreenProps) {
   const avatarData = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
   const levelProgress = (player.currentXp / player.nextLevelXp) * 100;
   const league = getLeagueTier(player.xp);
+
+  // Track unlock animation — show for 2s then clear
+  const [animatingKey, setAnimatingKey] = useState<string | null>(null);
+  const prevKeyRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (justUnlockedKey && justUnlockedKey !== prevKeyRef.current) {
+      prevKeyRef.current = justUnlockedKey;
+      // Small delay so the map renders first, then animate
+      const t = setTimeout(() => setAnimatingKey(justUnlockedKey), 300);
+      const t2 = setTimeout(() => setAnimatingKey(null), 3000);
+      return () => { clearTimeout(t); clearTimeout(t2); };
+    }
+  }, [justUnlockedKey]);
 
   const isSectionUnlocked = (sIdx: number) => {
     if (sIdx === 0) return true;
@@ -201,19 +217,24 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
                 {/* Nodes */}
                 {mapNodes.map((node, i) => {
                   const status = getSectionStatus(section.id, node.id);
+                  const nodeKey = `${section.id}:${node.id}`;
+                  const isJustUnlocked = animatingKey === nodeKey;
                   return (
                     <div key={i} className="absolute z-[2]" style={{ top: `${i * NODE_SPACING}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
                       {node.type === 'chest' ? (
                         <DuoChestNode locked={status === 'locked'} opened={sectionChestOpened} colors={colors}
+                          isJustUnlocked={isJustUnlocked}
                           onClick={() => { if (status !== 'locked' && onOpenChest) { onSectionChange?.(sIdx); onOpenChest(); } }} />
                       ) : node.type === 'trophy' ? (
                         <DuoTrophyNode status={status} colors={colors}
+                          isJustUnlocked={isJustUnlocked}
                           onClick={() => { if (status !== 'locked' && onOpenFinalTest) { onSectionChange?.(sIdx); onOpenFinalTest(); } }} />
                       ) : (
                         <DuoLessonNode
                           icon={node.icon} label={node.label} status={status} colors={colors}
                           isFirst={i === 0 && status === 'current'}
                           isPerfect={(player.perfectLessons[section.id] || []).includes(node.id)}
+                          isJustUnlocked={isJustUnlocked}
                           onClick={() => { if (status !== 'locked' && node.id >= 0) { onSectionChange?.(sIdx); onSelectLesson(sIdx, node.id); } }}
                         />
                       )}
@@ -280,20 +301,20 @@ interface DuoColors {
   ring: string;
 }
 
-function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, onClick }: {
-  icon: string; label: string; status: 'completed' | 'current' | 'locked'; colors: DuoColors; isFirst: boolean; isPerfect?: boolean; onClick: () => void;
+function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJustUnlocked, onClick }: {
+  icon: string; label: string; status: 'completed' | 'current' | 'locked'; colors: DuoColors; isFirst: boolean; isPerfect?: boolean; isJustUnlocked?: boolean; onClick: () => void;
 }) {
   const isCompleted = status === 'completed';
   const isCurrent = status === 'current';
   const isLocked = status === 'locked';
 
   return (
-    <div className="relative flex flex-col items-center">
+    <div className={`relative flex flex-col items-center ${isJustUnlocked ? 'animate-node-unlock' : ''}`}>
 
       <button
         onClick={onClick}
         disabled={isLocked}
-        className={`duo-node ${isCurrent ? 'animate-duo-bounce' : ''}`}
+        className={`duo-node ${isCurrent && !isJustUnlocked ? 'animate-duo-bounce' : ''}`}
         style={{
           background: isLocked ? 'hsl(var(--muted))' : colors.bg,
           boxShadow: isLocked
@@ -332,6 +353,11 @@ function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, onClic
         </div>
       )}
 
+      {/* Unlock glow ring */}
+      {isJustUnlocked && (
+        <div className="absolute inset-[-10px] rounded-full animate-unlock-ring z-[-1]" style={{ background: `radial-gradient(circle, ${colors.ring}40 0%, transparent 70%)` }} />
+      )}
+
       <span className={`mt-2.5 text-[10px] font-extrabold uppercase tracking-wider ${
         isLocked ? 'text-muted-foreground/40' : isCompleted ? 'opacity-70' : ''
       }`} style={{ color: isLocked ? undefined : colors.bg }}>
@@ -341,9 +367,9 @@ function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, onClic
   );
 }
 
-function DuoChestNode({ locked, opened, colors, onClick }: { locked: boolean; opened?: boolean; colors: DuoColors; onClick?: () => void }) {
+function DuoChestNode({ locked, opened, colors, isJustUnlocked, onClick }: { locked: boolean; opened?: boolean; colors: DuoColors; isJustUnlocked?: boolean; onClick?: () => void }) {
   return (
-    <div className="flex flex-col items-center" onClick={!locked ? onClick : undefined}>
+    <div className={`flex flex-col items-center ${isJustUnlocked ? 'animate-node-unlock' : ''}`} onClick={!locked ? onClick : undefined}>
       <div
         className={`duo-node-chest ${!locked && !opened ? 'animate-duo-bounce' : ''}`}
         style={{
@@ -369,15 +395,15 @@ function DuoChestNode({ locked, opened, colors, onClick }: { locked: boolean; op
   );
 }
 
-function DuoTrophyNode({ status, colors, onClick }: { status: 'completed' | 'current' | 'locked'; colors: DuoColors; onClick?: () => void }) {
+function DuoTrophyNode({ status, colors, isJustUnlocked, onClick }: { status: 'completed' | 'current' | 'locked'; colors: DuoColors; isJustUnlocked?: boolean; onClick?: () => void }) {
   const isLocked = status === 'locked';
   const isCompleted = status === 'completed';
   const isCurrent = status === 'current';
 
   return (
-    <div className="flex flex-col items-center" onClick={!isLocked ? onClick : undefined}>
+    <div className={`flex flex-col items-center ${isJustUnlocked ? 'animate-node-unlock' : ''}`} onClick={!isLocked ? onClick : undefined}>
       <div
-        className={`duo-node ${isCurrent ? 'animate-duo-bounce' : ''}`}
+        className={`duo-node ${isCurrent && !isJustUnlocked ? 'animate-duo-bounce' : ''}`}
         style={{
           background: isLocked ? 'hsl(var(--muted))' : 'hsl(40 96% 53%)',
           boxShadow: isLocked
