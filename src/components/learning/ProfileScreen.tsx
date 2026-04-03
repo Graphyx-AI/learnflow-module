@@ -62,7 +62,7 @@ interface ProfileScreenProps {
 }
 
 export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, onClose }: ProfileScreenProps) {
-  const [tab, setTab] = useState<'badges' | 'stats' | 'avatar'>('avatar');
+  const [tab, setTab] = useState<'badges' | 'stats' | 'avatar'>('badges');
 
   const currentAvatar = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
 
@@ -115,14 +115,6 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
       <div className="w-full max-w-[460px] px-5 mt-2 relative z-10">
         <div className="flex bg-muted rounded-xl p-1">
           <button
-            onClick={() => setTab('avatar')}
-            className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${
-              tab === 'avatar' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
-            }`}
-          >
-            🎭 Avatar
-          </button>
-          <button
             onClick={() => setTab('badges')}
             className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${
               tab === 'badges' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
@@ -138,12 +130,42 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
           >
             📊 Stats
           </button>
+          <button
+            onClick={() => setTab('avatar')}
+            className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${
+              tab === 'avatar' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
+            }`}
+          >
+            🎭 Avatar
+          </button>
         </div>
       </div>
 
       {/* Content */}
       <div className="w-full max-w-[460px] px-5 mt-4 pb-10 relative z-10">
-        {tab === 'avatar' ? (
+        {tab === 'badges' ? (
+          <>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[12px] font-bold text-muted-foreground uppercase tracking-wider">
+                {unlockedCount}/{achievements.length} desbloqueadas
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {achievements.map(a => (
+                <BadgeCard key={a.id} achievement={a} />
+              ))}
+            </div>
+          </>
+        ) : tab === 'stats' ? (
+          <div className="flex flex-col gap-3">
+            <StatRow icon="📚" label="Lições completas" value={player.completedLessons.length} />
+            <StatRow icon="⚡" label="XP total" value={player.xp} />
+            <StatRow icon="🔥" label="Maior streak" value={`${player.streak} dias`} />
+            <StatRow icon="🎯" label="Questões respondidas" value={player.completedLessons.length * 8} />
+            <StatRow icon="🏅" label="Conquistas" value={`${unlockedCount}/${achievements.length}`} />
+            <StatRow icon="📈" label="Nível atual" value={`${player.level} — ${player.levelTitle}`} />
+          </div>
+        ) : (
           <>
             <p className="text-[13px] text-muted-foreground font-semibold mb-4 text-center">
               Escolha seu companheiro de estudos!
@@ -183,28 +205,6 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
               ))}
             </div>
           </>
-        ) : tab === 'badges' ? (
-          <>
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[12px] font-bold text-muted-foreground uppercase tracking-wider">
-                {unlockedCount}/{achievements.length} desbloqueadas
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              {achievements.map(a => (
-                <BadgeCard key={a.id} achievement={a} />
-              ))}
-            </div>
-          </>
-        ) : (
-          <div className="flex flex-col gap-3">
-            <StatRow icon="📚" label="Lições completas" value={player.completedLessons.length} />
-            <StatRow icon="⚡" label="XP total" value={player.xp} />
-            <StatRow icon="🔥" label="Maior streak" value={`${player.streak} dias`} />
-            <StatRow icon="🎯" label="Questões respondidas" value={player.completedLessons.length * 8} />
-            <StatRow icon="🏅" label="Conquistas" value={`${unlockedCount}/${achievements.length}`} />
-            <StatRow icon="📈" label="Nível atual" value={`${player.level} — ${player.levelTitle}`} />
-          </div>
         )}
       </div>
     </div>
