@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { QuizResult, PlayerState } from './types';
+import Confetti from './Confetti';
 
 interface VictoryScreenProps {
   result: QuizResult;
