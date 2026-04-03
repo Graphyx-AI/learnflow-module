@@ -27,6 +27,7 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
     setSelected(idx);
     setAnswered(true);
     const isCorrect = idx === q.correctIndex;
+    if (soundOn) { isCorrect ? playCorrectSound() : playWrongSound(); }
     if (isCorrect) {
       setCorrect(c => c + 1);
       setStreak(s => {
