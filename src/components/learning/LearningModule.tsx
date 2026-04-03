@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { Home, Target, User } from 'lucide-react';
 import { Screen, QuizResult, PlayerState } from './types';
 import { SECTIONS, INITIAL_PLAYER } from './data';
 import MapScreen from './MapScreen';
