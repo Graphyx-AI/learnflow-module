@@ -95,6 +95,15 @@ export default function LearningModule() {
     else if (tab === 'missions') setScreen('missions');
     else if (tab === 'ranking') setScreen('ranking');
     else if (tab === 'achievements') setScreen('achievements');
+    else if (tab === 'league') setScreen('league');
+    else if (tab === 'lightning') setScreen('lightning');
+  }, []);
+
+  const handleLightningComplete = useCallback((xpGained: number) => {
+    setPlayer(prev => ({ ...prev, xp: prev.xp + xpGained, currentXp: prev.currentXp + xpGained }));
+    setLightningDone(true);
+    localStorage.setItem('lightningDate', new Date().toDateString());
+    setScreen('map');
   }, []);
 
   const lesson = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.lessons[selectedLesson.lessonIdx] : null;
