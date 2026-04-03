@@ -379,6 +379,8 @@ function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJust
       </span>
     </div>
   );
+
+  return tooltip ? <MapTooltip text={tooltip}>{content}</MapTooltip> : content;
 }
 
 function DuoChestNode({ locked, opened, colors, isJustUnlocked, onClick }: { locked: boolean; opened?: boolean; colors: DuoColors; isJustUnlocked?: boolean; onClick?: () => void }) {
