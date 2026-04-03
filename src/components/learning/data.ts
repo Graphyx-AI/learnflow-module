@@ -959,4 +959,5 @@ export const INITIAL_PLAYER = {
   sectionProgress: {} as Record<string, number[]>,
   chestsOpened: {} as Record<string, boolean>,
   testsCompleted: {} as Record<string, boolean>,
+  perfectLessons: {} as Record<string, number[]>,
 };

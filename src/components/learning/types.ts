@@ -48,6 +48,8 @@ export interface PlayerState {
   chestsOpened: Record<string, boolean>;
   /** Per-section test completed */
   testsCompleted: Record<string, boolean>;
+  /** Lessons completed with 100% accuracy: { 'section-1': [0, 2] } */
+  perfectLessons: Record<string, number[]>;
 }
 
 export type Screen = 'map' | 'intro' | 'quiz' | 'victory' | 'profile' | 'missions' | 'ranking' | 'achievements' | 'chest' | 'finaltest' | 'finaltest-result' | 'league' | 'lightning' | 'course-complete';
