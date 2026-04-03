@@ -23,6 +23,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
   const [shakingHeart, setShakingHeart] = useState<number | null>(null);
   const [animKey, setAnimKey] = useState(0);
   const popupKey = useRef(0);
+  const [showQuitModal, setShowQuitModal] = useState(false);
 
   const q = questions[qIdx];
   const progress = (qIdx / questions.length) * 100;
