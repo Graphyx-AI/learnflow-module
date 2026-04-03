@@ -594,7 +594,7 @@ export const SECTIONS: Section[] = [
     unlocked: false,
     lessons: [
       {
-        icon: '🎨', title: 'Arte Generativa com IA', description: 'Como a IA está revolucionando a criação artística.',
+        icon: '🖼️', title: 'Arte Generativa com IA', description: 'Como a IA está revolucionando a criação artística.',
         topics: ['Diffusion models', 'GANs', 'Style transfer', 'Arte algorítmica'],
         questions: [
           { icon: '🎨', category: 'Arte', difficulty: 'Fácil' as const, text: 'O que é arte generativa?', options: ['Arte criada com auxílio de algoritmos e IA', 'Pintura manual', 'Fotografia digital', 'Design gráfico tradicional'], correctIndex: 0, explanation: 'Arte generativa usa algoritmos e IA para criar obras originais.' },
@@ -608,7 +608,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🎵', title: 'IA na Música', description: 'Composição, produção e remix com inteligência artificial.',
+        icon: '🎙️', title: 'IA na Música', description: 'Composição, produção e remix com inteligência artificial.',
         topics: ['Composição automática', 'Síntese de áudio', 'Separação de stems', 'Copyright'],
         questions: [
           { icon: '🎵', category: 'Música', difficulty: 'Fácil' as const, text: 'Como IA pode criar música?', options: ['Tocando instrumentos físicos', 'Aprendendo padrões de composições e gerando novas', 'Gravando sons aleatórios', 'Copiando músicas'], correctIndex: 1, explanation: 'Modelos aprendem estruturas musicais e geram composições originais.' },
@@ -622,7 +622,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🎬', title: 'Vídeo e Animação com IA', description: 'Gere, edite e anime vídeos usando inteligência artificial.',
+        icon: '🤖', title: 'Vídeo e Animação com IA', description: 'Gere, edite e anime vídeos usando inteligência artificial.',
         topics: ['Geração de vídeo', 'Deepfakes', 'Animação automática', 'Efeitos visuais'],
         questions: [
           { icon: '🎬', category: 'Vídeo', difficulty: 'Fácil' as const, text: 'O que é geração de vídeo com IA?', options: ['Edição manual', 'Streaming ao vivo', 'Criar vídeos a partir de texto ou imagens usando IA', 'Converter formatos'], correctIndex: 2, explanation: 'Modelos como Sora geram vídeos fotorrealistas a partir de descrições textuais.' },
@@ -636,7 +636,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '✍️', title: 'Escrita Criativa com IA', description: 'Use IA como parceira na criação de textos e narrativas.',
+        icon: '💬', title: 'Escrita Criativa com IA', description: 'Use IA como parceira na criação de textos e narrativas.',
         topics: ['Storytelling', 'Copywriting', 'Worldbuilding', 'Co-criação'],
         questions: [
           { icon: '✍️', category: 'Escrita', difficulty: 'Fácil' as const, text: 'Como IA ajuda na escrita criativa?', options: ['Escreve tudo sozinha', 'Só corrige gramática', 'Sugere ideias, estruturas e supera bloqueio criativo', 'Não ajuda'], correctIndex: 2, explanation: 'IA é uma ferramenta de co-criação que amplifica a criatividade do escritor.' },
@@ -650,7 +650,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🎮', title: 'IA em Games', description: 'Como a IA transforma jogos e experiências interativas.',
+        icon: '🕹️', title: 'IA em Games', description: 'Como a IA transforma jogos e experiências interativas.',
         topics: ['NPCs inteligentes', 'Geração procedural', 'IA adaptativa', 'Narrativa dinâmica'],
         questions: [
           { icon: '🎮', category: 'Games', difficulty: 'Fácil' as const, text: 'Como IA é usada em NPCs?', options: ['Só movimentação', 'Comportamento adaptativo que reage ao jogador', 'Gráficos melhores', 'Som surround'], correctIndex: 1, explanation: 'NPCs com IA aprendem e se adaptam ao estilo do jogador.' },
@@ -686,7 +686,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🏗️', title: 'Arquiteturas Avançadas', description: 'Modelos de ponta que definem o futuro.',
+        icon: '⚙️', title: 'Arquiteturas Avançadas', description: 'Modelos de ponta que definem o futuro.',
         topics: ['Mixture of Experts', 'State Space Models', 'Multimodal', 'Sparse models'],
         questions: [
           { icon: '🏗️', category: 'Arquiteturas', difficulty: 'Difícil' as const, text: 'O que é Mixture of Experts?', options: ['Equipe de cientistas', 'Ensemble de modelos', 'Modelo que ativa subconjuntos de parâmetros por input', 'Votação'], correctIndex: 2, explanation: 'MoE usa roteamento para ativar especialistas relevantes.' },
@@ -714,7 +714,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🌐', title: 'IA Distribuída e Federada', description: 'Treine modelos sem compartilhar dados.',
+        icon: '🔗', title: 'IA Distribuída e Federada', description: 'Treine modelos sem compartilhar dados.',
         topics: ['Federated learning', 'Edge AI', 'On-device AI', 'Privacy ML'],
         questions: [
           { icon: '🌐', category: 'Distribuída', difficulty: 'Médio' as const, text: 'O que é federated learning?', options: ['Cloud computing', 'Rede social', 'Treinar modelos sem centralizar dados', 'Blockchain'], correctIndex: 2, explanation: 'Federated learning treina modelos localmente, compartilhando apenas gradientes.' },
@@ -728,7 +728,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🔮', title: 'O Horizonte da IA', description: 'AGI, superinteligência e o futuro.',
+        icon: '🧠', title: 'O Horizonte da IA', description: 'AGI, superinteligência e o futuro.',
         topics: ['AGI', 'Superinteligência', 'Consciousness', 'Existential risk'],
         questions: [
           { icon: '🔮', category: 'Futuro', difficulty: 'Fácil' as const, text: 'O que é AGI?', options: ['Tipo de GPU', 'Framework', 'App', 'IA com capacidade intelectual geral como humanos'], correctIndex: 3, explanation: 'AGI seria uma IA capaz de qualquer tarefa cognitiva humana.' },
