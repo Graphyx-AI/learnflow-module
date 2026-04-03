@@ -285,15 +285,6 @@ function DuoLessonNode({ icon, label, status, colors, isFirst, onClick }: {
 
   return (
     <div className="relative flex flex-col items-center">
-      {/* COMEÇAR speech bubble */}
-      {isFirst && (
-        <div className="absolute -top-[52px] left-1/2 -translate-x-1/2 z-20">
-          <div className="duo-speech-bubble" style={{ background: colors.bg }}>
-            COMEÇAR
-            <div className="duo-speech-arrow" style={{ borderTopColor: colors.bg }} />
-          </div>
-        </div>
-      )}
 
       <button
         onClick={onClick}
