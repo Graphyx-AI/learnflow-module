@@ -636,7 +636,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '✍️', title: 'Escrita Criativa com IA', description: 'Use IA como parceira na criação de textos e narrativas.',
+        icon: '💬', title: 'Escrita Criativa com IA', description: 'Use IA como parceira na criação de textos e narrativas.',
         topics: ['Storytelling', 'Copywriting', 'Worldbuilding', 'Co-criação'],
         questions: [
           { icon: '✍️', category: 'Escrita', difficulty: 'Fácil' as const, text: 'Como IA ajuda na escrita criativa?', options: ['Escreve tudo sozinha', 'Só corrige gramática', 'Sugere ideias, estruturas e supera bloqueio criativo', 'Não ajuda'], correctIndex: 2, explanation: 'IA é uma ferramenta de co-criação que amplifica a criatividade do escritor.' },
