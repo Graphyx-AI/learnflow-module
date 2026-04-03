@@ -714,7 +714,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🌐', title: 'IA Distribuída e Federada', description: 'Treine modelos sem compartilhar dados.',
+        icon: '🔗', title: 'IA Distribuída e Federada', description: 'Treine modelos sem compartilhar dados.',
         topics: ['Federated learning', 'Edge AI', 'On-device AI', 'Privacy ML'],
         questions: [
           { icon: '🌐', category: 'Distribuída', difficulty: 'Médio' as const, text: 'O que é federated learning?', options: ['Cloud computing', 'Rede social', 'Treinar modelos sem centralizar dados', 'Blockchain'], correctIndex: 2, explanation: 'Federated learning treina modelos localmente, compartilhando apenas gradientes.' },
