@@ -93,6 +93,7 @@ export default function LearningModule() {
             </div>
           </div>
         );
+      default:
         return null;
     }
   };
