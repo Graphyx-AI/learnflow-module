@@ -57,23 +57,22 @@ describe('VictoryScreen', () => {
 describe('LessonIntro', () => {
   it('renders lesson info', () => {
     render(<LessonIntro lesson={mockLesson} lessonNumber={1} onStart={vi.fn()} onClose={vi.fn()} />);
-    expect(screen.getByText('Test Lesson')).toBeInTheDocument();
+    // Title is split: "Lição 1 — Test Lesson"
+    expect(screen.getByText(/Test Lesson/)).toBeInTheDocument();
     expect(screen.getByText('A test lesson.')).toBeInTheDocument();
   });
 
   it('calls onStart when start button is clicked', () => {
     const onStart = vi.fn();
     render(<LessonIntro lesson={mockLesson} lessonNumber={1} onStart={onStart} onClose={vi.fn()} />);
-    const startBtn = screen.getByText(/Iniciar/i) || screen.getByText(/Começar/i);
-    fireEvent.click(startBtn);
+    fireEvent.click(screen.getByText(/COMEÇAR/i));
     expect(onStart).toHaveBeenCalledOnce();
   });
 
   it('calls onClose when back button is clicked', () => {
     const onClose = vi.fn();
     render(<LessonIntro lesson={mockLesson} lessonNumber={1} onStart={vi.fn()} onClose={onClose} />);
-    const backBtn = screen.getByText(/Voltar/i);
-    fireEvent.click(backBtn);
+    fireEvent.click(screen.getByText(/Agora não/i));
     expect(onClose).toHaveBeenCalledOnce();
   });
 });
