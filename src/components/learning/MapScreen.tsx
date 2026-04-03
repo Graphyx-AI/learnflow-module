@@ -301,20 +301,20 @@ interface DuoColors {
   ring: string;
 }
 
-function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, onClick }: {
-  icon: string; label: string; status: 'completed' | 'current' | 'locked'; colors: DuoColors; isFirst: boolean; isPerfect?: boolean; onClick: () => void;
+function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJustUnlocked, onClick }: {
+  icon: string; label: string; status: 'completed' | 'current' | 'locked'; colors: DuoColors; isFirst: boolean; isPerfect?: boolean; isJustUnlocked?: boolean; onClick: () => void;
 }) {
   const isCompleted = status === 'completed';
   const isCurrent = status === 'current';
   const isLocked = status === 'locked';
 
   return (
-    <div className="relative flex flex-col items-center">
+    <div className={`relative flex flex-col items-center ${isJustUnlocked ? 'animate-node-unlock' : ''}`}>
 
       <button
         onClick={onClick}
         disabled={isLocked}
-        className={`duo-node ${isCurrent ? 'animate-duo-bounce' : ''}`}
+        className={`duo-node ${isCurrent && !isJustUnlocked ? 'animate-duo-bounce' : ''}`}
         style={{
           background: isLocked ? 'hsl(var(--muted))' : colors.bg,
           boxShadow: isLocked
