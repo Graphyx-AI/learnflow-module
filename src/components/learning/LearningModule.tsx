@@ -22,6 +22,7 @@ export default function LearningModule() {
   const [selectedLesson, setSelectedLesson] = useState<{ sectionIdx: number; lessonIdx: number } | null>(null);
   const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
   const [selectedAvatar, setSelectedAvatar] = useState(() => localStorage.getItem('selectedAvatar') || 'robot');
+  const [justUnlockedKey, setJustUnlockedKey] = useState<string | null>(null);
 
   const handleSelectAvatar = useCallback((id: string) => {
     setSelectedAvatar(id);
