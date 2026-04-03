@@ -98,6 +98,7 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
   });
 
   const unlockedCount = achievements.filter(a => a.unlocked).length;
+  const perfectCount = Object.values(player.perfectLessons || {}).reduce((sum, arr) => sum + arr.length, 0);
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-background relative overflow-x-hidden">
