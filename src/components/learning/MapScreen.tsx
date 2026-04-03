@@ -1,5 +1,4 @@
 import { PlayerState, Section } from './types';
-import DailyMissions from './DailyMissions';
 
 interface MapScreenProps {
   sections: Section[];
@@ -72,8 +71,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
         </div>
       </div>
 
-      {/* Daily Missions */}
-      <DailyMissions completedLessons={player.completedLessons} />
+      {/* Section Banner */}
 
       {/* Section Banner — full-width colored bar */}
       <div className="w-[calc(100%-40px)] max-w-[460px] mx-5 mt-5 rounded-2xl overflow-hidden shadow-md">
