@@ -24,6 +24,9 @@ const SECTION_COLORS = [
   { bg: 'hsl(0 72% 50%)', bgLight: 'hsl(0 72% 58%)', shadow: 'hsl(0 72% 38%)', ring: 'hsl(0 72% 65%)' },
   { bg: 'hsl(195 70% 50%)', bgLight: 'hsl(195 70% 58%)', shadow: 'hsl(195 70% 38%)', ring: 'hsl(195 70% 62%)' },
   { bg: 'hsl(80 65% 40%)', bgLight: 'hsl(80 65% 50%)', shadow: 'hsl(80 65% 28%)', ring: 'hsl(80 65% 55%)' },
+  { bg: 'hsl(270 60% 55%)', bgLight: 'hsl(270 60% 62%)', shadow: 'hsl(270 60% 40%)', ring: 'hsl(270 60% 70%)' },
+  { bg: 'hsl(330 80% 55%)', bgLight: 'hsl(330 80% 62%)', shadow: 'hsl(330 80% 40%)', ring: 'hsl(330 80% 70%)' },
+  { bg: 'hsl(340 70% 55%)', bgLight: 'hsl(340 70% 62%)', shadow: 'hsl(340 70% 40%)', ring: 'hsl(340 70% 70%)' },
 ];
 
 interface MapScreenProps {
