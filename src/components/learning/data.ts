@@ -683,8 +683,8 @@ export const SECTIONS: Section[] = [
           { icon: '⚛️', category: 'Ciência', difficulty: 'Difícil' as const, text: 'O que é IA quântica?', options: ['Ficção', 'Combinar computação quântica com ML', 'Física teórica', 'Marketing'], correctIndex: 1, explanation: 'IA quântica promete resolver problemas intratáveis classicamente.' },
           { icon: '🧪', category: 'Ciência', difficulty: 'Médio' as const, text: 'O que é lab automation com IA?', options: ['Limpar laboratório', 'Organizar prateleiras', 'Robôs que conduzem experimentos guiados por IA', 'Agendar reuniões'], correctIndex: 2, explanation: 'Robôs controlados por IA executam milhares de experimentos.' },
           { icon: '📊', category: 'Ciência', difficulty: 'Difícil' as const, text: 'O que é AI-driven hypothesis generation?', options: ['Adivinhação', 'Gerar gráficos', 'IA gerando hipóteses a partir de padrões', 'Pesquisa manual'], correctIndex: 2, explanation: 'IA analisa literatura e dados para sugerir hipóteses novas.' },
-  ],
-  'section-8': [
+        ],
+      },
     { icon: '🎨', category: 'Arte', difficulty: 'Médio' as const, text: 'GANs usam qual estratégia?', options: ['Cooperação', 'Competição entre gerador e discriminador', 'Votação', 'Consenso'], correctIndex: 1, explanation: 'GANs competem: gerador cria, discriminador avalia.' },
     { icon: '🎵', category: 'Música', difficulty: 'Fácil' as const, text: 'Suno AI faz o quê?', options: ['Streaming', 'Gera músicas completas com voz', 'Edita áudio', 'Karaokê'], correctIndex: 1, explanation: 'Suno gera músicas com vocal e instrumentação.' },
     { icon: '🎬', category: 'Vídeo', difficulty: 'Médio' as const, text: 'O que é NeRF?', options: ['Filtro', 'Jogo', 'Cenas 3D a partir de fotos 2D', 'Câmera'], correctIndex: 2, explanation: 'NeRF reconstrói cenas 3D fotorrealistas.' },
