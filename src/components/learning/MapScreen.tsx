@@ -9,11 +9,11 @@ interface MapScreenProps {
 
 const MAP_NODES = [
   { id: 0, icon: '⭐', label: 'Lição 1', x: 50, type: 'lesson' as const },
-  { id: 1, icon: '🧠', label: 'Lição 2', x: 75, type: 'lesson' as const },
-  { id: -1, icon: '📦', label: 'Bônus', x: 50, type: 'chest' as const },
-  { id: 2, icon: '💬', label: 'Lição 3', x: 25, type: 'lesson' as const },
-  { id: 3, icon: '⚙️', label: 'Lição 4', x: 50, type: 'lesson' as const },
-  { id: 4, icon: '🎯', label: 'Lição 5', x: 75, type: 'lesson' as const },
+  { id: 1, icon: '🧠', label: 'Lição 2', x: 30, type: 'lesson' as const },
+  { id: -1, icon: '📦', label: 'Bônus', x: 55, type: 'chest' as const },
+  { id: 2, icon: '💬', label: 'Lição 3', x: 70, type: 'lesson' as const },
+  { id: 3, icon: '⚙️', label: 'Lição 4', x: 40, type: 'lesson' as const },
+  { id: 4, icon: '🎯', label: 'Lição 5', x: 60, type: 'lesson' as const },
   { id: -2, icon: '🏆', label: 'Teste', x: 50, type: 'trophy' as const },
 ];
 
@@ -31,16 +31,18 @@ export default function MapScreen({ sections, player, onSelectLesson }: MapScree
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-background relative overflow-x-hidden">
-      {/* Ambient glow top */}
-      <div className="fixed top-0 left-0 right-0 h-[400px] pointer-events-none z-0"
-        style={{ background: 'radial-gradient(ellipse at 50% -20%, rgba(94,234,212,0.08) 0%, transparent 70%)' }} />
-
       {/* Header */}
-      <div className="w-full max-w-[440px] px-5 pt-6 flex flex-col gap-4 relative z-10">
+      <div className="w-full max-w-[460px] px-5 pt-6 flex flex-col gap-4 relative z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center text-lg shadow-lg shadow-primary/20">🤖</div>
-            <span className="font-display text-base font-bold text-foreground">NexSkill AI</span>
+            <div className="w-10 h-10 rounded-2xl flex items-center justify-center text-lg shadow-lg"
+              style={{ background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))' }}>
+              🤖
+            </div>
+            <div>
+              <span className="font-display text-base font-bold text-foreground block leading-tight">NexSkill AI</span>
+              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Trilha de IA</span>
+            </div>
           </div>
           <div className="flex gap-2">
             <StatPill icon="🔥" value={player.streak} variant="gold" />
@@ -49,26 +51,21 @@ export default function MapScreen({ sections, player, onSelectLesson }: MapScree
         </div>
 
         {/* Level bar */}
-        <div className="bg-surface border border-border rounded-2xl p-4">
+        <div className="bg-card border border-border rounded-2xl p-4 shadow-sm">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-extrabold text-muted-foreground uppercase tracking-wider">
-              Nível {player.level}
-            </span>
-            <span className="text-[11px] font-bold text-muted-foreground">
-              {player.levelTitle}
-            </span>
-          </div>
-          <div className="bg-muted/60 h-3 rounded-full overflow-hidden relative">
-            <div className="h-full rounded-full transition-all duration-700 relative"
-              style={{
-                width: `${levelProgress}%`,
-                background: 'linear-gradient(90deg, hsl(var(--primary)), hsl(var(--secondary)))',
-              }}>
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-foreground rounded-full border-2 border-background shadow-md" />
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center text-[13px] font-black text-primary">
+                {player.level}
+              </div>
+              <span className="text-[12px] font-bold text-foreground">{player.levelTitle}</span>
             </div>
+            <span className="text-[11px] font-semibold text-muted-foreground">
+              {player.currentXp}/{player.nextLevelXp} XP
+            </span>
           </div>
-          <div className="text-[11px] text-muted-foreground mt-1.5 text-right font-semibold">
-            {player.currentXp} / {player.nextLevelXp} XP
+          <div className="bg-muted h-3 rounded-full overflow-hidden">
+            <div className="h-full rounded-full transition-all duration-700"
+              style={{ width: `${levelProgress}%`, background: 'linear-gradient(90deg, hsl(var(--primary)), hsl(var(--secondary)))' }} />
           </div>
         </div>
       </div>
@@ -76,70 +73,60 @@ export default function MapScreen({ sections, player, onSelectLesson }: MapScree
       {/* Daily Missions */}
       <DailyMissions completedLessons={player.completedLessons} />
 
-      {/* Section Banner */}
-      <div className="w-[calc(100%-40px)] max-w-[440px] mt-5 mx-5 rounded-2xl p-4 px-5 flex items-center justify-between cursor-pointer transition-all hover:brightness-110 border-2 border-green bg-green-bright/20">
-        <div>
-          <div className="text-[10px] font-extrabold uppercase tracking-[0.1em] text-green/80 mb-0.5">{section.label}</div>
-          <div className="font-display text-lg font-bold text-foreground">{section.title}</div>
-        </div>
-        <div className="flex items-center gap-1.5 bg-foreground/10 rounded-xl py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider">
-          📋 Guia
+      {/* Section Banner — full-width colored bar */}
+      <div className="w-[calc(100%-40px)] max-w-[460px] mx-5 mt-5 rounded-2xl overflow-hidden shadow-md">
+        <div className="p-5 px-6 flex items-center justify-between"
+          style={{ background: 'linear-gradient(135deg, hsl(var(--secondary)), hsl(160, 84%, 30%))' }}>
+          <div>
+            <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-primary-foreground/70 mb-1">{section.label}</div>
+            <div className="font-display text-xl font-bold text-primary-foreground">{section.title}</div>
+          </div>
+          <div className="flex items-center gap-2 bg-primary-foreground/20 backdrop-blur-sm rounded-xl py-2.5 px-4 text-[11px] font-extrabold uppercase tracking-wider text-primary-foreground cursor-pointer hover:bg-primary-foreground/30 transition-all">
+            📋 Guia
+          </div>
         </div>
       </div>
 
-      {/* ═══ SERPENTINE MAP ═══ */}
-      <div className="w-full max-w-[440px] relative mt-6 pb-8" style={{ minHeight: `${MAP_NODES.length * 110 + 40}px` }}>
-        {/* SVG Path connecting nodes */}
+      {/* ═══ MAP ═══ */}
+      <div className="w-full max-w-[460px] relative mt-8 pb-8" style={{ minHeight: `${MAP_NODES.length * 120 + 40}px` }}>
+        {/* SVG curved paths */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="pathGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="hsl(var(--green))" />
+              <stop offset="100%" stopColor="hsl(var(--locked))" />
+            </linearGradient>
+          </defs>
           {MAP_NODES.map((node, i) => {
             if (i === 0) return null;
             const prev = MAP_NODES[i - 1];
-            const y1 = i * 110 - 10;
-            const y0 = (i - 1) * 110 - 10;
+            const y0 = (i - 1) * 120 + 44;
+            const y1 = i * 120 + 10;
             const x0 = (prev.x / 100) * 100;
             const x1 = (node.x / 100) * 100;
             const status = getStatus(prev.id);
             const nextStatus = getStatus(node.id);
-            const pathDone = status === 'completed';
-            const pathCurrent = status === 'current' || (status === 'completed' && nextStatus === 'current');
+            const done = status === 'completed';
+            const isCurrent = status === 'current' || (done && nextStatus === 'current');
 
             const midY = (y0 + y1) / 2;
-            const d = `M ${x0}% ${y0 + 55} C ${x0}% ${midY}, ${x1}% ${midY}, ${x1}% ${y1 + 15}`;
+            const d = `M ${x0}% ${y0} C ${x0}% ${midY}, ${x1}% ${midY}, ${x1}% ${y1}`;
 
             return (
-              <path
-                key={i}
-                d={d}
-                fill="none"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeDasharray={!pathDone && !pathCurrent ? '8 8' : 'none'}
-                stroke={pathDone ? 'hsl(var(--green))' : pathCurrent ? 'url(#gradPath)' : 'hsl(var(--locked-text))'}
-                opacity={!pathDone && !pathCurrent ? 0.3 : 1}
+              <path key={i} d={d} fill="none" strokeWidth="5" strokeLinecap="round"
+                strokeDasharray={!done && !isCurrent ? '6 10' : 'none'}
+                stroke={done ? 'hsl(var(--green))' : isCurrent ? 'url(#pathGrad)' : 'hsl(var(--border))'}
+                opacity={!done && !isCurrent ? 0.5 : 1}
               />
             );
           })}
-          <defs>
-            <linearGradient id="gradPath" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="hsl(var(--green))" />
-              <stop offset="100%" stopColor="hsl(var(--locked-text))" />
-            </linearGradient>
-          </defs>
         </svg>
 
         {/* Nodes */}
         {MAP_NODES.map((node, i) => {
           const status = getStatus(node.id);
           return (
-            <div
-              key={i}
-              className="absolute"
-              style={{
-                top: `${i * 110}px`,
-                left: `${node.x}%`,
-                transform: 'translateX(-50%)',
-              }}
-            >
+            <div key={i} className="absolute" style={{ top: `${i * 120}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
               {node.type === 'chest' ? (
                 <ChestNode locked={status === 'locked'} />
               ) : node.type === 'trophy' ? (
@@ -150,11 +137,7 @@ export default function MapScreen({ sections, player, onSelectLesson }: MapScree
                   label={node.label}
                   status={status}
                   isFirst={i === 0 && status === 'current'}
-                  onClick={() => {
-                    if (status !== 'locked' && node.id >= 0) {
-                      onSelectLesson(0, node.id);
-                    }
-                  }}
+                  onClick={() => { if (status !== 'locked' && node.id >= 0) onSelectLesson(0, node.id); }}
                 />
               )}
             </div>
@@ -162,23 +145,25 @@ export default function MapScreen({ sections, player, onSelectLesson }: MapScree
         })}
       </div>
 
-      {/* Section 2 Banner (locked) */}
-      <div className="w-[calc(100%-40px)] max-w-[440px] mx-5 rounded-2xl p-4 px-5 flex items-center justify-between border-2 border-border bg-muted/60 pointer-events-none">
-        <div>
-          <div className="text-[10px] font-extrabold uppercase tracking-[0.1em] text-muted-foreground mb-0.5">Seção 2 · Unidade 2</div>
-          <div className="font-display text-lg font-bold text-muted-foreground">Prompting Avançado</div>
-        </div>
-        <div className="flex items-center gap-1.5 bg-muted rounded-xl py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-          🔒 Bloqueado
+      {/* Section 2 (locked) */}
+      <div className="w-[calc(100%-40px)] max-w-[460px] mx-5 rounded-2xl overflow-hidden">
+        <div className="p-5 px-6 flex items-center justify-between bg-muted border border-border">
+          <div>
+            <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted-foreground mb-1">Seção 2 · Unidade 2</div>
+            <div className="font-display text-lg font-bold text-muted-foreground">Prompting Avançado</div>
+          </div>
+          <div className="flex items-center gap-2 bg-muted rounded-xl py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+            🔒 Bloqueado
+          </div>
         </div>
       </div>
 
       {/* Lock wall */}
-      <div className="w-[calc(100%-40px)] max-w-[440px] bg-surface/80 backdrop-blur-sm border border-border rounded-3xl p-7 text-center flex flex-col items-center gap-3 mx-5 mt-3 mb-10">
-        <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center text-3xl">🔒</div>
-        <div className="font-display text-base font-bold text-muted-foreground">Seção bloqueada</div>
-        <div className="text-sm text-locked-text leading-relaxed max-w-[300px]">
-          Complete a Seção 1 para desbloquear <strong className="text-secondary">Prompting Avançado</strong> e técnicas como Chain-of-Thought e RAG.
+      <div className="w-[calc(100%-40px)] max-w-[460px] bg-card border border-border rounded-2xl p-7 text-center flex flex-col items-center gap-3 mx-5 mt-3 mb-12 shadow-sm">
+        <div className="w-14 h-14 rounded-2xl bg-gold/10 flex items-center justify-center text-2xl">🔒</div>
+        <div className="font-display text-base font-bold text-foreground">Seção bloqueada</div>
+        <div className="text-sm text-muted-foreground leading-relaxed max-w-[300px]">
+          Complete a Seção 1 para desbloquear <strong className="text-secondary font-bold">Prompting Avançado</strong> e técnicas como Chain-of-Thought e RAG.
         </div>
       </div>
     </div>
@@ -192,9 +177,8 @@ function StatPill({ icon, value, variant }: { icon: string; value: string | numb
     ? 'text-gold border-gold/25 bg-gold/[0.08]'
     : 'text-primary border-primary/25 bg-primary/[0.08]';
   return (
-    <div className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-extrabold border ${colors}`}>
-      <span>{icon}</span>
-      <span>{value}</span>
+    <div className={`flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] font-extrabold border ${colors}`}>
+      <span>{icon}</span><span>{value}</span>
     </div>
   );
 }
@@ -202,22 +186,27 @@ function StatPill({ icon, value, variant }: { icon: string; value: string | numb
 function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
   icon: string; label: string; status: 'completed' | 'current' | 'locked'; isFirst: boolean; onClick: () => void;
 }) {
-  const base = 'relative flex flex-col items-center';
+  // Outer ring + inner circle design
+  const outerRing = status === 'completed'
+    ? 'border-[4px] border-green shadow-[0_6px_20px_rgba(34,197,94,.25)]'
+    : status === 'current'
+    ? 'border-[4px] border-green shadow-[0_6px_25px_rgba(34,197,94,.3)] animate-pulse-glow'
+    : 'border-[4px] border-border shadow-[0_2px_10px_rgba(0,0,0,.06)]';
 
-  const nodeStyles = {
-    completed: 'bg-green shadow-[0_4px_20px_rgba(34,197,94,.3),0_0_0_4px_rgba(34,197,94,.15)] hover:scale-110 active:scale-95 cursor-pointer',
-    current: 'bg-green shadow-[0_4px_25px_rgba(34,197,94,.35),0_0_0_5px_rgba(34,197,94,.2)] animate-pulse-glow hover:scale-110 active:scale-95 cursor-pointer',
-    locked: 'bg-muted border-2 border-border shadow-[0_2px_8px_rgba(0,0,0,.06)] cursor-default',
-  };
+  const innerBg = status === 'completed'
+    ? 'bg-green'
+    : status === 'current'
+    ? 'bg-green'
+    : 'bg-muted';
 
   return (
-    <div className={base}>
+    <div className="relative flex flex-col items-center">
       {/* Start bubble */}
       {isFirst && (
         <div className="absolute -top-14 left-1/2 -translate-x-1/2 z-20">
-          <div className="bg-foreground text-background font-display text-[13px] font-bold py-2.5 px-5 rounded-2xl tracking-wide whitespace-nowrap animate-bobble shadow-lg relative">
+          <div className="bg-foreground text-background font-display text-[12px] font-bold py-2 px-5 rounded-2xl tracking-wider whitespace-nowrap animate-bobble shadow-lg relative">
             COMEÇAR
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-foreground" />
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-t-[7px] border-t-foreground" />
           </div>
         </div>
       )}
@@ -225,50 +214,49 @@ function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
       <button
         onClick={onClick}
         disabled={status === 'locked'}
-        className={`w-[76px] h-[76px] rounded-full flex flex-col items-center justify-center gap-1 transition-transform duration-150 ${nodeStyles[status]}`}
+        className={`w-[72px] h-[72px] rounded-full flex items-center justify-center relative transition-transform duration-150 ${outerRing} ${status !== 'locked' ? 'hover:scale-110 active:scale-95 cursor-pointer' : 'cursor-default'}`}
       >
-        <span className={`text-[28px] leading-none ${status === 'locked' ? 'opacity-25 grayscale' : 'drop-shadow-md'}`}>
-          {icon}
-        </span>
-        <span className={`text-[8px] font-black uppercase tracking-[0.08em] ${status === 'locked' ? 'text-locked-text' : 'text-foreground/80'}`}>
-          {label}
-        </span>
+        <div className={`w-[56px] h-[56px] rounded-full flex items-center justify-center ${innerBg}`}>
+          {status === 'completed' ? (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          ) : (
+            <span className={`text-[26px] leading-none ${status === 'locked' ? 'opacity-30 grayscale' : 'drop-shadow-sm'}`}>
+              {icon}
+            </span>
+          )}
+        </div>
 
         {/* Badge */}
         {status === 'current' && (
-          <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-gold border-[2.5px] border-background flex items-center justify-center shadow-md">
+          <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-gold border-[3px] border-background flex items-center justify-center shadow-md">
             <span className="text-[10px] font-black text-yellow-900">!</span>
-          </div>
-        )}
-        {status === 'completed' && (
-          <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-green border-[2.5px] border-background flex items-center justify-center shadow-md">
-            <span className="text-[11px] font-bold text-foreground">✓</span>
           </div>
         )}
       </button>
 
-      {/* Glow ring for current */}
-      {status === 'current' && (
-        <div className="absolute inset-0 w-[76px] h-[76px] rounded-full pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle, rgba(34,197,94,0.15) 0%, transparent 70%)',
-            transform: 'scale(2)',
-          }}
-        />
-      )}
+      {/* Label */}
+      <span className={`mt-2 text-[10px] font-bold uppercase tracking-wider ${
+        status === 'locked' ? 'text-muted-foreground' : status === 'completed' ? 'text-green' : 'text-foreground'
+      }`}>
+        {label}
+      </span>
     </div>
   );
 }
 
 function ChestNode({ locked }: { locked: boolean }) {
   return (
-    <div className={`w-[66px] h-[56px] rounded-2xl flex flex-col items-center justify-center gap-1 border-2 transition-transform duration-150 ${
-      locked
-        ? 'bg-muted border-border shadow-[0_2px_8px_rgba(0,0,0,.06)] cursor-default'
-        : 'bg-gold/10 border-gold/30 cursor-pointer hover:scale-105'
-    }`}>
-      <span className={`text-[24px] ${locked ? 'opacity-40 grayscale' : 'drop-shadow-md'}`}>📦</span>
-      <span className={`text-[8px] font-black uppercase tracking-[0.08em] ${locked ? 'text-muted-foreground' : 'text-gold'}`}>
+    <div className="flex flex-col items-center">
+      <div className={`w-[60px] h-[52px] rounded-2xl flex items-center justify-center border-[3px] transition-transform duration-150 ${
+        locked
+          ? 'bg-muted border-border cursor-default'
+          : 'bg-gold/10 border-gold/30 cursor-pointer hover:scale-105'
+      }`}>
+        <span className={`text-[24px] ${locked ? 'opacity-30 grayscale' : 'drop-shadow-sm'}`}>📦</span>
+      </div>
+      <span className={`mt-1.5 text-[9px] font-bold uppercase tracking-wider ${locked ? 'text-muted-foreground' : 'text-gold'}`}>
         Bônus
       </span>
     </div>
@@ -277,9 +265,11 @@ function ChestNode({ locked }: { locked: boolean }) {
 
 function TrophyNode() {
   return (
-    <div className="w-[76px] h-[76px] rounded-full flex flex-col items-center justify-center gap-1 cursor-default bg-gold/[0.08] border-2 border-dashed border-gold/25 shadow-[0_2px_8px_rgba(0,0,0,.04)]">
-      <span className="text-[26px] opacity-40 grayscale">🏆</span>
-      <span className="text-[8px] font-black uppercase tracking-[0.08em] text-muted-foreground">Teste</span>
+    <div className="flex flex-col items-center">
+      <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center border-[3px] border-dashed border-gold/25 bg-gold/[0.05]">
+        <span className="text-[28px] opacity-30 grayscale">🏆</span>
+      </div>
+      <span className="mt-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Teste</span>
     </div>
   );
 }
