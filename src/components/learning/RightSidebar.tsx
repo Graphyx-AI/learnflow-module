@@ -24,6 +24,7 @@ interface SidebarProps {
   playerStreak?: number;
   playerBadges?: number;
   playerName?: string;
+  achievements?: Achievement[];
 }
 
 export default function RightSidebar({ completedLessons, activeTab, onNavigate, playerXp = 0, playerStreak = 0, playerBadges = 0, playerName = 'Você' }: SidebarProps) {
