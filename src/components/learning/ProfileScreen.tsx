@@ -267,12 +267,12 @@ function BadgeCard({ achievement }: { achievement: Achievement }) {
   const style = RARITY_STYLES[achievement.rarity];
   return (
     <div className={`rounded-2xl border-[1.5px] p-4 transition-all ${style.border} ${
-      achievement.unlocked ? style.bg : 'bg-muted/30 opacity-50 grayscale'
+      achievement.unlocked ? style.bg : 'bg-muted/30 opacity-50'
     }`}>
-      <div className="flex items-start justify-between mb-2">
-        <span className={`text-3xl ${achievement.unlocked ? 'drop-shadow-sm' : 'opacity-40'}`}>
-          {achievement.unlocked ? achievement.icon : <Lock className="w-7 h-7 text-muted-foreground" />}
-        </span>
+      <div className="flex items-start justify-between mb-3">
+        <div className={`w-14 h-14 rounded-xl overflow-hidden shadow-md ${achievement.unlocked ? '' : 'grayscale opacity-40'}`}>
+          <img src={achievement.badgeImg} alt={achievement.title} width={56} height={56} loading="lazy" className="w-full h-full object-cover" />
+        </div>
         <span className={`text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full border ${style.border} ${style.labelColor}`}>
           {style.label}
         </span>
