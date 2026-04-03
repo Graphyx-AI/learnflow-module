@@ -28,13 +28,14 @@ interface SidebarProps {
   lightningAvailable?: boolean;
 }
 
-export default function RightSidebar({ completedLessons, activeTab, onNavigate, playerXp = 0, playerStreak = 0, playerBadges = 0, playerName = 'Você', achievements = [] }: SidebarProps) {
+export default function RightSidebar({ completedLessons, activeTab, onNavigate, playerXp = 0, playerStreak = 0, playerBadges = 0, playerName = 'Você', achievements = [], lightningAvailable = false }: SidebarProps) {
   const [missionsExpanded, setMissionsExpanded] = useState(false);
   const [rankingExpanded, setRankingExpanded] = useState(false);
   const [achievementsExpanded, setAchievementsExpanded] = useState(false);
 
   const navItems = [
     { id: 'map', icon: Home, label: 'Aprender' },
+    { id: 'league', icon: Shield, label: 'Liga' },
     { id: 'missions', icon: Target, label: 'Missões' },
     { id: 'achievements', icon: Award, label: 'Conquistas' },
     { id: 'ranking', icon: Trophy, label: 'Ranking' },
