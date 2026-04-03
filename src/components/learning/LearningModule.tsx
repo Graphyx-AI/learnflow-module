@@ -71,7 +71,7 @@ export default function LearningModule() {
       case 'victory':
         return quizResult ? <VictoryScreen result={quizResult} player={player} onContinue={handleBackToMap} /> : null;
       case 'profile':
-        return <ProfileScreen player={player} onClose={handleBackToMap} />;
+        return <ProfileScreen player={player} selectedAvatar={selectedAvatar} onSelectAvatar={handleSelectAvatar} onClose={handleBackToMap} />;
       default:
         return null;
     }
