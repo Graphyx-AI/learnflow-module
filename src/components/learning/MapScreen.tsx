@@ -388,15 +388,15 @@ function DuoChestNode({ locked, opened, colors, isJustUnlocked, onClick }: { loc
   );
 }
 
-function DuoTrophyNode({ status, colors, onClick }: { status: 'completed' | 'current' | 'locked'; colors: DuoColors; onClick?: () => void }) {
+function DuoTrophyNode({ status, colors, isJustUnlocked, onClick }: { status: 'completed' | 'current' | 'locked'; colors: DuoColors; isJustUnlocked?: boolean; onClick?: () => void }) {
   const isLocked = status === 'locked';
   const isCompleted = status === 'completed';
   const isCurrent = status === 'current';
 
   return (
-    <div className="flex flex-col items-center" onClick={!isLocked ? onClick : undefined}>
+    <div className={`flex flex-col items-center ${isJustUnlocked ? 'animate-node-unlock' : ''}`} onClick={!isLocked ? onClick : undefined}>
       <div
-        className={`duo-node ${isCurrent ? 'animate-duo-bounce' : ''}`}
+        className={`duo-node ${isCurrent && !isJustUnlocked ? 'animate-duo-bounce' : ''}`}
         style={{
           background: isLocked ? 'hsl(var(--muted))' : 'hsl(40 96% 53%)',
           boxShadow: isLocked
