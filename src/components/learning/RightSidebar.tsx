@@ -27,13 +27,15 @@ interface SidebarProps {
   achievements?: Achievement[];
 }
 
-export default function RightSidebar({ completedLessons, activeTab, onNavigate, playerXp = 0, playerStreak = 0, playerBadges = 0, playerName = 'Você' }: SidebarProps) {
+export default function RightSidebar({ completedLessons, activeTab, onNavigate, playerXp = 0, playerStreak = 0, playerBadges = 0, playerName = 'Você', achievements = [] }: SidebarProps) {
   const [missionsExpanded, setMissionsExpanded] = useState(true);
   const [rankingExpanded, setRankingExpanded] = useState(true);
+  const [achievementsExpanded, setAchievementsExpanded] = useState(true);
 
   const navItems = [
     { id: 'map', icon: Home, label: 'Aprender' },
     { id: 'missions', icon: Target, label: 'Missões' },
+    { id: 'achievements', icon: Award, label: 'Conquistas' },
     { id: 'ranking', icon: Trophy, label: 'Ranking' },
     { id: 'profile', icon: User, label: 'Perfil' },
   ];
