@@ -12,7 +12,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [lives, setLives] = useState(3);
+  const [lives, setLives] = useState(5);
   const [xp, setXp] = useState(0);
   const [streak, setStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
