@@ -356,7 +356,7 @@ export const SECTIONS: Section[] = [
   {
     id: 'section-5',
     label: 'Seção 5 · Unidade 5',
-    title: 'Ciência de Dados',
+    title: 'Skills AI',
     unlocked: false,
     lessons: [
       {
