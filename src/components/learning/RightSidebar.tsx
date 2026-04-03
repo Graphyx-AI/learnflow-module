@@ -28,9 +28,9 @@ interface SidebarProps {
 }
 
 export default function RightSidebar({ completedLessons, activeTab, onNavigate, playerXp = 0, playerStreak = 0, playerBadges = 0, playerName = 'Você', achievements = [] }: SidebarProps) {
-  const [missionsExpanded, setMissionsExpanded] = useState(true);
-  const [rankingExpanded, setRankingExpanded] = useState(true);
-  const [achievementsExpanded, setAchievementsExpanded] = useState(true);
+  const [missionsExpanded, setMissionsExpanded] = useState(false);
+  const [rankingExpanded, setRankingExpanded] = useState(false);
+  const [achievementsExpanded, setAchievementsExpanded] = useState(false);
 
   const navItems = [
     { id: 'map', icon: Home, label: 'Aprender' },
