@@ -27,7 +27,7 @@ const MAP_NODES = [
 
 const NODE_SPACING = 130;
 
-export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, selectedAvatar, playerName, chestOpened }: MapScreenProps) {
+export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted }: MapScreenProps) {
   const section = sections[0];
   const avatarData = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
   const levelProgress = (player.currentXp / player.nextLevelXp) * 100;
