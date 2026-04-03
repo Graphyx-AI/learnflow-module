@@ -62,7 +62,7 @@ interface ProfileScreenProps {
 }
 
 export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, onClose }: ProfileScreenProps) {
-  const [tab, setTab] = useState<'badges' | 'stats' | 'avatar'>('avatar');
+  const [tab, setTab] = useState<'badges' | 'stats' | 'avatar'>('badges');
 
   const currentAvatar = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
 
