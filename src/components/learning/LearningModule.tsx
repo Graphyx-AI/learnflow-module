@@ -52,7 +52,7 @@ export default function LearningModule() {
   const handleNavigate = useCallback((tab: string) => {
     if (tab === 'map') setScreen('map');
     else if (tab === 'profile') setScreen('profile');
-    // missions tab just highlights in sidebar
+    else if (tab === 'missions') setScreen('missions');
   }, []);
 
   const lesson = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.lessons[selectedLesson.lessonIdx] : null;
