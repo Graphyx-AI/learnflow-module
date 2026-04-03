@@ -44,7 +44,17 @@ export interface PlayerState {
   completedLessons: number[];
 }
 
-export type Screen = 'map' | 'intro' | 'quiz' | 'victory' | 'profile' | 'missions' | 'ranking' | 'achievements';
+export type Screen = 'map' | 'intro' | 'quiz' | 'victory' | 'profile' | 'missions' | 'ranking' | 'achievements' | 'chest';
+
+export interface ChestReward {
+  type: 'xp' | 'life' | 'achievement';
+  amount?: number;
+  achievementId?: string;
+  label: string;
+  description: string;
+  icon: string;
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+}
 
 export interface QuizResult {
   xpGained: number;
