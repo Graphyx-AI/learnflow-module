@@ -58,7 +58,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
         setStreak(0);
         // Lose a heart
         const nextDead = [...deadHearts];
-        for (let i = 2; i >= 0; i--) {
+        for (let i = 4; i >= 0; i--) {
           if (!nextDead.includes(i)) { nextDead.push(i); setShakingHeart(i); setTimeout(() => setShakingHeart(null), 600); break; }
         }
         setDeadHearts(nextDead);
