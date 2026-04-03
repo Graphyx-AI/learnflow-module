@@ -213,6 +213,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
                         <DuoLessonNode
                           icon={node.icon} label={node.label} status={status} colors={colors}
                           isFirst={i === 0 && status === 'current'}
+                          isPerfect={(player.perfectLessons[section.id] || []).includes(node.id)}
                           onClick={() => { if (status !== 'locked' && node.id >= 0) { onSectionChange?.(sIdx); onSelectLesson(sIdx, node.id); } }}
                         />
                       )}
