@@ -26,6 +26,8 @@ export default function LearningModule() {
 
   const [playerName, setPlayerName] = useState(() => localStorage.getItem('playerName') || 'Estudante IA');
   const [chestOpened, setChestOpened] = useState(() => localStorage.getItem('chestOpened') === 'true');
+  const [testCompleted, setTestCompleted] = useState(() => localStorage.getItem('testCompleted') === 'true');
+  const [testResult, setTestResult] = useState<{ score: number; total: number; passed: boolean; xpGained: number } | null>(null);
   const handleChangeName = useCallback((name: string) => {
     setPlayerName(name);
     localStorage.setItem('playerName', name);
