@@ -154,6 +154,7 @@ export default function LearningModule() {
 
   const mobileNavItems = [
     { id: 'map', icon: Home, label: 'Aprender' },
+    { id: 'achievements', icon: Award, label: 'Conquistas' },
     { id: 'ranking', icon: Trophy, label: 'Ranking' },
     { id: 'missions', icon: Target, label: 'Missões' },
     { id: 'profile', icon: User, label: 'Perfil' },
