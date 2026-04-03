@@ -115,14 +115,6 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
       <div className="w-full max-w-[460px] px-5 mt-2 relative z-10">
         <div className="flex bg-muted rounded-xl p-1">
           <button
-            onClick={() => setTab('avatar')}
-            className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${
-              tab === 'avatar' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
-            }`}
-          >
-            🎭 Avatar
-          </button>
-          <button
             onClick={() => setTab('badges')}
             className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${
               tab === 'badges' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
@@ -137,6 +129,14 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
             }`}
           >
             📊 Stats
+          </button>
+          <button
+            onClick={() => setTab('avatar')}
+            className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${
+              tab === 'avatar' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
+            }`}
+          >
+            🎭 Avatar
           </button>
         </div>
       </div>
