@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Home, Target, User, Trophy } from 'lucide-react';
+import { Home, Target, User, Trophy, Award } from 'lucide-react';
 import { Screen, QuizResult, PlayerState } from './types';
 import { SECTIONS, INITIAL_PLAYER } from './data';
 import MapScreen from './MapScreen';
@@ -61,21 +61,24 @@ export default function LearningModule() {
     else if (tab === 'profile') setScreen('profile');
     else if (tab === 'missions') setScreen('missions');
     else if (tab === 'ranking') setScreen('ranking');
+    else if (tab === 'achievements') setScreen('achievements');
   }, []);
 
   const lesson = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.lessons[selectedLesson.lessonIdx] : null;
 
-  const showSidebar = screen === 'map' || screen === 'profile' || screen === 'missions' || screen === 'ranking';
-  const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : screen === 'ranking' ? 'ranking' : 'map';
+  const showSidebar = screen === 'map' || screen === 'profile' || screen === 'missions' || screen === 'ranking' || screen === 'achievements';
+  const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : screen === 'ranking' ? 'ranking' : screen === 'achievements' ? 'achievements' : 'map';
 
-  // Count badges for ranking
-  const playerBadges = ACHIEVEMENTS.filter(a => {
-    if (a.id === 'a1') return player.completedLessons.length >= 1;
-    if (a.id === 'a4') return player.xp >= 500;
-    if (a.id === 'a7') return player.completedLessons.length >= 3;
-    if (a.id === 'a8') return player.streak >= 7;
-    return false;
-  }).length;
+  // Compute achievements
+  const computedAchievements = ACHIEVEMENTS.map(a => {
+    let unlocked = false;
+    if (a.id === 'a1') unlocked = player.completedLessons.length >= 1;
+    if (a.id === 'a4') unlocked = player.xp >= 500;
+    if (a.id === 'a7') unlocked = player.completedLessons.length >= 3;
+    if (a.id === 'a8') unlocked = player.streak >= 7;
+    return { ...a, unlocked, unlockedAt: unlocked ? 'Hoje' : undefined };
+  });
+  const playerBadges = computedAchievements.filter(a => a.unlocked).length;
 
   const renderContent = () => {
     switch (screen) {
@@ -103,6 +106,47 @@ export default function LearningModule() {
         );
       case 'ranking':
         return <RankingScreen playerXp={player.xp} playerStreak={player.streak} playerBadges={playerBadges} playerName={playerName} onClose={handleBackToMap} />;
+      case 'achievements':
+        return (
+          <div className="flex flex-col items-center min-h-screen bg-background">
+            <div className="w-full max-w-[460px] px-5 pt-6 pb-24">
+              <button onClick={handleBackToMap} className="text-muted-foreground text-sm font-bold flex items-center gap-1 mb-4 hover:text-foreground transition-colors cursor-pointer">
+                ← Voltar
+              </button>
+              <div className="flex items-center justify-between mb-4">
+                <h1 className="font-display text-xl font-bold text-foreground">🏅 Conquistas</h1>
+                <span className="text-[12px] font-bold text-muted-foreground">{playerBadges}/{computedAchievements.length}</span>
+              </div>
+              <div className="flex flex-col gap-3">
+                {computedAchievements.map(a => {
+                  const rarityColors: Record<string, string> = {
+                    common: 'border-border bg-muted/30',
+                    rare: 'border-primary/30 bg-primary/[0.04]',
+                    epic: 'border-secondary/30 bg-secondary/[0.04]',
+                    legendary: 'border-gold/30 bg-gold/[0.04]',
+                  };
+                  const rarityLabels: Record<string, string> = { common: 'Comum', rare: 'Raro', epic: 'Épico', legendary: 'Lendário' };
+                  return (
+                    <div key={a.id} className={`rounded-2xl border-[1.5px] p-4 flex items-center gap-4 transition-all ${
+                      a.unlocked ? rarityColors[a.rarity] : 'border-border bg-muted/20 opacity-50 grayscale'
+                    }`}>
+                      <div className="w-12 h-12 rounded-xl bg-muted/50 flex items-center justify-center text-2xl flex-shrink-0">
+                        {a.unlocked ? a.icon : '🔒'}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="text-[13px] font-bold text-foreground">{a.title}</span>
+                          <span className="text-[9px] font-extrabold uppercase tracking-wider text-muted-foreground">{rarityLabels[a.rarity]}</span>
+                        </div>
+                        <p className="text-[11px] text-muted-foreground">{a.description}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
       default:
         return null;
     }
@@ -110,6 +154,7 @@ export default function LearningModule() {
 
   const mobileNavItems = [
     { id: 'map', icon: Home, label: 'Aprender' },
+    { id: 'achievements', icon: Award, label: 'Conquistas' },
     { id: 'ranking', icon: Trophy, label: 'Ranking' },
     { id: 'missions', icon: Target, label: 'Missões' },
     { id: 'profile', icon: User, label: 'Perfil' },
@@ -131,6 +176,7 @@ export default function LearningModule() {
             playerStreak={player.streak}
             playerBadges={playerBadges}
             playerName={playerName}
+            achievements={computedAchievements}
           />
         </div>
       )}

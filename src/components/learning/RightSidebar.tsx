@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Home, Target, User, Trophy } from 'lucide-react';
+import { Home, Target, User, Trophy, Award } from 'lucide-react';
 import DailyMissions from './DailyMissions';
+import { ACHIEVEMENTS, Achievement } from './ProfileScreen';
 
 const FAKE_LEADERBOARD = [
   { rank: 1, name: 'Luna Silva', xp: 4200, streak: 14, badges: 7, avatar: '🦊' },
@@ -23,15 +24,18 @@ interface SidebarProps {
   playerStreak?: number;
   playerBadges?: number;
   playerName?: string;
+  achievements?: Achievement[];
 }
 
-export default function RightSidebar({ completedLessons, activeTab, onNavigate, playerXp = 0, playerStreak = 0, playerBadges = 0, playerName = 'Você' }: SidebarProps) {
+export default function RightSidebar({ completedLessons, activeTab, onNavigate, playerXp = 0, playerStreak = 0, playerBadges = 0, playerName = 'Você', achievements = [] }: SidebarProps) {
   const [missionsExpanded, setMissionsExpanded] = useState(true);
   const [rankingExpanded, setRankingExpanded] = useState(true);
+  const [achievementsExpanded, setAchievementsExpanded] = useState(true);
 
   const navItems = [
     { id: 'map', icon: Home, label: 'Aprender' },
     { id: 'missions', icon: Target, label: 'Missões' },
+    { id: 'achievements', icon: Award, label: 'Conquistas' },
     { id: 'ranking', icon: Trophy, label: 'Ranking' },
     { id: 'profile', icon: User, label: 'Perfil' },
   ];
@@ -84,6 +88,27 @@ export default function RightSidebar({ completedLessons, activeTab, onNavigate, 
 
         <div className="h-px bg-border my-2" />
 
+        {/* Conquistas preview */}
+        <div>
+          <button
+            onClick={() => setAchievementsExpanded(!achievementsExpanded)}
+            className="w-full flex items-center justify-between py-2 px-1 cursor-pointer"
+          >
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
+              Conquistas
+            </span>
+            <span className={`text-muted-foreground text-xs transition-transform duration-200 ${achievementsExpanded ? 'rotate-180' : ''}`}>
+              ▼
+            </span>
+          </button>
+
+          {achievementsExpanded && (
+            <SidebarAchievements achievements={achievements} onViewAll={() => onNavigate('achievements')} />
+          )}
+        </div>
+
+        <div className="h-px bg-border my-2" />
+
         {/* Ranking */}
         <div>
           <button
@@ -106,6 +131,44 @@ export default function RightSidebar({ completedLessons, activeTab, onNavigate, 
     </div>
   );
 }
+
+const RARITY_COLORS: Record<string, string> = {
+  common: 'bg-muted',
+  rare: 'bg-primary/10',
+  epic: 'bg-secondary/10',
+  legendary: 'bg-gold/10',
+};
+
+function SidebarAchievements({ achievements, onViewAll }: { achievements: Achievement[]; onViewAll: () => void }) {
+  const unlocked = achievements.filter(a => a.unlocked);
+  const locked = achievements.filter(a => !a.unlocked);
+  const shown = [...unlocked.slice(0, 3), ...locked.slice(0, Math.max(0, 3 - unlocked.length))];
+
+  return (
+    <div className="flex flex-col gap-2 mt-1 animate-slide-up">
+      {shown.map(a => (
+        <div key={a.id} className={`flex items-center gap-2.5 py-2 px-2.5 rounded-lg ${a.unlocked ? '' : 'opacity-50'}`}>
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-base ${RARITY_COLORS[a.rarity]}`}>
+            {a.unlocked ? a.icon : '🔒'}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className={`text-[11px] font-bold leading-tight ${a.unlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
+              {a.title}
+            </div>
+            <div className="text-[9px] text-muted-foreground truncate">{a.description}</div>
+          </div>
+        </div>
+      ))}
+      <button
+        onClick={onViewAll}
+        className="text-[10px] font-extrabold text-primary uppercase tracking-wider text-center py-1.5 hover:bg-primary/5 rounded-lg cursor-pointer transition-colors"
+      >
+        Ver todas →
+      </button>
+    </div>
+  );
+}
+
 
 function SidebarRanking({ playerXp, playerName, playerRank }: { playerXp: number; playerName: string; playerRank: number }) {
   return (
