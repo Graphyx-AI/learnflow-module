@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Home, Target, User, Trophy, Award } from 'lucide-react';
+import { Home, Target, User, Trophy, Award, Shield, Zap } from 'lucide-react';
 import DailyMissions from './DailyMissions';
 import { ACHIEVEMENTS, Achievement } from './ProfileScreen';
 
@@ -25,15 +25,17 @@ interface SidebarProps {
   playerBadges?: number;
   playerName?: string;
   achievements?: Achievement[];
+  lightningAvailable?: boolean;
 }
 
-export default function RightSidebar({ completedLessons, activeTab, onNavigate, playerXp = 0, playerStreak = 0, playerBadges = 0, playerName = 'Você', achievements = [] }: SidebarProps) {
+export default function RightSidebar({ completedLessons, activeTab, onNavigate, playerXp = 0, playerStreak = 0, playerBadges = 0, playerName = 'Você', achievements = [], lightningAvailable = false }: SidebarProps) {
   const [missionsExpanded, setMissionsExpanded] = useState(false);
   const [rankingExpanded, setRankingExpanded] = useState(false);
   const [achievementsExpanded, setAchievementsExpanded] = useState(false);
 
   const navItems = [
     { id: 'map', icon: Home, label: 'Aprender' },
+    { id: 'league', icon: Shield, label: 'Liga' },
     { id: 'missions', icon: Target, label: 'Missões' },
     { id: 'achievements', icon: Award, label: 'Conquistas' },
     { id: 'ranking', icon: Trophy, label: 'Ranking' },
@@ -64,6 +66,18 @@ export default function RightSidebar({ completedLessons, activeTab, onNavigate, 
             </button>
           );
         })}
+
+        {/* Lightning Challenge */}
+        {lightningAvailable && (
+          <button
+            onClick={() => onNavigate('lightning')}
+            className="w-full flex items-center gap-3 py-3 px-4 rounded-xl text-[13px] font-bold transition-all cursor-pointer bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-400/20 text-orange-600 hover:from-orange-500/20 hover:to-red-500/20 animate-pulse"
+          >
+            <Zap className="w-[18px] h-[18px]" />
+            <span className="uppercase tracking-wider">Desafio ⚡</span>
+            <span className="ml-auto text-[9px] font-extrabold bg-orange-500 text-white rounded-full px-2 py-0.5">3x XP</span>
+          </button>
+        )}
 
         {/* Divider */}
         <div className="border-t border-border my-2" />

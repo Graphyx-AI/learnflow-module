@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Home, Target, User, Trophy, Award } from 'lucide-react';
+import { Home, Target, User, Trophy, Award, Zap, Shield } from 'lucide-react';
 import { Screen, QuizResult, PlayerState, ChestReward } from './types';
 import { SECTIONS, INITIAL_PLAYER, FINAL_TEST_QUESTIONS } from './data';
 import MapScreen from './MapScreen';
@@ -11,6 +11,9 @@ import ProfileScreen, { ACHIEVEMENTS } from './ProfileScreen';
 import RightSidebar, { RankingScreen } from './RightSidebar';
 import ChestScreen from './ChestScreen';
 import FinalTestScreen, { FinalTestResultScreen } from './FinalTestScreen';
+import LeagueScreen from './LeagueScreen';
+import LightningChallenge from './LightningChallenge';
+import StreakNotification from './StreakNotification';
 
 export default function LearningModule() {
   const [screen, setScreen] = useState<Screen>('map');
@@ -28,6 +31,11 @@ export default function LearningModule() {
   const [chestOpened, setChestOpened] = useState(() => localStorage.getItem('chestOpened') === 'true');
   const [testCompleted, setTestCompleted] = useState(() => localStorage.getItem('testCompleted') === 'true');
   const [testResult, setTestResult] = useState<{ score: number; total: number; passed: boolean; xpGained: number } | null>(null);
+  const [streakDismissed, setStreakDismissed] = useState(false);
+  const [lightningDone, setLightningDone] = useState(() => {
+    const saved = localStorage.getItem('lightningDate');
+    return saved === new Date().toDateString();
+  });
   const handleChangeName = useCallback((name: string) => {
     setPlayerName(name);
     localStorage.setItem('playerName', name);
@@ -87,12 +95,21 @@ export default function LearningModule() {
     else if (tab === 'missions') setScreen('missions');
     else if (tab === 'ranking') setScreen('ranking');
     else if (tab === 'achievements') setScreen('achievements');
+    else if (tab === 'league') setScreen('league');
+    else if (tab === 'lightning') setScreen('lightning');
+  }, []);
+
+  const handleLightningComplete = useCallback((xpGained: number) => {
+    setPlayer(prev => ({ ...prev, xp: prev.xp + xpGained, currentXp: prev.currentXp + xpGained }));
+    setLightningDone(true);
+    localStorage.setItem('lightningDate', new Date().toDateString());
+    setScreen('map');
   }, []);
 
   const lesson = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.lessons[selectedLesson.lessonIdx] : null;
 
-  const showSidebar = screen === 'map' || screen === 'profile' || screen === 'missions' || screen === 'ranking' || screen === 'achievements';
-  const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : screen === 'ranking' ? 'ranking' : screen === 'achievements' ? 'achievements' : 'map';
+  const showSidebar = ['map', 'profile', 'missions', 'ranking', 'achievements', 'league'].includes(screen);
+  const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : screen === 'ranking' ? 'ranking' : screen === 'achievements' ? 'achievements' : screen === 'league' ? 'league' : 'map';
 
   // Compute achievements
   const computedAchievements = ACHIEVEMENTS.map(a => {
@@ -178,6 +195,10 @@ export default function LearningModule() {
         return <FinalTestScreen questions={FINAL_TEST_QUESTIONS} onComplete={handleFinalTestComplete} onQuit={handleBackToMap} />;
       case 'finaltest-result':
         return testResult ? <FinalTestResultScreen score={testResult.score} total={testResult.total} passed={testResult.passed} xpGained={testResult.xpGained} onClose={handleBackToMap} /> : null;
+      case 'league':
+        return <LeagueScreen playerXp={player.xp} playerName={playerName} onClose={handleBackToMap} />;
+      case 'lightning':
+        return <LightningChallenge onComplete={handleLightningComplete} onClose={handleBackToMap} />;
       default:
         return null;
     }
@@ -185,7 +206,7 @@ export default function LearningModule() {
 
   const mobileNavItems = [
     { id: 'map', icon: Home, label: 'Aprender' },
-    { id: 'achievements', icon: Award, label: 'Conquistas' },
+    { id: 'league', icon: Shield, label: 'Liga' },
     { id: 'ranking', icon: Trophy, label: 'Ranking' },
     { id: 'missions', icon: Target, label: 'Missões' },
     { id: 'profile', icon: User, label: 'Perfil' },
@@ -193,6 +214,15 @@ export default function LearningModule() {
 
   return (
     <div className="flex min-h-screen bg-background">
+      {/* Streak notification */}
+      {screen === 'map' && player.streak >= 1 && !streakDismissed && (
+        <StreakNotification
+          streak={player.streak}
+          onDismiss={() => setStreakDismissed(true)}
+          onStartLesson={() => { setStreakDismissed(true); handleSelectLesson(0, 0); }}
+        />
+      )}
+
       <div className="flex-1 min-w-0 pb-20 lg:pb-0">
         {renderContent()}
       </div>
@@ -208,6 +238,7 @@ export default function LearningModule() {
             playerBadges={playerBadges}
             playerName={playerName}
             achievements={computedAchievements}
+            lightningAvailable={!lightningDone}
           />
         </div>
       )}
