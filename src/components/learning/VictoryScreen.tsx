@@ -47,12 +47,14 @@ export default function VictoryScreen({ result, player, onContinue }: VictoryScr
     if (!confettiRef.current) {
       confettiRef.current = true;
       shootConfetti();
-      // Animate bar
+      if (result.accuracy === 100 && isSoundEnabled()) {
+        playVictorySound();
+      }
       setTimeout(() => {
         if (barRef.current) barRef.current.style.width = `${newPct}%`;
       }, 400);
     }
-  }, [shootConfetti, newPct]);
+  }, [shootConfetti, newPct, result.accuracy]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background px-5 py-10">
