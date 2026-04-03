@@ -73,7 +73,18 @@ export default function LearningModule() {
         return quizResult ? <VictoryScreen result={quizResult} player={player} onContinue={handleBackToMap} /> : null;
       case 'profile':
         return <ProfileScreen player={player} selectedAvatar={selectedAvatar} onSelectAvatar={handleSelectAvatar} onClose={handleBackToMap} />;
-      default:
+      case 'missions':
+        return (
+          <div className="flex flex-col items-center min-h-screen bg-background">
+            <div className="w-full max-w-[460px] px-5 pt-6">
+              <button onClick={handleBackToMap} className="text-muted-foreground text-sm font-bold flex items-center gap-1 mb-4 hover:text-foreground transition-colors cursor-pointer">
+                ← Voltar
+              </button>
+              <h1 className="font-display text-xl font-bold text-foreground mb-4">🎯 Missões Diárias</h1>
+              <DailyMissions completedLessons={player.completedLessons} />
+            </div>
+          </div>
+        );
         return null;
     }
   };
