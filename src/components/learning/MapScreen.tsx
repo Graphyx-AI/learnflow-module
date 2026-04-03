@@ -260,11 +260,11 @@ function ChestNode({ locked }: { locked: boolean }) {
   return (
     <div className={`w-[66px] h-[56px] rounded-2xl flex flex-col items-center justify-center gap-1 border-2 transition-transform duration-150 ${
       locked
-        ? 'bg-locked border-locked-text/30 cursor-default'
+        ? 'bg-muted border-border shadow-[0_2px_8px_rgba(0,0,0,.06)] cursor-default'
         : 'bg-gold/10 border-gold/30 cursor-pointer hover:scale-105'
     }`}>
-      <span className={`text-[24px] ${locked ? 'opacity-25 grayscale' : 'drop-shadow-md'}`}>📦</span>
-      <span className={`text-[8px] font-black uppercase tracking-[0.08em] ${locked ? 'text-locked-text' : 'text-gold'}`}>
+      <span className={`text-[24px] ${locked ? 'opacity-40 grayscale' : 'drop-shadow-md'}`}>📦</span>
+      <span className={`text-[8px] font-black uppercase tracking-[0.08em] ${locked ? 'text-muted-foreground' : 'text-gold'}`}>
         Bônus
       </span>
     </div>
@@ -273,10 +273,9 @@ function ChestNode({ locked }: { locked: boolean }) {
 
 function TrophyNode() {
   return (
-    <div className="w-[76px] h-[76px] rounded-full flex flex-col items-center justify-center gap-1 cursor-default"
-      style={{ background: 'rgba(251,191,36,.06)', border: '2px dashed rgba(251,191,36,.2)' }}>
-      <span className="text-[26px] opacity-25 grayscale">🏆</span>
-      <span className="text-[8px] font-black uppercase tracking-[0.08em] text-locked-text">Teste</span>
+    <div className="w-[76px] h-[76px] rounded-full flex flex-col items-center justify-center gap-1 cursor-default bg-gold/[0.08] border-2 border-dashed border-gold/25 shadow-[0_2px_8px_rgba(0,0,0,.04)]">
+      <span className="text-[26px] opacity-40 grayscale">🏆</span>
+      <span className="text-[8px] font-black uppercase tracking-[0.08em] text-muted-foreground">Teste</span>
     </div>
   );
 }
