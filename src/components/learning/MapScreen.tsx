@@ -73,6 +73,9 @@ export default function MapScreen({ sections, player, onSelectLesson }: MapScree
         </div>
       </div>
 
+      {/* Daily Missions */}
+      <DailyMissions completedLessons={player.completedLessons} />
+
       {/* Section Banner */}
       <div className="w-[calc(100%-40px)] max-w-[440px] mt-5 mx-5 rounded-2xl p-4 px-5 flex items-center justify-between cursor-pointer transition-all hover:brightness-110 border-2 border-green bg-green-bright/20">
         <div>
