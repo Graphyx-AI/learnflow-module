@@ -684,6 +684,7 @@ export const SECTIONS: Section[] = [
           { icon: '🧪', category: 'Ciência', difficulty: 'Médio' as const, text: 'O que é lab automation com IA?', options: ['Limpar laboratório', 'Organizar prateleiras', 'Robôs que conduzem experimentos guiados por IA', 'Agendar reuniões'], correctIndex: 2, explanation: 'Robôs controlados por IA executam milhares de experimentos.' },
           { icon: '📊', category: 'Ciência', difficulty: 'Difícil' as const, text: 'O que é AI-driven hypothesis generation?', options: ['Adivinhação', 'Gerar gráficos', 'IA gerando hipóteses a partir de padrões', 'Pesquisa manual'], correctIndex: 2, explanation: 'IA analisa literatura e dados para sugerir hipóteses novas.' },
         ],
+      },
       {
         icon: '🏗️', title: 'Arquiteturas Avançadas', description: 'Modelos de ponta que definem o futuro.',
         topics: ['Mixture of Experts', 'State Space Models', 'Multimodal', 'Sparse models'],
