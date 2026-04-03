@@ -195,6 +195,10 @@ export default function LearningModule() {
         return <FinalTestScreen questions={FINAL_TEST_QUESTIONS} onComplete={handleFinalTestComplete} onQuit={handleBackToMap} />;
       case 'finaltest-result':
         return testResult ? <FinalTestResultScreen score={testResult.score} total={testResult.total} passed={testResult.passed} xpGained={testResult.xpGained} onClose={handleBackToMap} /> : null;
+      case 'league':
+        return <LeagueScreen playerXp={player.xp} playerName={playerName} onClose={handleBackToMap} />;
+      case 'lightning':
+        return <LightningChallenge onComplete={handleLightningComplete} onClose={handleBackToMap} />;
       default:
         return null;
     }
@@ -202,7 +206,7 @@ export default function LearningModule() {
 
   const mobileNavItems = [
     { id: 'map', icon: Home, label: 'Aprender' },
-    { id: 'achievements', icon: Award, label: 'Conquistas' },
+    { id: 'league', icon: Shield, label: 'Liga' },
     { id: 'ranking', icon: Trophy, label: 'Ranking' },
     { id: 'missions', icon: Target, label: 'Missões' },
     { id: 'profile', icon: User, label: 'Perfil' },
