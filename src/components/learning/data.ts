@@ -594,7 +594,7 @@ export const SECTIONS: Section[] = [
     unlocked: false,
     lessons: [
       {
-        icon: '🎨', title: 'Arte Generativa com IA', description: 'Como a IA está revolucionando a criação artística.',
+        icon: '🖼️', title: 'Arte Generativa com IA', description: 'Como a IA está revolucionando a criação artística.',
         topics: ['Diffusion models', 'GANs', 'Style transfer', 'Arte algorítmica'],
         questions: [
           { icon: '🎨', category: 'Arte', difficulty: 'Fácil' as const, text: 'O que é arte generativa?', options: ['Arte criada com auxílio de algoritmos e IA', 'Pintura manual', 'Fotografia digital', 'Design gráfico tradicional'], correctIndex: 0, explanation: 'Arte generativa usa algoritmos e IA para criar obras originais.' },
