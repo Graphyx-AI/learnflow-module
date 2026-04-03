@@ -87,7 +87,7 @@ export default function LightningChallenge({ onComplete, onClose, playerLevel = 
       setCurrentQ(c => c + 1);
       setSelected(null);
       setAnswered(false);
-      setTimeLeft(60);
+      setTimeLeft(tier.timePerQuestion);
     } else {
       setPhase('result');
     }
