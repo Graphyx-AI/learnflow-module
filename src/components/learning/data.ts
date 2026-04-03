@@ -764,7 +764,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '📂', title: 'Construindo seu Portfólio', description: 'Crie projetos que impressionam recrutadores.',
+        icon: '🧬', title: 'Construindo seu Portfólio', description: 'Crie projetos que impressionam recrutadores.',
         topics: ['Projetos práticos', 'GitHub', 'Documentação', 'Apresentação'],
         questions: [
           { icon: '📂', category: 'Portfólio', difficulty: 'Fácil' as const, text: 'Por que portfólio é importante?', options: ['Não é', 'Demonstra habilidades práticas melhor que certificados', 'Só para freelancers', 'Só para designers'], correctIndex: 1, explanation: 'Portfólio mostra habilidades aplicadas em problemas reais.' },
