@@ -70,6 +70,17 @@ export default function LearningModule() {
     setScreen('map');
   }, []);
 
+  const handleOpenFinalTest = useCallback(() => setScreen('finaltest'), []);
+  const handleFinalTestComplete = useCallback((result: { score: number; total: number; passed: boolean; xpGained: number }) => {
+    setTestResult(result);
+    setPlayer(prev => ({ ...prev, xp: prev.xp + result.xpGained, currentXp: prev.currentXp + result.xpGained }));
+    if (result.passed) {
+      setTestCompleted(true);
+      localStorage.setItem('testCompleted', 'true');
+    }
+    setScreen('finaltest-result');
+  }, []);
+
   const handleNavigate = useCallback((tab: string) => {
     if (tab === 'map') setScreen('map');
     else if (tab === 'profile') setScreen('profile');
