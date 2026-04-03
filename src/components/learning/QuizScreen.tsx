@@ -38,6 +38,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
 
   const handleSelect = (idx: number) => {
     if (answered) return;
+    if (soundOn) playSelectSound();
     setSelected(idx);
   };
 
