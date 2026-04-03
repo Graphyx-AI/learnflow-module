@@ -42,6 +42,8 @@ interface MapScreenProps {
   chestOpened?: boolean;
   testCompleted?: boolean;
   onSectionChange?: (idx: number) => void;
+  /** Recently unlocked node key e.g. "section-1:2" */
+  justUnlockedKey?: string | null;
 }
 
 function buildMapNodes(section: Section) {
