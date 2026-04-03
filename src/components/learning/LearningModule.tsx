@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Home, Target, User } from 'lucide-react';
+import { Home, Target, User, Trophy } from 'lucide-react';
 import { Screen, QuizResult, PlayerState } from './types';
 import { SECTIONS, INITIAL_PLAYER } from './data';
 import MapScreen from './MapScreen';
@@ -7,8 +7,8 @@ import DailyMissions from './DailyMissions';
 import LessonIntro from './LessonIntro';
 import QuizScreen from './QuizScreen';
 import VictoryScreen from './VictoryScreen';
-import ProfileScreen from './ProfileScreen';
-import RightSidebar from './RightSidebar';
+import ProfileScreen, { ACHIEVEMENTS } from './ProfileScreen';
+import RightSidebar, { RankingScreen } from './RightSidebar';
 
 export default function LearningModule() {
   const [screen, setScreen] = useState<Screen>('map');
@@ -27,7 +27,6 @@ export default function LearningModule() {
     setPlayerName(name);
     localStorage.setItem('playerName', name);
   }, []);
-
 
   const handleSelectLesson = useCallback((sectionIdx: number, lessonIdx: number) => {
     setSelectedLesson({ sectionIdx, lessonIdx });
@@ -61,13 +60,22 @@ export default function LearningModule() {
     if (tab === 'map') setScreen('map');
     else if (tab === 'profile') setScreen('profile');
     else if (tab === 'missions') setScreen('missions');
+    else if (tab === 'ranking') setScreen('ranking');
   }, []);
 
   const lesson = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.lessons[selectedLesson.lessonIdx] : null;
 
-  // Sidebar only shows on map and profile screens
-  const showSidebar = screen === 'map' || screen === 'profile' || screen === 'missions';
-  const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : 'map';
+  const showSidebar = screen === 'map' || screen === 'profile' || screen === 'missions' || screen === 'ranking';
+  const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : screen === 'ranking' ? 'ranking' : 'map';
+
+  // Count badges for ranking
+  const playerBadges = ACHIEVEMENTS.filter(a => {
+    if (a.id === 'a1') return player.completedLessons.length >= 1;
+    if (a.id === 'a4') return player.xp >= 500;
+    if (a.id === 'a7') return player.completedLessons.length >= 3;
+    if (a.id === 'a8') return player.streak >= 7;
+    return false;
+  }).length;
 
   const renderContent = () => {
     switch (screen) {
@@ -93,6 +101,8 @@ export default function LearningModule() {
             </div>
           </div>
         );
+      case 'ranking':
+        return <RankingScreen playerXp={player.xp} playerStreak={player.streak} playerBadges={playerBadges} playerName={playerName} onClose={handleBackToMap} />;
       default:
         return null;
     }
@@ -100,29 +110,31 @@ export default function LearningModule() {
 
   const mobileNavItems = [
     { id: 'map', icon: Home, label: 'Aprender' },
+    { id: 'ranking', icon: Trophy, label: 'Ranking' },
     { id: 'missions', icon: Target, label: 'Missões' },
     { id: 'profile', icon: User, label: 'Perfil' },
   ];
 
   return (
     <div className="flex min-h-screen bg-background">
-      {/* Main content */}
       <div className="flex-1 min-w-0 pb-20 lg:pb-0">
         {renderContent()}
       </div>
 
-      {/* Right sidebar — hidden on mobile, visible on lg+ */}
       {showSidebar && (
         <div className="hidden lg:block">
           <RightSidebar
             completedLessons={player.completedLessons}
             activeTab={activeTab}
             onNavigate={handleNavigate}
+            playerXp={player.xp}
+            playerStreak={player.streak}
+            playerBadges={playerBadges}
+            playerName={playerName}
           />
         </div>
       )}
 
-      {/* Mobile bottom tab bar — visible on mobile, hidden on lg+ */}
       {showSidebar && (
         <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-card border-t border-border">
           <div className="flex items-center justify-around h-16 max-w-[460px] mx-auto">

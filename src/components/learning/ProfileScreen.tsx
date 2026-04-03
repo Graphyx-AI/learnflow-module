@@ -31,7 +31,7 @@ export interface Achievement {
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
 }
 
-const ACHIEVEMENTS: Achievement[] = [
+export const ACHIEVEMENTS: Achievement[] = [
   { id: 'a1', icon: '🚀', title: 'Primeiro Passo', description: 'Complete sua primeira lição', unlocked: false, rarity: 'common' },
   { id: 'a2', icon: '🔥', title: 'Em Chamas', description: 'Atinja um combo de 3x', unlocked: false, rarity: 'common' },
   { id: 'a3', icon: '🎯', title: 'Precisão Total', description: 'Complete uma lição com 100% de acerto', unlocked: false, rarity: 'rare' },
