@@ -61,12 +61,13 @@ export default function LearningModule() {
     else if (tab === 'profile') setScreen('profile');
     else if (tab === 'missions') setScreen('missions');
     else if (tab === 'ranking') setScreen('ranking');
+    else if (tab === 'achievements') setScreen('achievements');
   }, []);
 
   const lesson = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.lessons[selectedLesson.lessonIdx] : null;
 
-  const showSidebar = screen === 'map' || screen === 'profile' || screen === 'missions' || screen === 'ranking';
-  const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : screen === 'ranking' ? 'ranking' : 'map';
+  const showSidebar = screen === 'map' || screen === 'profile' || screen === 'missions' || screen === 'ranking' || screen === 'achievements';
+  const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : screen === 'ranking' ? 'ranking' : screen === 'achievements' ? 'achievements' : 'map';
 
   // Count badges for ranking
   const playerBadges = ACHIEVEMENTS.filter(a => {
