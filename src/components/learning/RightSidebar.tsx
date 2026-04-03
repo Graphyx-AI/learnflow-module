@@ -67,6 +67,18 @@ export default function RightSidebar({ completedLessons, activeTab, onNavigate, 
           );
         })}
 
+        {/* Lightning Challenge */}
+        {lightningAvailable && (
+          <button
+            onClick={() => onNavigate('lightning')}
+            className="w-full flex items-center gap-3 py-3 px-4 rounded-xl text-[13px] font-bold transition-all cursor-pointer bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-400/20 text-orange-600 hover:from-orange-500/20 hover:to-red-500/20 animate-pulse"
+          >
+            <Zap className="w-[18px] h-[18px]" />
+            <span className="uppercase tracking-wider">Desafio ⚡</span>
+            <span className="ml-auto text-[9px] font-extrabold bg-orange-500 text-white rounded-full px-2 py-0.5">3x XP</span>
+          </button>
+        )}
+
         {/* Divider */}
         <div className="border-t border-border my-2" />
 
