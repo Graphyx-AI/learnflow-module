@@ -72,7 +72,7 @@ export default function LearningModule() {
       case 'victory':
         return quizResult ? <VictoryScreen result={quizResult} player={player} onContinue={handleBackToMap} /> : null;
       case 'profile':
-        return <ProfileScreen player={player} selectedAvatar={selectedAvatar} onSelectAvatar={handleSelectAvatar} onClose={handleBackToMap} />;
+        return <ProfileScreen player={player} selectedAvatar={selectedAvatar} onSelectAvatar={handleSelectAvatar} playerName={playerName} onChangeName={handleChangeName} onClose={handleBackToMap} />;
       case 'missions':
         return (
           <div className="flex flex-col items-center min-h-screen bg-background">
