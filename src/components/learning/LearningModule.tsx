@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Screen, QuizResult, PlayerState } from './types';
 import { SECTIONS, INITIAL_PLAYER } from './data';
 import MapScreen from './MapScreen';
+import DailyMissions from './DailyMissions';
 import LessonIntro from './LessonIntro';
 import QuizScreen from './QuizScreen';
 import VictoryScreen from './VictoryScreen';
@@ -51,14 +52,14 @@ export default function LearningModule() {
   const handleNavigate = useCallback((tab: string) => {
     if (tab === 'map') setScreen('map');
     else if (tab === 'profile') setScreen('profile');
-    // missions tab just highlights in sidebar
+    else if (tab === 'missions') setScreen('missions');
   }, []);
 
   const lesson = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.lessons[selectedLesson.lessonIdx] : null;
 
   // Sidebar only shows on map and profile screens
-  const showSidebar = screen === 'map' || screen === 'profile';
-  const activeTab = screen === 'profile' ? 'profile' : 'map';
+  const showSidebar = screen === 'map' || screen === 'profile' || screen === 'missions';
+  const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : 'map';
 
   const renderContent = () => {
     switch (screen) {
@@ -72,7 +73,18 @@ export default function LearningModule() {
         return quizResult ? <VictoryScreen result={quizResult} player={player} onContinue={handleBackToMap} /> : null;
       case 'profile':
         return <ProfileScreen player={player} selectedAvatar={selectedAvatar} onSelectAvatar={handleSelectAvatar} onClose={handleBackToMap} />;
-      default:
+      case 'missions':
+        return (
+          <div className="flex flex-col items-center min-h-screen bg-background">
+            <div className="w-full max-w-[460px] px-5 pt-6">
+              <button onClick={handleBackToMap} className="text-muted-foreground text-sm font-bold flex items-center gap-1 mb-4 hover:text-foreground transition-colors cursor-pointer">
+                ← Voltar
+              </button>
+              <h1 className="font-display text-xl font-bold text-foreground mb-4">🎯 Missões Diárias</h1>
+              <DailyMissions completedLessons={player.completedLessons} />
+            </div>
+          </div>
+        );
         return null;
     }
   };

@@ -44,7 +44,7 @@ export interface PlayerState {
   completedLessons: number[];
 }
 
-export type Screen = 'map' | 'intro' | 'quiz' | 'victory' | 'profile';
+export type Screen = 'map' | 'intro' | 'quiz' | 'victory' | 'profile' | 'missions';
 
 export interface QuizResult {
   xpGained: number;
