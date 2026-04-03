@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Home, Target, User, Trophy, Award } from 'lucide-react';
+import { Home, Target, User, Trophy, Award, Shield, Zap } from 'lucide-react';
 import DailyMissions from './DailyMissions';
 import { ACHIEVEMENTS, Achievement } from './ProfileScreen';
 
