@@ -79,6 +79,8 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
         return prev;
       });
       setLives(l => l - 1);
+      setShaking(true);
+      setTimeout(() => setShaking(false), 500);
     }
   };
 
