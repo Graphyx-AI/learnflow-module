@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Trophy, BarChart3, UserCircle } from 'lucide-react';
 
 import avatarRobot from '@/assets/avatars/avatar-robot.png';
 import avatarCat from '@/assets/avatars/avatar-cat.png';
@@ -116,27 +117,27 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
         <div className="flex bg-muted rounded-xl p-1">
           <button
             onClick={() => setTab('badges')}
-            className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${
+            className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
               tab === 'badges' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
             }`}
           >
-            🏅 Conquistas
+            <Trophy className="w-4 h-4" /> Conquistas
           </button>
           <button
             onClick={() => setTab('stats')}
-            className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${
+            className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
               tab === 'stats' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
             }`}
           >
-            📊 Stats
+            <BarChart3 className="w-4 h-4" /> Stats
           </button>
           <button
             onClick={() => setTab('avatar')}
-            className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer ${
+            className={`flex-1 py-2.5 rounded-lg text-[13px] font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
               tab === 'avatar' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'
             }`}
           >
-            🎭 Avatar
+            <UserCircle className="w-4 h-4" /> Avatar
           </button>
         </div>
       </div>
