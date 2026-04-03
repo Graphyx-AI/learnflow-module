@@ -69,14 +69,16 @@ export default function LearningModule() {
   const showSidebar = screen === 'map' || screen === 'profile' || screen === 'missions' || screen === 'ranking' || screen === 'achievements';
   const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : screen === 'ranking' ? 'ranking' : screen === 'achievements' ? 'achievements' : 'map';
 
-  // Count badges for ranking
-  const playerBadges = ACHIEVEMENTS.filter(a => {
-    if (a.id === 'a1') return player.completedLessons.length >= 1;
-    if (a.id === 'a4') return player.xp >= 500;
-    if (a.id === 'a7') return player.completedLessons.length >= 3;
-    if (a.id === 'a8') return player.streak >= 7;
-    return false;
-  }).length;
+  // Compute achievements
+  const computedAchievements = ACHIEVEMENTS.map(a => {
+    let unlocked = false;
+    if (a.id === 'a1') unlocked = player.completedLessons.length >= 1;
+    if (a.id === 'a4') unlocked = player.xp >= 500;
+    if (a.id === 'a7') unlocked = player.completedLessons.length >= 3;
+    if (a.id === 'a8') unlocked = player.streak >= 7;
+    return { ...a, unlocked, unlockedAt: unlocked ? 'Hoje' : undefined };
+  });
+  const playerBadges = computedAchievements.filter(a => a.unlocked).length;
 
   const renderContent = () => {
     switch (screen) {
