@@ -50,6 +50,12 @@ export const ACHIEVEMENTS: Achievement[] = [
   { id: 'a6', icon: '👑', badgeImg: badgeCrown, title: 'Mestre da IA', description: 'Complete todas as lições da Seção 1', unlocked: false, rarity: 'legendary' },
   { id: 'a7', icon: '🧠', badgeImg: badgeBrain, title: 'Mente Curiosa', description: 'Acerte 20 questões no total', unlocked: false, rarity: 'common' },
   { id: 'a8', icon: '🏆', badgeImg: badgeTrophy, title: 'Imparável', description: 'Mantenha um streak de 7 dias', unlocked: false, rarity: 'epic' },
+  { id: 'a9', icon: '🌟', badgeImg: badgeDiamond, title: 'Gênio Supremo', description: 'Acerte 50 questões seguidas sem errar', unlocked: false, rarity: 'legendary' },
+  { id: 'a10', icon: '🐉', badgeImg: badgeCrown, title: 'Lenda Viva', description: 'Alcance o nível 50', unlocked: false, rarity: 'legendary' },
+  { id: 'a11', icon: '💀', badgeImg: badgeLightning, title: 'Modo Hardcore', description: 'Complete 10 Desafios Relâmpago no Difícil', unlocked: false, rarity: 'legendary' },
+  { id: 'a12', icon: '🔮', badgeImg: badgeBrain, title: 'Oráculo da IA', description: 'Passe na Prova Final com 100% de acerto', unlocked: false, rarity: 'legendary' },
+  { id: 'a13', icon: '⭐', badgeImg: badgeTrophy, title: 'Estrela Rara', description: 'Alcance a Liga Diamante', unlocked: false, rarity: 'legendary' },
+  { id: 'a14', icon: '🦅', badgeImg: badgeRocket, title: 'Fênix', description: 'Mantenha um streak de 30 dias', unlocked: false, rarity: 'legendary' },
 ];
 
 const RARITY_STYLES = {
