@@ -22,6 +22,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
   const [deadHearts, setDeadHearts] = useState<number[]>([]);
   const [shakingHeart, setShakingHeart] = useState<number | null>(null);
   const [showQuitModal, setShowQuitModal] = useState(false);
+  const [shaking, setShaking] = useState(false);
 
   // Use refs for values needed in onComplete to avoid stale closures
   const xpRef = useRef(0);
