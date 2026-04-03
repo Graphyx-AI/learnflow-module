@@ -346,11 +346,9 @@ function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJust
         )}
       </button>
 
-      {/* Perfect badge */}
-      {isCompleted && isPerfect && (
-        <div className="absolute -top-1.5 -right-1.5 z-10 flex items-center justify-center w-7 h-7 rounded-full bg-gold shadow-[0_2px_8px_rgba(251,191,36,0.5)] border-2 border-background animate-bounce-in">
-          <span className="text-[14px] leading-none">⭐</span>
-        </div>
+      {/* Unlock glow ring */}
+      {isJustUnlocked && (
+        <div className="absolute inset-[-10px] rounded-full animate-unlock-ring z-[-1]" style={{ background: `radial-gradient(circle, ${colors.ring}40 0%, transparent 70%)` }} />
       )}
 
       <span className={`mt-2.5 text-[10px] font-extrabold uppercase tracking-wider ${
@@ -362,9 +360,9 @@ function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJust
   );
 }
 
-function DuoChestNode({ locked, opened, colors, onClick }: { locked: boolean; opened?: boolean; colors: DuoColors; onClick?: () => void }) {
+function DuoChestNode({ locked, opened, colors, isJustUnlocked, onClick }: { locked: boolean; opened?: boolean; colors: DuoColors; isJustUnlocked?: boolean; onClick?: () => void }) {
   return (
-    <div className="flex flex-col items-center" onClick={!locked ? onClick : undefined}>
+    <div className={`flex flex-col items-center ${isJustUnlocked ? 'animate-node-unlock' : ''}`} onClick={!locked ? onClick : undefined}>
       <div
         className={`duo-node-chest ${!locked && !opened ? 'animate-duo-bounce' : ''}`}
         style={{
