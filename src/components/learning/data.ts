@@ -728,7 +728,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🔮', title: 'O Horizonte da IA', description: 'AGI, superinteligência e o futuro.',
+        icon: '🧠', title: 'O Horizonte da IA', description: 'AGI, superinteligência e o futuro.',
         topics: ['AGI', 'Superinteligência', 'Consciousness', 'Existential risk'],
         questions: [
           { icon: '🔮', category: 'Futuro', difficulty: 'Fácil' as const, text: 'O que é AGI?', options: ['Tipo de GPU', 'Framework', 'App', 'IA com capacidade intelectual geral como humanos'], correctIndex: 3, explanation: 'AGI seria uma IA capaz de qualquer tarefa cognitiva humana.' },
