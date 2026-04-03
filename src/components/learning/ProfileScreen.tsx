@@ -59,11 +59,15 @@ interface ProfileScreenProps {
   };
   selectedAvatar: string;
   onSelectAvatar: (id: string) => void;
+  playerName: string;
+  onChangeName: (name: string) => void;
   onClose: () => void;
 }
 
-export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, onClose }: ProfileScreenProps) {
+export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, playerName, onChangeName, onClose }: ProfileScreenProps) {
   const [tab, setTab] = useState<'badges' | 'stats' | 'avatar'>('badges');
+  const [editing, setEditing] = useState(false);
+  const [nameInput, setNameInput] = useState(playerName);
 
   const currentAvatar = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
 
