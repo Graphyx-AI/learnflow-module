@@ -1,6 +1,7 @@
 import { PlayerState, Section } from './types';
 import { AVATARS } from './ProfileScreen';
 import FloatingParticles from './FloatingParticles';
+import BiomeBackground, { BIOMES } from './BiomeBackground';
 import { Flame, Zap } from 'lucide-react';
 
 const LEAGUE_TIERS = [
