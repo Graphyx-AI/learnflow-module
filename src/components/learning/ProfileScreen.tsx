@@ -72,6 +72,7 @@ interface ProfileScreenProps {
     level: number;
     levelTitle: string;
     completedLessons: number[];
+    perfectLessons?: Record<string, number[]>;
   };
   selectedAvatar: string;
   onSelectAvatar: (id: string) => void;
