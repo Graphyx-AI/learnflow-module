@@ -17,6 +17,7 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
   const [streak, setStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
   const [shaking, setShaking] = useState(false);
+  const [soundOn, setSoundOn] = useState(() => isSoundEnabled());
 
   const q = questions[currentQ];
   const progress = ((currentQ + (answered ? 1 : 0)) / questions.length) * 100;
