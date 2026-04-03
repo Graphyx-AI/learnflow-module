@@ -179,27 +179,54 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
         })}
       </div>
 
-      {/* Section 2 (locked) */}
-      <div className="w-[calc(100%-40px)] max-w-[460px] mx-5 rounded-2xl overflow-hidden">
-        <div className="p-5 px-6 flex items-center justify-between bg-muted/50 border border-border">
-          <div>
-            <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted-foreground mb-1">Seção 2 · Unidade 2</div>
-            <div className="font-display text-lg font-bold text-muted-foreground">Prompting Avançado</div>
+      {/* Locked Sections with Biome Previews */}
+      {[
+        { biome: BIOMES[1], label: 'Seção 2 · Unidade 2', title: 'Prompting Avançado', desc: 'Chain-of-Thought, Few-Shot e RAG' },
+        { biome: BIOMES[2], label: 'Seção 3 · Unidade 3', title: 'IA Generativa', desc: 'GPT, DALL-E, Midjourney e Stable Diffusion' },
+        { biome: BIOMES[3], label: 'Seção 4 · Unidade 4', title: 'IA na Prática', desc: 'APIs, automações e projetos reais' },
+      ].map((s, i) => (
+        <div key={i} className="w-[calc(100%-40px)] max-w-[460px] mx-5 mt-5">
+          {/* Banner */}
+          <div className="rounded-2xl overflow-hidden relative">
+            <div className="p-5 px-6 flex items-center justify-between relative z-10"
+              style={{ background: s.biome.bannerGradient, opacity: 0.6 }}>
+              <div>
+                <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-white/70 mb-1">
+                  {s.biome.icon} {s.label}
+                </div>
+                <div className="font-display text-lg font-bold text-white">{s.title}</div>
+              </div>
+              <div className="flex items-center gap-2 bg-white/20 rounded-xl py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider text-white">
+                🔒 Bloqueado
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-2 bg-muted rounded-xl py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-            🔒 Bloqueado
-          </div>
-        </div>
-      </div>
 
-      {/* Lock wall */}
-      <div className="w-[calc(100%-40px)] max-w-[460px] bg-card border border-border rounded-2xl p-7 text-center flex flex-col items-center gap-3 mx-5 mt-3 mb-12 shadow-sm">
-        <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center text-2xl">🔒</div>
-        <div className="font-display text-base font-bold text-foreground">Seção bloqueada</div>
-        <div className="text-sm text-muted-foreground leading-relaxed max-w-[300px]">
-          Complete a Seção 1 para desbloquear <strong className="text-primary font-bold">Prompting Avançado</strong> e técnicas como Chain-of-Thought e RAG.
+          {/* Locked preview nodes */}
+          <div className="relative rounded-2xl overflow-hidden mt-1" style={{ height: 180 }}>
+            <BiomeBackground biomeId={s.biome.id} height={180} />
+            <div className="absolute inset-0 z-[1] flex items-center justify-center">
+              <div className="flex flex-col items-center gap-2 bg-card/80 rounded-2xl p-5 border border-border/50 shadow-sm">
+                <div className="text-3xl">🔒</div>
+                <div className="text-[11px] font-bold text-muted-foreground text-center max-w-[200px]">
+                  Complete a seção anterior para desbloquear <strong className="text-foreground">{s.title}</strong>
+                </div>
+                <div className="text-[10px] text-muted-foreground/70">{s.desc}</div>
+              </div>
+            </div>
+            {/* Ghost nodes */}
+            <div className="absolute inset-0 z-0 flex items-center justify-around px-8 opacity-20">
+              {['⭐', '🧠', '📦', '💬', '🏆'].map((e, j) => (
+                <div key={j} className="w-12 h-12 rounded-full bg-muted border-2 border-border/40 flex items-center justify-center text-lg grayscale">
+                  {e}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      ))}
+
+      <div className="h-12" />
     </div>
   );
 }
