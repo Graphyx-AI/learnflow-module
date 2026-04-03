@@ -301,8 +301,22 @@ interface DuoColors {
   ring: string;
 }
 
-function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJustUnlocked, onClick }: {
-  icon: string; label: string; status: 'completed' | 'current' | 'locked'; colors: DuoColors; isFirst: boolean; isPerfect?: boolean; isJustUnlocked?: boolean; onClick: () => void;
+function MapTooltip({ text, children }: { text: string; children: React.ReactNode }) {
+  return (
+    <div className="group/tip relative">
+      {children}
+      <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-2 -translate-y-full opacity-0 group-hover/tip:opacity-100 transition-all duration-200 scale-90 group-hover/tip:scale-100 z-50">
+        <div className="bg-foreground text-background text-[11px] font-bold px-3 py-1.5 rounded-lg whitespace-nowrap shadow-lg max-w-[200px] text-center truncate">
+          {text}
+        </div>
+        <div className="w-2.5 h-2.5 bg-foreground rotate-45 mx-auto -mt-1.5" />
+      </div>
+    </div>
+  );
+}
+
+function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJustUnlocked, tooltip, onClick }: {
+  icon: string; label: string; status: 'completed' | 'current' | 'locked'; colors: DuoColors; isFirst: boolean; isPerfect?: boolean; isJustUnlocked?: boolean; tooltip?: string; onClick: () => void;
 }) {
   const isCompleted = status === 'completed';
   const isCurrent = status === 'current';
