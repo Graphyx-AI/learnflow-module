@@ -102,11 +102,19 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
           {q.options.map((opt, i) => {
             const isSelected = selected === i;
             const isCorrectOpt = i === q.correctIndex;
+            const selColors = [
+              { bg: 'bg-[hsl(217,91%,60%)]/10 border-[hsl(217,91%,60%)]', letter: 'bg-[hsl(217,91%,60%)] text-white' },
+              { bg: 'bg-[hsl(280,80%,55%)]/10 border-[hsl(280,80%,55%)]', letter: 'bg-[hsl(280,80%,55%)] text-white' },
+              { bg: 'bg-[hsl(35,95%,55%)]/10 border-[hsl(35,95%,55%)]', letter: 'bg-[hsl(35,95%,55%)] text-white' },
+              { bg: 'bg-[hsl(170,70%,45%)]/10 border-[hsl(170,70%,45%)]', letter: 'bg-[hsl(170,70%,45%)] text-white' },
+            ];
             let style = 'bg-card border-border hover:border-primary/40 hover:bg-primary/[0.02] cursor-pointer';
             if (answered) {
               if (isCorrectOpt) style = 'bg-primary/10 border-primary/40';
               else if (isSelected) style = 'bg-destructive/10 border-destructive/40';
               else style = 'bg-card border-border opacity-50';
+            } else if (isSelected) {
+              style = selColors[i].bg;
             }
             return (
               <button
@@ -116,7 +124,7 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
                 className={`w-full text-left p-4 rounded-xl border-[1.5px] transition-all ${style}`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="w-7 h-7 rounded-lg bg-muted flex items-center justify-center text-[12px] font-black text-muted-foreground flex-shrink-0">
+                  <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-[12px] font-black flex-shrink-0 transition-all ${!answered && isSelected ? selColors[i].letter : 'bg-muted text-muted-foreground'}`}>
                     {String.fromCharCode(65 + i)}
                   </span>
                   <span className="text-[13px] font-semibold text-foreground">{opt}</span>
