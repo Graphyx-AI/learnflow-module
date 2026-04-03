@@ -118,6 +118,11 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
           ✕
         </button>
 
+        <button onClick={() => { const v = !soundOn; setSoundOn(v); setSoundEnabled(v); }}
+          className="w-9 h-9 bg-surface border border-border rounded-full flex items-center justify-center text-muted-foreground cursor-pointer transition-all hover:border-foreground/20 hover:text-foreground flex-shrink-0"
+          title={soundOn ? 'Desativar som' : 'Ativar som'}>
+          {soundOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+        </button>
         <div className="flex-1 h-2.5 bg-muted rounded-full overflow-hidden">
           <div className="h-full rounded-full relative transition-all duration-500"
             style={{
