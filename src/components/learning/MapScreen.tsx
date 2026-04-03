@@ -208,7 +208,7 @@ function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
           isCompleted
             ? 'bg-primary shadow-[0_6px_28px_rgba(var(--primary-rgb),0.35)] cursor-pointer hover:scale-110 active:scale-95'
             : isCurrent
-            ? 'bg-primary shadow-[0_6px_30px_rgba(var(--primary-rgb),0.4)] cursor-pointer hover:scale-110 active:scale-95 ring-4 ring-primary/20'
+            ? 'bg-primary shadow-[0_6px_30px_rgba(var(--primary-rgb),0.4)] cursor-pointer hover:scale-110 active:scale-95 ring-4 ring-primary/20 animate-node-glow'
             : 'bg-muted border-[3px] border-border/60 shadow-md cursor-default'
         }`}
       >
