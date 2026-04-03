@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Trophy, BarChart3, UserCircle } from 'lucide-react';
 
 import avatarRobot from '@/assets/avatars/avatar-robot.png';
 import avatarCat from '@/assets/avatars/avatar-cat.png';
