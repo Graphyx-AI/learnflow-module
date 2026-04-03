@@ -165,30 +165,53 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
         return (
           <div key={section.id} className="w-full max-w-[460px] mt-4">
             {/* Section Banner — Duolingo style full-width colored bar */}
-            <div
-              className="mx-4 rounded-2xl px-5 py-4 flex items-center justify-between transition-opacity"
-              style={{ background: biome.bannerGradient, opacity: unlocked ? 1 : 0.5 }}
-            >
-              <div className="flex-1 min-w-0">
-                <div className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-white/60">
-                  {biome.icon} {section.label}
+            {(() => {
+              const completedCount = (player.sectionProgress[section.id] || []).length;
+              const totalCount = section.lessons.length;
+              const progressPct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+              return (
+                <div
+                  className="mx-4 rounded-2xl px-5 py-4 transition-opacity"
+                  style={{ background: biome.bannerGradient, opacity: unlocked ? 1 : 0.5 }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-white/60">
+                        {biome.icon} {section.label}
+                      </div>
+                      <div className="text-[17px] font-extrabold text-white mt-0.5 truncate">{section.title}</div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {unlocked && getSectionStatus(section.id, 0) === 'current' && (
+                        <button
+                          onClick={() => { onSectionChange?.(sIdx); onSelectLesson(sIdx, 0); }}
+                          className="rounded-xl bg-white/30 hover:bg-white/40 active:scale-95 transition-all px-4 py-2 text-[12px] font-extrabold uppercase tracking-wider text-white"
+                        >
+                          COMEÇAR
+                        </button>
+                      )}
+                      <div className="rounded-xl bg-white/20 hover:bg-white/30 transition-colors px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-wider text-white cursor-pointer">
+                        {unlocked ? '📋 Guia' : '🔒'}
+                      </div>
+                    </div>
+                  </div>
+                  {/* Progress indicator */}
+                  {unlocked && (
+                    <div className="mt-3 flex items-center gap-2.5">
+                      <div className="flex-1 h-2 bg-white/20 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-700"
+                          style={{ width: `${progressPct}%`, background: 'rgba(255,255,255,0.7)' }}
+                        />
+                      </div>
+                      <span className="text-[10px] font-extrabold text-white/80 whitespace-nowrap">
+                        {completedCount}/{totalCount}
+                      </span>
+                    </div>
+                  )}
                 </div>
-                <div className="text-[17px] font-extrabold text-white mt-0.5 truncate">{section.title}</div>
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                {unlocked && getSectionStatus(section.id, 0) === 'current' && (
-                  <button
-                    onClick={() => { onSectionChange?.(sIdx); onSelectLesson(sIdx, 0); }}
-                    className="rounded-xl bg-white/30 hover:bg-white/40 active:scale-95 transition-all px-4 py-2 text-[12px] font-extrabold uppercase tracking-wider text-white"
-                  >
-                    COMEÇAR
-                  </button>
-                )}
-                <div className="rounded-xl bg-white/20 hover:bg-white/30 transition-colors px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-wider text-white cursor-pointer">
-                  {unlocked ? '📋 Guia' : '🔒'}
-                </div>
-              </div>
-            </div>
+              );
+            })()}
 
             {/* Map nodes */}
             {unlocked ? (
