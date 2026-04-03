@@ -269,13 +269,27 @@ function ChestNode({ locked, opened, onClick }: { locked: boolean; opened?: bool
   );
 }
 
-function TrophyNode() {
+function TrophyNode({ status, onClick }: { status: 'completed' | 'current' | 'locked'; onClick?: () => void }) {
+  const isLocked = status === 'locked';
+  const isCompleted = status === 'completed';
+  const isCurrent = status === 'current';
+
   return (
-    <div className="flex flex-col items-center">
-      <div className="w-[76px] h-[76px] rounded-full flex items-center justify-center border-2 border-dashed border-border bg-muted/30">
-        <span className="text-[28px] opacity-20 grayscale">🏆</span>
+    <div className="flex flex-col items-center" onClick={!isLocked ? onClick : undefined}>
+      <div className={`w-[76px] h-[76px] rounded-full flex items-center justify-center border-2 transition-all duration-200 ${
+        isCompleted
+          ? 'border-gold/40 bg-gold/10 shadow-[0_0_20px_rgba(var(--gold-rgb),0.2)] cursor-pointer hover:scale-110'
+          : isCurrent
+          ? 'border-gold/30 bg-gold/5 cursor-pointer hover:scale-110 animate-bobble shadow-md'
+          : 'border-dashed border-border bg-muted/30 cursor-default'
+      }`}>
+        <span className={`text-[28px] ${isLocked ? 'opacity-20 grayscale' : 'drop-shadow-sm'}`}>🏆</span>
       </div>
-      <span className="mt-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">Teste</span>
+      <span className={`mt-2.5 text-[10px] font-bold uppercase tracking-wider ${
+        isCompleted ? 'text-gold' : isCurrent ? 'text-gold' : 'text-muted-foreground/60'
+      }`}>
+        {isCompleted ? 'Aprovado!' : 'Prova Final'}
+      </span>
     </div>
   );
 }
