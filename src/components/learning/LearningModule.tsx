@@ -6,6 +6,7 @@ import LessonIntro from './LessonIntro';
 import QuizScreen from './QuizScreen';
 import VictoryScreen from './VictoryScreen';
 import ProfileScreen from './ProfileScreen';
+import RightSidebar from './RightSidebar';
 
 export default function LearningModule() {
   const [screen, setScreen] = useState<Screen>('map');
@@ -41,20 +42,52 @@ export default function LearningModule() {
 
   const handleOpenProfile = useCallback(() => setScreen('profile'), []);
 
+  const handleNavigate = useCallback((tab: string) => {
+    if (tab === 'map') setScreen('map');
+    else if (tab === 'profile') setScreen('profile');
+    // missions tab just highlights in sidebar
+  }, []);
+
   const lesson = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.lessons[selectedLesson.lessonIdx] : null;
 
-  switch (screen) {
-    case 'map':
-      return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} />;
-    case 'intro':
-      return lesson ? <LessonIntro lesson={lesson} lessonNumber={(selectedLesson?.lessonIdx ?? 0) + 1} onStart={handleStartQuiz} onClose={handleBackToMap} /> : null;
-    case 'quiz':
-      return lesson ? <QuizScreen questions={lesson.questions} onComplete={handleQuizComplete} onQuit={handleBackToMap} /> : null;
-    case 'victory':
-      return quizResult ? <VictoryScreen result={quizResult} player={player} onContinue={handleBackToMap} /> : null;
-    case 'profile':
-      return <ProfileScreen player={player} onClose={handleBackToMap} />;
-    default:
-      return null;
-  }
+  // Sidebar only shows on map and profile screens
+  const showSidebar = screen === 'map' || screen === 'profile';
+  const activeTab = screen === 'profile' ? 'profile' : 'map';
+
+  const renderContent = () => {
+    switch (screen) {
+      case 'map':
+        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} />;
+      case 'intro':
+        return lesson ? <LessonIntro lesson={lesson} lessonNumber={(selectedLesson?.lessonIdx ?? 0) + 1} onStart={handleStartQuiz} onClose={handleBackToMap} /> : null;
+      case 'quiz':
+        return lesson ? <QuizScreen questions={lesson.questions} onComplete={handleQuizComplete} onQuit={handleBackToMap} /> : null;
+      case 'victory':
+        return quizResult ? <VictoryScreen result={quizResult} player={player} onContinue={handleBackToMap} /> : null;
+      case 'profile':
+        return <ProfileScreen player={player} onClose={handleBackToMap} />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen bg-background">
+      {/* Main content */}
+      <div className="flex-1 min-w-0">
+        {renderContent()}
+      </div>
+
+      {/* Right sidebar — hidden on mobile, visible on lg+ */}
+      {showSidebar && (
+        <div className="hidden lg:block">
+          <RightSidebar
+            completedLessons={player.completedLessons}
+            activeTab={activeTab}
+            onNavigate={handleNavigate}
+          />
+        </div>
+      )}
+    </div>
+  );
 }
