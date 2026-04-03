@@ -322,7 +322,7 @@ function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJust
   const isCurrent = status === 'current';
   const isLocked = status === 'locked';
 
-  return (
+  const content = (
     <div className={`relative flex flex-col items-center ${isJustUnlocked ? 'animate-node-unlock' : ''}`}>
 
       <button
