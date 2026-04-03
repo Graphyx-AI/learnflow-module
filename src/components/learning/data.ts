@@ -750,7 +750,7 @@ export const SECTIONS: Section[] = [
     unlocked: false,
     lessons: [
       {
-        icon: '💼', title: 'Carreiras em IA', description: 'Os caminhos profissionais mais promissores.',
+        icon: '🤖', title: 'Carreiras em IA', description: 'Os caminhos profissionais mais promissores.',
         topics: ['ML Engineer', 'Prompt Engineer', 'AI PM', 'Pesquisador'],
         questions: [
           { icon: '💼', category: 'Carreiras', difficulty: 'Fácil' as const, text: 'Qual carreira mais nova criada pela IA?', options: ['Contador', 'Advogado', 'Prompt Engineer', 'Médico'], correctIndex: 2, explanation: 'Prompt Engineering surgiu com a explosão de LLMs.' },
