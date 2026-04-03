@@ -31,7 +31,8 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
   const levelProgress = (player.currentXp / player.nextLevelXp) * 100;
 
   const getStatus = (id: number) => {
-    if (id < 0) return 'locked' as const;
+    if (id === -1) return player.completedLessons.length >= 2 ? (chestOpened ? 'completed' as const : 'current' as const) : 'locked' as const;
+    if (id === -2) return 'locked' as const;
     if (player.completedLessons.includes(id)) return 'completed' as const;
     if (id === 0 && !player.completedLessons.includes(0)) return 'current' as const;
     if (id > 0 && player.completedLessons.includes(id - 1)) return 'current' as const;
