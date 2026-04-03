@@ -243,10 +243,10 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
   );
 }
 
-function QuickStat({ icon, value, label }: { icon: string; value: number; label: string }) {
+function QuickStat({ icon, value, label }: { icon: React.ReactNode; value: number; label: string }) {
   return (
     <div className="bg-muted/50 rounded-xl p-3 text-center">
-      <span className="text-base">{icon}</span>
+      <div className="flex justify-center">{icon}</div>
       <div className="text-lg font-black text-foreground mt-0.5">{value}</div>
       <div className="text-[10px] font-semibold text-muted-foreground">{label}</div>
     </div>
