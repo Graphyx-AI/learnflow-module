@@ -108,7 +108,7 @@ export default function LearningModule() {
   const renderContent = () => {
     switch (screen) {
       case 'map':
-        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} onOpenChest={handleOpenChest} selectedAvatar={selectedAvatar} playerName={playerName} chestOpened={chestOpened} />;
+        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} onOpenChest={handleOpenChest} onOpenFinalTest={handleOpenFinalTest} selectedAvatar={selectedAvatar} playerName={playerName} chestOpened={chestOpened} testCompleted={testCompleted} />;
       case 'intro':
         return lesson ? <LessonIntro lesson={lesson} lessonNumber={(selectedLesson?.lessonIdx ?? 0) + 1} onStart={handleStartQuiz} onClose={handleBackToMap} /> : null;
       case 'quiz':
