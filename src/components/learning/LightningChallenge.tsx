@@ -205,7 +205,7 @@ export default function LightningChallenge({ onComplete, onClose, playerLevel = 
           <div className={`h-3 rounded-full overflow-hidden ${urgency ? 'bg-destructive/20' : 'bg-muted'}`}>
             <div
               className={`h-full rounded-full transition-all duration-1000 ${urgency ? 'bg-destructive animate-pulse' : 'bg-gradient-to-r from-orange-500 to-red-500'}`}
-              style={{ width: `${(timeLeft / 60) * 100}%` }}
+              style={{ width: `${(timeLeft / tier.timePerQuestion) * 100}%` }}
             />
           </div>
           <div className={`absolute right-0 -top-6 flex items-center gap-1 ${urgency ? 'text-destructive animate-pulse' : 'text-muted-foreground'}`}>
