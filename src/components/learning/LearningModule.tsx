@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Home, Target, User, Trophy, Award, Zap, Shield } from 'lucide-react';
 import { Screen, QuizResult, PlayerState, ChestReward } from './types';
-import { SECTIONS, INITIAL_PLAYER, FINAL_TEST_QUESTIONS } from './data';
+import { SECTIONS, INITIAL_PLAYER, FINAL_TEST_QUESTIONS, SECTION_FINAL_TESTS } from './data';
 import MapScreen from './MapScreen';
 import DailyMissions from './DailyMissions';
 import LessonIntro from './LessonIntro';
@@ -32,6 +32,7 @@ export default function LearningModule() {
   const [testCompleted, setTestCompleted] = useState(() => localStorage.getItem('testCompleted') === 'true');
   const [testResult, setTestResult] = useState<{ score: number; total: number; passed: boolean; xpGained: number } | null>(null);
   const [streakDismissed, setStreakDismissed] = useState(false);
+  const [activeSectionIdx, setActiveSectionIdx] = useState(0);
   const [lightningDone, setLightningDone] = useState(() => {
     const saved = localStorage.getItem('lightningDate');
     return saved === new Date().toDateString();
@@ -50,14 +51,22 @@ export default function LearningModule() {
 
   const handleQuizComplete = useCallback((result: QuizResult) => {
     setQuizResult(result);
-    setPlayer(prev => ({
-      ...prev,
-      xp: prev.xp + result.xpGained,
-      currentXp: prev.currentXp + result.xpGained,
-      completedLessons: selectedLesson
-        ? [...prev.completedLessons, selectedLesson.lessonIdx]
-        : prev.completedLessons,
-    }));
+    setPlayer(prev => {
+      const sectionId = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.id : '';
+      const prevSectionLessons = prev.sectionProgress[sectionId] || [];
+      const newSectionLessons = selectedLesson && !prevSectionLessons.includes(selectedLesson.lessonIdx)
+        ? [...prevSectionLessons, selectedLesson.lessonIdx]
+        : prevSectionLessons;
+      return {
+        ...prev,
+        xp: prev.xp + result.xpGained,
+        currentXp: prev.currentXp + result.xpGained,
+        completedLessons: selectedLesson
+          ? [...prev.completedLessons, selectedLesson.lessonIdx]
+          : prev.completedLessons,
+        sectionProgress: { ...prev.sectionProgress, [sectionId]: newSectionLessons },
+      };
+    });
     setScreen('victory');
   }, [selectedLesson]);
 
@@ -70,24 +79,34 @@ export default function LearningModule() {
   const handleOpenProfile = useCallback(() => setScreen('profile'), []);
   const handleOpenChest = useCallback(() => setScreen('chest'), []);
   const handleClaimChest = useCallback((reward: ChestReward) => {
+    const sectionId = SECTIONS[activeSectionIdx]?.id || 'section-1';
+    setPlayer(prev => ({
+      ...prev,
+      xp: reward.type === 'xp' && reward.amount ? prev.xp + reward.amount : prev.xp,
+      currentXp: reward.type === 'xp' && reward.amount ? prev.currentXp + reward.amount : prev.currentXp,
+      chestsOpened: { ...prev.chestsOpened, [sectionId]: true },
+    }));
     setChestOpened(true);
     localStorage.setItem('chestOpened', 'true');
-    if (reward.type === 'xp' && reward.amount) {
-      setPlayer(prev => ({ ...prev, xp: prev.xp + reward.amount!, currentXp: prev.currentXp + reward.amount! }));
-    }
     setScreen('map');
-  }, []);
+  }, [activeSectionIdx]);
 
   const handleOpenFinalTest = useCallback(() => setScreen('finaltest'), []);
   const handleFinalTestComplete = useCallback((result: { score: number; total: number; passed: boolean; xpGained: number }) => {
     setTestResult(result);
-    setPlayer(prev => ({ ...prev, xp: prev.xp + result.xpGained, currentXp: prev.currentXp + result.xpGained }));
+    const sectionId = SECTIONS[activeSectionIdx]?.id || 'section-1';
+    setPlayer(prev => ({
+      ...prev,
+      xp: prev.xp + result.xpGained,
+      currentXp: prev.currentXp + result.xpGained,
+      testsCompleted: result.passed ? { ...prev.testsCompleted, [sectionId]: true } : prev.testsCompleted,
+    }));
     if (result.passed) {
       setTestCompleted(true);
       localStorage.setItem('testCompleted', 'true');
     }
     setScreen('finaltest-result');
-  }, []);
+  }, [activeSectionIdx]);
 
   const handleNavigate = useCallback((tab: string) => {
     if (tab === 'map') setScreen('map');
@@ -125,7 +144,7 @@ export default function LearningModule() {
   const renderContent = () => {
     switch (screen) {
       case 'map':
-        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} onOpenChest={handleOpenChest} onOpenFinalTest={handleOpenFinalTest} selectedAvatar={selectedAvatar} playerName={playerName} chestOpened={chestOpened} testCompleted={testCompleted} />;
+        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} onOpenChest={handleOpenChest} onOpenFinalTest={handleOpenFinalTest} selectedAvatar={selectedAvatar} playerName={playerName} chestOpened={chestOpened} testCompleted={testCompleted} onSectionChange={setActiveSectionIdx} />;
       case 'intro':
         return lesson ? <LessonIntro lesson={lesson} lessonNumber={(selectedLesson?.lessonIdx ?? 0) + 1} onStart={handleStartQuiz} onClose={handleBackToMap} /> : null;
       case 'quiz':
@@ -192,7 +211,9 @@ export default function LearningModule() {
       case 'chest':
         return <ChestScreen onClaim={handleClaimChest} onClose={handleBackToMap} alreadyOpened={chestOpened} />;
       case 'finaltest':
-        return <FinalTestScreen questions={FINAL_TEST_QUESTIONS} onComplete={handleFinalTestComplete} onQuit={handleBackToMap} />;
+        const activeSectionId = SECTIONS[activeSectionIdx]?.id || 'section-1';
+        const testQs = SECTION_FINAL_TESTS[activeSectionId] || FINAL_TEST_QUESTIONS;
+        return <FinalTestScreen questions={testQs} onComplete={handleFinalTestComplete} onQuit={handleBackToMap} />;
       case 'finaltest-result':
         return testResult ? <FinalTestResultScreen score={testResult.score} total={testResult.total} passed={testResult.passed} xpGained={testResult.xpGained} onClose={handleBackToMap} /> : null;
       case 'league':

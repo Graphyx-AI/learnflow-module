@@ -42,6 +42,12 @@ export interface PlayerState {
   currentXp: number;
   nextLevelXp: number;
   completedLessons: number[];
+  /** Per-section completed lessons: { 'section-1': [0,1,2], 'section-2': [0] } */
+  sectionProgress: Record<string, number[]>;
+  /** Per-section chest opened */
+  chestsOpened: Record<string, boolean>;
+  /** Per-section test completed */
+  testsCompleted: Record<string, boolean>;
 }
 
 export type Screen = 'map' | 'intro' | 'quiz' | 'victory' | 'profile' | 'missions' | 'ranking' | 'achievements' | 'chest' | 'finaltest' | 'finaltest-result' | 'league' | 'lightning';
