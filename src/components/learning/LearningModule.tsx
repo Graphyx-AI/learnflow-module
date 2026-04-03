@@ -5,19 +5,8 @@ import MapScreen from './MapScreen';
 import LessonIntro from './LessonIntro';
 import QuizScreen from './QuizScreen';
 import VictoryScreen from './VictoryScreen';
+import ProfileScreen from './ProfileScreen';
 
-/**
- * LearningModule — Gamified AI learning experience.
- * 
- * Usage in Next.js:
- * ```tsx
- * import LearningModule from '@/components/learning/LearningModule';
- * 
- * export default function LearnPage() {
- *   return <LearningModule />;
- * }
- * ```
- */
 export default function LearningModule() {
   const [screen, setScreen] = useState<Screen>('map');
   const [player, setPlayer] = useState<PlayerState>({ ...INITIAL_PLAYER });
@@ -29,9 +18,7 @@ export default function LearningModule() {
     setScreen('intro');
   }, []);
 
-  const handleStartQuiz = useCallback(() => {
-    setScreen('quiz');
-  }, []);
+  const handleStartQuiz = useCallback(() => setScreen('quiz'), []);
 
   const handleQuizComplete = useCallback((result: QuizResult) => {
     setQuizResult(result);
@@ -52,36 +39,21 @@ export default function LearningModule() {
     setQuizResult(null);
   }, []);
 
+  const handleOpenProfile = useCallback(() => setScreen('profile'), []);
+
   const lesson = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.lessons[selectedLesson.lessonIdx] : null;
 
   switch (screen) {
     case 'map':
-      return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} />;
+      return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} />;
     case 'intro':
-      return lesson ? (
-        <LessonIntro
-          lesson={lesson}
-          lessonNumber={(selectedLesson?.lessonIdx ?? 0) + 1}
-          onStart={handleStartQuiz}
-          onClose={handleBackToMap}
-        />
-      ) : null;
+      return lesson ? <LessonIntro lesson={lesson} lessonNumber={(selectedLesson?.lessonIdx ?? 0) + 1} onStart={handleStartQuiz} onClose={handleBackToMap} /> : null;
     case 'quiz':
-      return lesson ? (
-        <QuizScreen
-          questions={lesson.questions}
-          onComplete={handleQuizComplete}
-          onQuit={handleBackToMap}
-        />
-      ) : null;
+      return lesson ? <QuizScreen questions={lesson.questions} onComplete={handleQuizComplete} onQuit={handleBackToMap} /> : null;
     case 'victory':
-      return quizResult ? (
-        <VictoryScreen
-          result={quizResult}
-          player={player}
-          onContinue={handleBackToMap}
-        />
-      ) : null;
+      return quizResult ? <VictoryScreen result={quizResult} player={player} onContinue={handleBackToMap} /> : null;
+    case 'profile':
+      return <ProfileScreen player={player} onClose={handleBackToMap} />;
     default:
       return null;
   }
