@@ -60,10 +60,23 @@ function buildMapNodes(section: Section) {
 
 const NODE_SPACING = 130;
 
-export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted, onSectionChange }: MapScreenProps) {
+export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted, onSectionChange, justUnlockedKey }: MapScreenProps) {
   const avatarData = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
   const levelProgress = (player.currentXp / player.nextLevelXp) * 100;
   const league = getLeagueTier(player.xp);
+
+  // Track unlock animation — show for 2s then clear
+  const [animatingKey, setAnimatingKey] = useState<string | null>(null);
+  const prevKeyRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (justUnlockedKey && justUnlockedKey !== prevKeyRef.current) {
+      prevKeyRef.current = justUnlockedKey;
+      // Small delay so the map renders first, then animate
+      const t = setTimeout(() => setAnimatingKey(justUnlockedKey), 300);
+      const t2 = setTimeout(() => setAnimatingKey(null), 3000);
+      return () => { clearTimeout(t); clearTimeout(t2); };
+    }
+  }, [justUnlockedKey]);
 
   const isSectionUnlocked = (sIdx: number) => {
     if (sIdx === 0) return true;
