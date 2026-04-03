@@ -21,6 +21,13 @@ export default function LearningModule() {
     localStorage.setItem('selectedAvatar', id);
   }, []);
 
+  const [playerName, setPlayerName] = useState(() => localStorage.getItem('playerName') || 'Estudante IA');
+  const handleChangeName = useCallback((name: string) => {
+    setPlayerName(name);
+    localStorage.setItem('playerName', name);
+  }, []);
+
+
   const handleSelectLesson = useCallback((sectionIdx: number, lessonIdx: number) => {
     setSelectedLesson({ sectionIdx, lessonIdx });
     setScreen('intro');
