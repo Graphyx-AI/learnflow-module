@@ -412,12 +412,12 @@ function DuoChestNode({ locked, opened, colors, isJustUnlocked, tooltip, onClick
   return tooltip ? <MapTooltip text={tooltip}>{content}</MapTooltip> : content;
 }
 
-function DuoTrophyNode({ status, colors, isJustUnlocked, onClick }: { status: 'completed' | 'current' | 'locked'; colors: DuoColors; isJustUnlocked?: boolean; onClick?: () => void }) {
+function DuoTrophyNode({ status, colors, isJustUnlocked, tooltip, onClick }: { status: 'completed' | 'current' | 'locked'; colors: DuoColors; isJustUnlocked?: boolean; tooltip?: string; onClick?: () => void }) {
   const isLocked = status === 'locked';
   const isCompleted = status === 'completed';
   const isCurrent = status === 'current';
 
-  return (
+  const content = (
     <div className={`flex flex-col items-center ${isJustUnlocked ? 'animate-node-unlock' : ''}`} onClick={!isLocked ? onClick : undefined}>
       <div
         className={`duo-node ${isCurrent && !isJustUnlocked ? 'animate-duo-bounce' : ''}`}
@@ -450,4 +450,5 @@ function DuoTrophyNode({ status, colors, isJustUnlocked, onClick }: { status: 'c
       </span>
     </div>
   );
+  return tooltip ? <MapTooltip text={tooltip}>{content}</MapTooltip> : content;
 }
