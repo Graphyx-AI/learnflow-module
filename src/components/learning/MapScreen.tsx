@@ -36,10 +36,11 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
       <div className="w-full max-w-[460px] px-5 pt-6 flex flex-col gap-4 relative z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl flex items-center justify-center text-lg shadow-lg"
+            <button onClick={onOpenProfile}
+              className="w-10 h-10 rounded-2xl flex items-center justify-center text-lg shadow-lg cursor-pointer transition-transform hover:scale-105 active:scale-95"
               style={{ background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))' }}>
               🤖
-            </div>
+            </button>
             <div>
               <span className="font-display text-base font-bold text-foreground block leading-tight">NexSkill AI</span>
               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Trilha de IA</span>
