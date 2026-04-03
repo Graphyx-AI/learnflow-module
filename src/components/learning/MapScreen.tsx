@@ -1,5 +1,6 @@
 import { PlayerState, Section } from './types';
 import { AVATARS } from './ProfileScreen';
+import { Flame, Zap } from 'lucide-react';
 
 interface MapScreenProps {
   sections: Section[];
@@ -12,13 +13,15 @@ interface MapScreenProps {
 
 const MAP_NODES = [
   { id: 0, icon: '⭐', label: 'Lição 1', x: 50, type: 'lesson' as const },
-  { id: 1, icon: '🧠', label: 'Lição 2', x: 30, type: 'lesson' as const },
+  { id: 1, icon: '🧠', label: 'Lição 2', x: 28, type: 'lesson' as const },
   { id: -1, icon: '📦', label: 'Bônus', x: 55, type: 'chest' as const },
-  { id: 2, icon: '💬', label: 'Lição 3', x: 70, type: 'lesson' as const },
-  { id: 3, icon: '⚙️', label: 'Lição 4', x: 40, type: 'lesson' as const },
-  { id: 4, icon: '🎯', label: 'Lição 5', x: 60, type: 'lesson' as const },
+  { id: 2, icon: '💬', label: 'Lição 3', x: 72, type: 'lesson' as const },
+  { id: 3, icon: '⚙️', label: 'Lição 4', x: 38, type: 'lesson' as const },
+  { id: 4, icon: '🎯', label: 'Lição 5', x: 62, type: 'lesson' as const },
   { id: -2, icon: '🏆', label: 'Teste', x: 50, type: 'trophy' as const },
 ];
+
+const NODE_SPACING = 130;
 
 export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, selectedAvatar, playerName }: MapScreenProps) {
   const section = sections[0];
@@ -38,19 +41,23 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
       {/* Header */}
       <div className="w-full max-w-[460px] px-5 pt-6 flex flex-col gap-4 relative z-10">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-3">
             <button onClick={onOpenProfile}
-              className="w-10 h-10 rounded-2xl overflow-hidden shadow-lg cursor-pointer transition-transform hover:scale-105 active:scale-95 bg-muted">
-              <img src={avatarData.src} alt={avatarData.name} width={40} height={40} className="w-full h-full object-cover" />
+              className="w-11 h-11 rounded-full overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-105 active:scale-95 ring-2 ring-primary/20">
+              <img src={avatarData.src} alt={avatarData.name} width={44} height={44} className="w-full h-full object-cover" />
             </button>
             <div>
-              <span className="font-display text-base font-bold text-foreground block leading-tight">NexSkill AI</span>
-              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{playerName || 'Estudante IA'}</span>
+              <span className="font-display text-[15px] font-bold text-foreground block leading-tight">NexSkill AI</span>
+              <span className="text-[10px] font-semibold text-muted-foreground">{playerName || 'Estudante IA'}</span>
             </div>
           </div>
           <div className="flex gap-2">
-            <StatPill icon="🔥" value={player.streak} variant="gold" />
-            <StatPill icon="⚡" value={`${player.xp}`} variant="purple" />
+            <div className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-extrabold border border-orange-200 bg-orange-50 text-orange-500">
+              <Flame className="w-4 h-4" /><span>{player.streak}</span>
+            </div>
+            <div className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-extrabold border border-primary/20 bg-primary/5 text-primary">
+              <Zap className="w-4 h-4" /><span>{player.xp}</span>
+            </div>
           </div>
         </div>
 
@@ -75,11 +82,9 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
       </div>
 
       {/* Section Banner */}
-
-      {/* Section Banner — full-width colored bar */}
       <div className="w-[calc(100%-40px)] max-w-[460px] mx-5 mt-5 rounded-2xl overflow-hidden shadow-md">
         <div className="p-5 px-6 flex items-center justify-between"
-          style={{ background: 'linear-gradient(135deg, hsl(var(--secondary)), hsl(160, 84%, 30%))' }}>
+          style={{ background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))' }}>
           <div>
             <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-primary-foreground/70 mb-1">{section.label}</div>
             <div className="font-display text-xl font-bold text-primary-foreground">{section.title}</div>
@@ -91,20 +96,14 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
       </div>
 
       {/* ═══ MAP ═══ */}
-      <div className="w-full max-w-[460px] relative mt-8 pb-8" style={{ minHeight: `${MAP_NODES.length * 120 + 40}px` }}>
-        {/* SVG curved paths */}
+      <div className="w-full max-w-[460px] relative mt-10 pb-8 px-5" style={{ minHeight: `${MAP_NODES.length * NODE_SPACING + 40}px` }}>
+        {/* SVG paths */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="pathGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="hsl(var(--green))" />
-              <stop offset="100%" stopColor="hsl(var(--locked))" />
-            </linearGradient>
-          </defs>
           {MAP_NODES.map((node, i) => {
             if (i === 0) return null;
             const prev = MAP_NODES[i - 1];
-            const y0 = (i - 1) * 120 + 44;
-            const y1 = i * 120 + 10;
+            const y0 = (i - 1) * NODE_SPACING + 44;
+            const y1 = i * NODE_SPACING + 10;
             const x0 = (prev.x / 100) * 100;
             const x1 = (node.x / 100) * 100;
             const status = getStatus(prev.id);
@@ -116,10 +115,10 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
             const d = `M ${x0}% ${y0} C ${x0}% ${midY}, ${x1}% ${midY}, ${x1}% ${y1}`;
 
             return (
-              <path key={i} d={d} fill="none" strokeWidth="5" strokeLinecap="round"
-                strokeDasharray={!done && !isCurrent ? '6 10' : 'none'}
-                stroke={done ? 'hsl(var(--green))' : isCurrent ? 'url(#pathGrad)' : 'hsl(var(--border))'}
-                opacity={!done && !isCurrent ? 0.5 : 1}
+              <path key={i} d={d} fill="none" strokeWidth="4" strokeLinecap="round"
+                strokeDasharray={!done && !isCurrent ? '8 12' : 'none'}
+                stroke={done ? 'hsl(var(--primary))' : isCurrent ? 'hsl(var(--primary))' : 'hsl(var(--border))'}
+                opacity={!done && !isCurrent ? 0.4 : done ? 0.7 : 0.5}
               />
             );
           })}
@@ -129,7 +128,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
         {MAP_NODES.map((node, i) => {
           const status = getStatus(node.id);
           return (
-            <div key={i} className="absolute" style={{ top: `${i * 120}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
+            <div key={i} className="absolute" style={{ top: `${i * NODE_SPACING}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
               {node.type === 'chest' ? (
                 <ChestNode locked={status === 'locked'} />
               ) : node.type === 'trophy' ? (
@@ -150,7 +149,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
 
       {/* Section 2 (locked) */}
       <div className="w-[calc(100%-40px)] max-w-[460px] mx-5 rounded-2xl overflow-hidden">
-        <div className="p-5 px-6 flex items-center justify-between bg-muted border border-border">
+        <div className="p-5 px-6 flex items-center justify-between bg-muted/50 border border-border">
           <div>
             <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted-foreground mb-1">Seção 2 · Unidade 2</div>
             <div className="font-display text-lg font-bold text-muted-foreground">Prompting Avançado</div>
@@ -163,10 +162,10 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
 
       {/* Lock wall */}
       <div className="w-[calc(100%-40px)] max-w-[460px] bg-card border border-border rounded-2xl p-7 text-center flex flex-col items-center gap-3 mx-5 mt-3 mb-12 shadow-sm">
-        <div className="w-14 h-14 rounded-2xl bg-gold/10 flex items-center justify-center text-2xl">🔒</div>
+        <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center text-2xl">🔒</div>
         <div className="font-display text-base font-bold text-foreground">Seção bloqueada</div>
         <div className="text-sm text-muted-foreground leading-relaxed max-w-[300px]">
-          Complete a Seção 1 para desbloquear <strong className="text-secondary font-bold">Prompting Avançado</strong> e técnicas como Chain-of-Thought e RAG.
+          Complete a Seção 1 para desbloquear <strong className="text-primary font-bold">Prompting Avançado</strong> e técnicas como Chain-of-Thought e RAG.
         </div>
       </div>
     </div>
@@ -175,73 +174,65 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
 
 /* ═══ Sub-components ═══ */
 
-function StatPill({ icon, value, variant }: { icon: string; value: string | number; variant: 'gold' | 'purple' }) {
-  const colors = variant === 'gold'
-    ? 'text-gold border-gold/25 bg-gold/[0.08]'
-    : 'text-primary border-primary/25 bg-primary/[0.08]';
-  return (
-    <div className={`flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] font-extrabold border ${colors}`}>
-      <span>{icon}</span><span>{value}</span>
-    </div>
-  );
-}
-
 function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
   icon: string; label: string; status: 'completed' | 'current' | 'locked'; isFirst: boolean; onClick: () => void;
 }) {
-  // Outer ring + inner circle design
-  const outerRing = status === 'completed'
-    ? 'border-[4px] border-green shadow-[0_6px_20px_rgba(34,197,94,.25)]'
-    : status === 'current'
-    ? 'border-[4px] border-green shadow-[0_6px_25px_rgba(34,197,94,.3)] animate-pulse-glow'
-    : 'border-[4px] border-border shadow-[0_2px_10px_rgba(0,0,0,.06)]';
-
-  const innerBg = status === 'completed'
-    ? 'bg-green'
-    : status === 'current'
-    ? 'bg-green'
-    : 'bg-muted';
+  const isCompleted = status === 'completed';
+  const isCurrent = status === 'current';
+  const isLocked = status === 'locked';
 
   return (
     <div className="relative flex flex-col items-center">
       {/* Start bubble */}
       {isFirst && (
         <div className="absolute -top-14 left-1/2 -translate-x-1/2 z-20">
-          <div className="bg-foreground text-background font-display text-[12px] font-bold py-2 px-5 rounded-2xl tracking-wider whitespace-nowrap animate-bobble shadow-lg relative">
+          <div className="bg-primary text-primary-foreground font-display text-[12px] font-bold py-2 px-5 rounded-2xl tracking-wider whitespace-nowrap animate-bobble shadow-lg relative">
             COMEÇAR
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-t-[7px] border-t-foreground" />
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-t-[7px] border-t-primary" />
           </div>
         </div>
       )}
 
       <button
         onClick={onClick}
-        disabled={status === 'locked'}
-        className={`w-[72px] h-[72px] rounded-full flex items-center justify-center relative transition-transform duration-150 ${outerRing} ${status !== 'locked' ? 'hover:scale-110 active:scale-95 cursor-pointer' : 'cursor-default'}`}
+        disabled={isLocked}
+        className={`relative w-[76px] h-[76px] rounded-full flex items-center justify-center transition-all duration-200 ${
+          isCompleted
+            ? 'bg-primary shadow-[0_4px_20px_rgba(var(--primary-rgb),0.3)] cursor-pointer hover:scale-110 active:scale-95'
+            : isCurrent
+            ? 'bg-primary shadow-[0_4px_24px_rgba(var(--primary-rgb),0.35)] cursor-pointer hover:scale-110 active:scale-95'
+            : 'bg-muted/80 border-2 border-border shadow-sm cursor-default'
+        }`}
       >
-        <div className={`w-[56px] h-[56px] rounded-full flex items-center justify-center ${innerBg}`}>
-          {status === 'completed' ? (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
-          ) : (
-            <span className={`text-[26px] leading-none ${status === 'locked' ? 'opacity-30 grayscale' : 'drop-shadow-sm'}`}>
-              {icon}
-            </span>
-          )}
-        </div>
+        {/* Inner white circle for current/completed */}
+        {(isCompleted || isCurrent) && (
+          <div className="absolute inset-[4px] rounded-full bg-primary flex items-center justify-center">
+            {isCompleted ? (
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            ) : (
+              <span className="text-[28px] leading-none drop-shadow-sm">{icon}</span>
+            )}
+          </div>
+        )}
 
-        {/* Badge */}
-        {status === 'current' && (
-          <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-gold border-[3px] border-background flex items-center justify-center shadow-md">
-            <span className="text-[10px] font-black text-yellow-900">!</span>
+        {/* Locked state */}
+        {isLocked && (
+          <span className="text-[26px] leading-none opacity-30 grayscale">{icon}</span>
+        )}
+
+        {/* Current indicator badge */}
+        {isCurrent && (
+          <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-amber-400 border-[3px] border-background flex items-center justify-center shadow-md">
+            <span className="text-[10px] font-black text-amber-900">!</span>
           </div>
         )}
       </button>
 
       {/* Label */}
-      <span className={`mt-2 text-[10px] font-bold uppercase tracking-wider ${
-        status === 'locked' ? 'text-muted-foreground' : status === 'completed' ? 'text-green' : 'text-foreground'
+      <span className={`mt-2.5 text-[10px] font-bold uppercase tracking-wider ${
+        isLocked ? 'text-muted-foreground/60' : isCompleted ? 'text-primary' : 'text-foreground'
       }`}>
         {label}
       </span>
@@ -252,14 +243,14 @@ function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
 function ChestNode({ locked }: { locked: boolean }) {
   return (
     <div className="flex flex-col items-center">
-      <div className={`w-[60px] h-[52px] rounded-2xl flex items-center justify-center border-[3px] transition-transform duration-150 ${
+      <div className={`w-[64px] h-[56px] rounded-2xl flex items-center justify-center border-2 transition-transform duration-150 ${
         locked
-          ? 'bg-muted border-border cursor-default'
-          : 'bg-gold/10 border-gold/30 cursor-pointer hover:scale-105'
+          ? 'bg-muted/60 border-border cursor-default'
+          : 'bg-amber-50 border-amber-200 cursor-pointer hover:scale-105 shadow-md'
       }`}>
-        <span className={`text-[24px] ${locked ? 'opacity-30 grayscale' : 'drop-shadow-sm'}`}>📦</span>
+        <span className={`text-[24px] ${locked ? 'opacity-25 grayscale' : 'drop-shadow-sm'}`}>📦</span>
       </div>
-      <span className={`mt-1.5 text-[9px] font-bold uppercase tracking-wider ${locked ? 'text-muted-foreground' : 'text-gold'}`}>
+      <span className={`mt-2 text-[9px] font-bold uppercase tracking-wider ${locked ? 'text-muted-foreground/60' : 'text-amber-500'}`}>
         Bônus
       </span>
     </div>
@@ -269,10 +260,10 @@ function ChestNode({ locked }: { locked: boolean }) {
 function TrophyNode() {
   return (
     <div className="flex flex-col items-center">
-      <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center border-[3px] border-dashed border-gold/25 bg-gold/[0.05]">
-        <span className="text-[28px] opacity-30 grayscale">🏆</span>
+      <div className="w-[76px] h-[76px] rounded-full flex items-center justify-center border-2 border-dashed border-border bg-muted/30">
+        <span className="text-[28px] opacity-20 grayscale">🏆</span>
       </div>
-      <span className="mt-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Teste</span>
+      <span className="mt-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60">Teste</span>
     </div>
   );
 }
