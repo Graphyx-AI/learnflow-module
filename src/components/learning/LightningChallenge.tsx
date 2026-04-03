@@ -2,60 +2,62 @@ import { useState, useEffect, useCallback } from 'react';
 import { Question } from './types';
 import { Zap, Clock, CheckCircle, XCircle, Star } from 'lucide-react';
 
-const LIGHTNING_QUESTIONS: Question[] = [
-  {
-    icon: '⚡', category: 'Relâmpago', difficulty: 'Médio',
-    text: 'Qual modelo de IA é famoso por gerar imagens a partir de texto?',
-    options: ['BERT', 'DALL-E', 'ResNet', 'LSTM'],
-    correctIndex: 1,
-    explanation: 'DALL-E, criado pela OpenAI, gera imagens originais a partir de descrições textuais.',
-  },
-  {
-    icon: '⚡', category: 'Relâmpago', difficulty: 'Difícil',
-    text: 'O que é "hallucination" em LLMs?',
-    options: ['Bug de memória', 'Quando o modelo gera informações falsas com confiança', 'Erro de GPU', 'Latência alta'],
-    correctIndex: 1,
-    explanation: 'Alucinação é quando o modelo gera informações plausíveis mas factualmente incorretas.',
-  },
-  {
-    icon: '⚡', category: 'Relâmpago', difficulty: 'Fácil',
-    text: 'Qual empresa criou o ChatGPT?',
-    options: ['Google', 'OpenAI', 'Meta', 'Microsoft'],
-    correctIndex: 1,
-    explanation: 'O ChatGPT foi criado pela OpenAI e lançado em novembro de 2022.',
-  },
-  {
-    icon: '⚡', category: 'Relâmpago', difficulty: 'Médio',
-    text: 'O que é "fine-tuning" em IA?',
-    options: ['Ajustar hiperparâmetros', 'Retreinar um modelo pré-treinado para tarefa específica', 'Comprimir o modelo', 'Aumentar o dataset'],
-    correctIndex: 1,
-    explanation: 'Fine-tuning adapta um modelo pré-treinado para uma tarefa ou domínio específico com dados adicionais.',
-  },
-  {
-    icon: '⚡', category: 'Relâmpago', difficulty: 'Difícil',
-    text: 'O que é RAG (Retrieval-Augmented Generation)?',
-    options: ['Tipo de GPU', 'Combinar busca de dados com geração de texto', 'Rede adversarial', 'Método de compressão'],
-    correctIndex: 1,
-    explanation: 'RAG combina recuperação de informações de bases de dados com geração de texto por LLMs para respostas mais precisas.',
-  },
+const EASY_QUESTIONS: Question[] = [
+  { icon: '⚡', category: 'Básico', difficulty: 'Fácil', text: 'Qual empresa criou o ChatGPT?', options: ['Google', 'OpenAI', 'Meta', 'Microsoft'], correctIndex: 1, explanation: 'O ChatGPT foi criado pela OpenAI e lançado em novembro de 2022.' },
+  { icon: '⚡', category: 'Básico', difficulty: 'Fácil', text: 'O que significa "IA"?', options: ['Internet Avançada', 'Inteligência Artificial', 'Interface Automática', 'Integração de Apps'], correctIndex: 1, explanation: 'IA significa Inteligência Artificial — sistemas que simulam capacidades cognitivas humanas.' },
+  { icon: '⚡', category: 'Básico', difficulty: 'Fácil', text: 'Qual destes é um assistente de IA?', options: ['Excel', 'Siri', 'Linux', 'Python'], correctIndex: 1, explanation: 'Siri é o assistente de IA da Apple, capaz de entender comandos de voz.' },
+  { icon: '⚡', category: 'Básico', difficulty: 'Fácil', text: 'O que um chatbot faz?', options: ['Edita fotos', 'Conversa com humanos via texto', 'Programa jogos', 'Cria planilhas'], correctIndex: 1, explanation: 'Chatbots são programas que simulam conversas humanas via texto ou voz.' },
+  { icon: '⚡', category: 'Básico', difficulty: 'Fácil', text: 'IA pode reconhecer imagens?', options: ['Não, apenas texto', 'Sim, usando visão computacional', 'Só em preto e branco', 'Apenas QR codes'], correctIndex: 1, explanation: 'Visão computacional permite que a IA analise e reconheça conteúdo em imagens.' },
 ];
+
+const MEDIUM_QUESTIONS: Question[] = [
+  { icon: '⚡', category: 'Intermediário', difficulty: 'Médio', text: 'Qual modelo de IA gera imagens a partir de texto?', options: ['BERT', 'DALL-E', 'ResNet', 'LSTM'], correctIndex: 1, explanation: 'DALL-E gera imagens originais a partir de descrições textuais.' },
+  { icon: '⚡', category: 'Intermediário', difficulty: 'Médio', text: 'O que é "fine-tuning" em IA?', options: ['Ajustar hiperparâmetros', 'Retreinar um modelo pré-treinado para tarefa específica', 'Comprimir o modelo', 'Aumentar o dataset'], correctIndex: 1, explanation: 'Fine-tuning adapta um modelo pré-treinado para uma tarefa específica.' },
+  { icon: '⚡', category: 'Intermediário', difficulty: 'Médio', text: 'O que é overfitting?', options: ['Modelo perfeito', 'Modelo que memoriza dados sem generalizar', 'Falta de dados', 'Treino rápido'], correctIndex: 1, explanation: 'Overfitting ocorre quando o modelo decora os dados de treino e falha em dados novos.' },
+  { icon: '⚡', category: 'Intermediário', difficulty: 'Médio', text: 'O que são "embeddings"?', options: ['Imagens embutidas', 'Vetores numéricos que representam palavras', 'Links de sites', 'Plugins'], correctIndex: 1, explanation: 'Embeddings convertem palavras em vetores numéricos que capturam significado semântico.' },
+  { icon: '⚡', category: 'Intermediário', difficulty: 'Médio', text: 'O que é aprendizado por reforço?', options: ['Estudar muito', 'IA que aprende por tentativa, erro e recompensa', 'Backup de dados', 'Duplicar modelos'], correctIndex: 1, explanation: 'No aprendizado por reforço, o agente aprende tomando ações e recebendo recompensas ou penalidades.' },
+];
+
+const HARD_QUESTIONS: Question[] = [
+  { icon: '⚡', category: 'Avançado', difficulty: 'Difícil', text: 'O que é "hallucination" em LLMs?', options: ['Bug de memória', 'Gerar informações falsas com confiança', 'Erro de GPU', 'Latência alta'], correctIndex: 1, explanation: 'Alucinação é quando o modelo gera informações plausíveis mas incorretas.' },
+  { icon: '⚡', category: 'Avançado', difficulty: 'Difícil', text: 'O que é RAG?', options: ['Tipo de GPU', 'Busca de dados + geração de texto', 'Rede adversarial', 'Compressão'], correctIndex: 1, explanation: 'RAG combina recuperação de informações com geração por LLMs para respostas mais precisas.' },
+  { icon: '⚡', category: 'Avançado', difficulty: 'Difícil', text: 'O que é o mecanismo de Attention?', options: ['Filtro de spam', 'Focar nas partes relevantes da entrada', 'Cache de memória', 'Compressão de dados'], correctIndex: 1, explanation: 'Attention permite ao modelo ponderar a importância de cada parte da entrada.' },
+  { icon: '⚡', category: 'Avançado', difficulty: 'Difícil', text: 'O que é "model drift"?', options: ['Bug de código', 'Degradação do modelo quando dados mudam ao longo do tempo', 'Modelo lento', 'Erro de deploy'], correctIndex: 1, explanation: 'Model drift ocorre quando a distribuição dos dados muda, fazendo o modelo perder performance.' },
+  { icon: '⚡', category: 'Avançado', difficulty: 'Difícil', text: 'O que é quantização de modelos?', options: ['Aumentar parâmetros', 'Reduzir precisão numérica para comprimir o modelo', 'Treinar mais rápido', 'Adicionar camadas'], correctIndex: 1, explanation: 'Quantização reduz a precisão dos pesos (ex: float32 → int8), diminuindo tamanho e acelerando inferência.' },
+];
+
+type DifficultyTier = { label: string; questions: Question[]; timePerQuestion: number; color: string };
+
+const DIFFICULTY_TIERS: Record<string, DifficultyTier> = {
+  easy: { label: 'Fácil', questions: EASY_QUESTIONS, timePerQuestion: 60, color: 'text-primary' },
+  medium: { label: 'Médio', questions: MEDIUM_QUESTIONS, timePerQuestion: 45, color: 'text-orange-500' },
+  hard: { label: 'Difícil', questions: HARD_QUESTIONS, timePerQuestion: 30, color: 'text-destructive' },
+};
+
+function getTier(level: number): DifficultyTier {
+  if (level <= 10) return DIFFICULTY_TIERS.easy;
+  if (level <= 20) return DIFFICULTY_TIERS.medium;
+  return DIFFICULTY_TIERS.hard;
+}
 
 interface LightningChallengeProps {
   onComplete: (xpGained: number) => void;
   onClose: () => void;
+  playerLevel?: number;
 }
 
-export default function LightningChallenge({ onComplete, onClose }: LightningChallengeProps) {
+export default function LightningChallenge({ onComplete, onClose, playerLevel = 1 }: LightningChallengeProps) {
+  const tier = getTier(playerLevel);
   const [phase, setPhase] = useState<'intro' | 'playing' | 'result'>('intro');
   const [questions] = useState(() => {
-    const shuffled = [...LIGHTNING_QUESTIONS].sort(() => Math.random() - 0.5);
+    const shuffled = [...tier.questions].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 3);
   });
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
   const [correct, setCorrect] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(tier.timePerQuestion);
   const [totalTime, setTotalTime] = useState(0);
 
   // Timer
