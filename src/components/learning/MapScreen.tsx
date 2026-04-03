@@ -19,8 +19,9 @@ const MAP_NODES = [
   { id: -2, icon: '🏆', label: 'Teste', x: 50, type: 'trophy' as const },
 ];
 
-export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile }: MapScreenProps) {
+export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, selectedAvatar }: MapScreenProps) {
   const section = sections[0];
+  const avatarData = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
   const levelProgress = (player.currentXp / player.nextLevelXp) * 100;
 
   const getStatus = (id: number) => {
