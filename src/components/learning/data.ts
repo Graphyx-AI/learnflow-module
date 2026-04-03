@@ -778,7 +778,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🤝', title: 'Networking e Comunidade', description: 'Conecte-se com profissionais de IA.',
+        icon: '🌐', title: 'Networking e Comunidade', description: 'Conecte-se com profissionais de IA.',
         topics: ['Comunidades online', 'Conferências', 'Open source', 'Mentoria'],
         questions: [
           { icon: '🤝', category: 'Networking', difficulty: 'Fácil' as const, text: 'Melhor plataforma para networking em IA?', options: ['TikTok', 'Facebook', 'LinkedIn e Twitter/X para IA', 'Snapchat'], correctIndex: 2, explanation: 'LinkedIn e X são onde a comunidade de IA compartilha pesquisa e oportunidades.' },
