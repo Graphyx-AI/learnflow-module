@@ -63,9 +63,12 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button onClick={onOpenProfile}
-              className="w-11 h-11 rounded-full overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-105 active:scale-95 ring-2 ring-primary/20">
-              <img src={avatarData.src} alt={avatarData.name} width={44} height={44} className="w-full h-full object-cover" />
+              className={`avatar-frame ${league.frameClass} w-12 h-12 rounded-full overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-105 active:scale-95`}>
+              <img src={avatarData.src} alt={avatarData.name} width={48} height={48} className="w-full h-full object-cover rounded-full" />
             </button>
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-card border-2 border-background flex items-center justify-center text-[10px] shadow-sm">
+              {league.icon}
+            </div>
             <div>
               <span className="font-display text-[15px] font-bold text-foreground block leading-tight">NexSkill AI</span>
               <span className="text-[10px] font-semibold text-muted-foreground">{playerName || 'Estudante IA'}</span>
