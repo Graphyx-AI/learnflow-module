@@ -792,7 +792,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🚀', title: 'Empreendendo com IA', description: 'Crie seu negócio usando inteligência artificial.',
+        icon: '⚡', title: 'Empreendendo com IA', description: 'Crie seu negócio usando inteligência artificial.',
         topics: ['Ideação', 'MVP', 'Product-market fit', 'Escalar'],
         questions: [
           { icon: '🚀', category: 'Empreender', difficulty: 'Fácil' as const, text: 'Primeiro passo para empreender com IA?', options: ['Levantar investimento', 'Contratar 100 pessoas', 'Comprar domínio', 'Identificar um problema real'], correctIndex: 3, explanation: 'Comece pelo problema, não pela tecnologia.' },
