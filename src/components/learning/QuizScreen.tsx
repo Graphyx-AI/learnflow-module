@@ -48,6 +48,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
     const correct = selected === q.correctIndex;
     setAnswered(true);
     setIsCorrect(correct);
+    if (soundOn) { correct ? playCorrectSound() : playWrongSound(); }
 
     if (correct) {
       const newCombo = combo + 1;
