@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Question } from './types';
-import { CheckCircle, XCircle, ArrowRight, Trophy, Star } from 'lucide-react';
+import { CheckCircle, XCircle, ArrowRight, Trophy, Star, Volume2, VolumeX } from 'lucide-react';
+import { playCorrectSound, playWrongSound, isSoundEnabled, setSoundEnabled } from './sounds';
 
 interface FinalTestScreenProps {
   questions: Question[];
@@ -16,6 +17,7 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
   const [streak, setStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
   const [shaking, setShaking] = useState(false);
+  const [soundOn, setSoundOn] = useState(() => isSoundEnabled());
 
   const q = questions[currentQ];
   const progress = ((currentQ + (answered ? 1 : 0)) / questions.length) * 100;
@@ -25,6 +27,7 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
     setSelected(idx);
     setAnswered(true);
     const isCorrect = idx === q.correctIndex;
+    if (soundOn) { isCorrect ? playCorrectSound() : playWrongSound(); }
     if (isCorrect) {
       setCorrect(c => c + 1);
       setStreak(s => {
@@ -60,6 +63,11 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
         <div className="flex items-center justify-between mb-6">
           <button onClick={onQuit} className="text-muted-foreground text-sm font-bold hover:text-foreground transition-colors cursor-pointer">
             ✕ Sair
+          </button>
+          <button onClick={() => { const v = !soundOn; setSoundOn(v); setSoundEnabled(v); }}
+            className="w-8 h-8 bg-surface border border-border rounded-full flex items-center justify-center text-muted-foreground cursor-pointer transition-all hover:text-foreground"
+            title={soundOn ? 'Desativar som' : 'Ativar som'}>
+            {soundOn ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
           </button>
           <div className="flex items-center gap-2">
             <Trophy className="w-4 h-4 text-gold" />

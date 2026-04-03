@@ -1,5 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { Question, QuizResult } from './types';
+import { playCorrectSound, playWrongSound, playSelectSound, isSoundEnabled, setSoundEnabled } from './sounds';
+import { Volume2, VolumeX } from 'lucide-react';
 
 interface QuizScreenProps {
   questions: Question[];
@@ -23,6 +25,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
   const [shakingHeart, setShakingHeart] = useState<number | null>(null);
   const [showQuitModal, setShowQuitModal] = useState(false);
   const [shaking, setShaking] = useState(false);
+  const [soundOn, setSoundOn] = useState(() => isSoundEnabled());
 
   // Use refs for values needed in onComplete to avoid stale closures
   const xpRef = useRef(0);
@@ -35,6 +38,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
 
   const handleSelect = (idx: number) => {
     if (answered) return;
+    if (soundOn) playSelectSound();
     setSelected(idx);
   };
 
@@ -44,6 +48,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
     const correct = selected === q.correctIndex;
     setAnswered(true);
     setIsCorrect(correct);
+    if (soundOn) { correct ? playCorrectSound() : playWrongSound(); }
 
     if (correct) {
       const newCombo = combo + 1;
@@ -113,6 +118,11 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
           ✕
         </button>
 
+        <button onClick={() => { const v = !soundOn; setSoundOn(v); setSoundEnabled(v); }}
+          className="w-9 h-9 bg-surface border border-border rounded-full flex items-center justify-center text-muted-foreground cursor-pointer transition-all hover:border-foreground/20 hover:text-foreground flex-shrink-0"
+          title={soundOn ? 'Desativar som' : 'Ativar som'}>
+          {soundOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+        </button>
         <div className="flex-1 h-2.5 bg-muted rounded-full overflow-hidden">
           <div className="h-full rounded-full relative transition-all duration-500"
             style={{
