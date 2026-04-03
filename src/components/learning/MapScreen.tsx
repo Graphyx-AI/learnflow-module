@@ -243,18 +243,22 @@ function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
   );
 }
 
-function ChestNode({ locked }: { locked: boolean }) {
+function ChestNode({ locked, opened, onClick }: { locked: boolean; opened?: boolean; onClick?: () => void }) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center" onClick={!locked ? onClick : undefined}>
       <div className={`w-[64px] h-[56px] rounded-2xl flex items-center justify-center border-2 transition-transform duration-150 ${
         locked
           ? 'bg-muted/60 border-border cursor-default'
-          : 'bg-amber-50 border-amber-200 cursor-pointer hover:scale-105 shadow-md'
+          : opened
+          ? 'bg-primary/10 border-primary/30 cursor-pointer hover:scale-105 shadow-md'
+          : 'bg-gold/10 border-gold/30 cursor-pointer hover:scale-105 shadow-md animate-bobble'
       }`}>
-        <span className={`text-[24px] ${locked ? 'opacity-25 grayscale' : 'drop-shadow-sm'}`}>📦</span>
+        <span className={`text-[24px] ${locked ? 'opacity-25 grayscale' : 'drop-shadow-sm'}`}>
+          {opened ? '📭' : '📦'}
+        </span>
       </div>
-      <span className={`mt-2 text-[9px] font-bold uppercase tracking-wider ${locked ? 'text-muted-foreground/60' : 'text-amber-500'}`}>
-        Bônus
+      <span className={`mt-2 text-[9px] font-bold uppercase tracking-wider ${locked ? 'text-muted-foreground/60' : opened ? 'text-primary' : 'text-gold'}`}>
+        {opened ? 'Coletado' : 'Bônus'}
       </span>
     </div>
   );
