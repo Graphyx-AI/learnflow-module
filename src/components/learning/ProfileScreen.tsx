@@ -214,6 +214,7 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
             <StatRow icon={<Flame className="w-[18px] h-[18px] text-orange-500" />} label="Maior streak" value={`${player.streak} dias`} />
             <StatRow icon={<Target className="w-[18px] h-[18px] text-emerald-500" />} label="Questões respondidas" value={player.completedLessons.length * 8} />
             <StatRow icon={<Trophy className="w-[18px] h-[18px] text-amber-500" />} label="Conquistas" value={`${unlockedCount}/${achievements.length}`} />
+            <StatRow icon={<Star className="w-[18px] h-[18px] text-gold" />} label="Lições perfeitas (100%)" value={perfectCount} />
             <StatRow icon={<TrendingUp className="w-[18px] h-[18px] text-violet-500" />} label="Nível atual" value={`${player.level} — ${player.levelTitle}`} />
           </div>
         ) : (
