@@ -97,6 +97,25 @@ export function playVictorySound() {
   }, 600);
 }
 
+export function playUnlockSound() {
+  const ctx = getCtx();
+  // Magical shimmer: quick ascending arpeggio with triangle wave
+  const notes = [392, 523, 659]; // G4 C5 E5
+  notes.forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = 'triangle';
+    const t = ctx.currentTime + i * 0.08;
+    osc.frequency.setValueAtTime(freq, t);
+    gain.gain.setValueAtTime(0.12, t);
+    gain.gain.exponentialRampToValueAtTime(0.01, t + 0.25);
+    osc.start(t);
+    osc.stop(t + 0.25);
+  });
+}
+
 // Persist sound preference
 const SOUND_KEY = 'soundEnabled';
 
