@@ -7,8 +7,10 @@ interface MapScreenProps {
   player: PlayerState;
   onSelectLesson: (sectionIdx: number, lessonIdx: number) => void;
   onOpenProfile?: () => void;
+  onOpenChest?: () => void;
   selectedAvatar?: string;
   playerName?: string;
+  chestOpened?: boolean;
 }
 
 const MAP_NODES = [
