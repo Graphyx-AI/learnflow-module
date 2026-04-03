@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Trophy, BarChart3, UserCircle, Pencil, Check, Zap, Flame, Award, BookOpen, Target, TrendingUp, Lock, CheckCircle } from 'lucide-react';
+import { Trophy, BarChart3, UserCircle, Pencil, Check, Zap, Flame, Award, BookOpen, Target, TrendingUp, Lock, CheckCircle, Star } from 'lucide-react';
 
 import avatarRobot from '@/assets/avatars/avatar-robot.png';
 import avatarCat from '@/assets/avatars/avatar-cat.png';
@@ -72,6 +72,7 @@ interface ProfileScreenProps {
     level: number;
     levelTitle: string;
     completedLessons: number[];
+    perfectLessons?: Record<string, number[]>;
   };
   selectedAvatar: string;
   onSelectAvatar: (id: string) => void;
@@ -97,6 +98,7 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
   });
 
   const unlockedCount = achievements.filter(a => a.unlocked).length;
+  const perfectCount = Object.values(player.perfectLessons || {}).reduce((sum, arr) => sum + arr.length, 0);
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-background relative overflow-x-hidden">
@@ -151,9 +153,10 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
           </div>
 
           {/* Quick stats */}
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-4 gap-3">
             <QuickStat icon={<Zap className="w-4 h-4 text-primary" />} value={player.xp} label="XP Total" />
             <QuickStat icon={<Flame className="w-4 h-4 text-orange-500" />} value={player.streak} label="Streak" />
+            <QuickStat icon={<Star className="w-4 h-4 text-gold" />} value={perfectCount} label="Perfeitas" />
             <QuickStat icon={<Award className="w-4 h-4 text-amber-500" />} value={unlockedCount} label="Badges" />
           </div>
         </div>
@@ -211,6 +214,7 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
             <StatRow icon={<Flame className="w-[18px] h-[18px] text-orange-500" />} label="Maior streak" value={`${player.streak} dias`} />
             <StatRow icon={<Target className="w-[18px] h-[18px] text-emerald-500" />} label="Questões respondidas" value={player.completedLessons.length * 8} />
             <StatRow icon={<Trophy className="w-[18px] h-[18px] text-amber-500" />} label="Conquistas" value={`${unlockedCount}/${achievements.length}`} />
+            <StatRow icon={<Star className="w-[18px] h-[18px] text-gold" />} label="Lições perfeitas (100%)" value={perfectCount} />
             <StatRow icon={<TrendingUp className="w-[18px] h-[18px] text-violet-500" />} label="Nível atual" value={`${player.level} — ${player.levelTitle}`} />
           </div>
         ) : (
