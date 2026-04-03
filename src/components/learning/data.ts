@@ -608,7 +608,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🎵', title: 'IA na Música', description: 'Composição, produção e remix com inteligência artificial.',
+        icon: '🎙️', title: 'IA na Música', description: 'Composição, produção e remix com inteligência artificial.',
         topics: ['Composição automática', 'Síntese de áudio', 'Separação de stems', 'Copyright'],
         questions: [
           { icon: '🎵', category: 'Música', difficulty: 'Fácil' as const, text: 'Como IA pode criar música?', options: ['Tocando instrumentos físicos', 'Aprendendo padrões de composições e gerando novas', 'Gravando sons aleatórios', 'Copiando músicas'], correctIndex: 1, explanation: 'Modelos aprendem estruturas musicais e geram composições originais.' },
