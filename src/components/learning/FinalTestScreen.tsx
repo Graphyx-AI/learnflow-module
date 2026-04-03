@@ -34,6 +34,8 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
       });
     } else {
       setStreak(0);
+      setShaking(true);
+      setTimeout(() => setShaking(false), 500);
     }
   };
 
