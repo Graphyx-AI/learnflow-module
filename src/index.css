@@ -94,6 +94,87 @@
   animation: node-glow 2s ease-in-out infinite;
 }
 
+/* Duolingo-style components */
+.duo-stat-pill {
+  @apply flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-[13px] font-extrabold border;
+}
+
+.duo-node {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.duo-node:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.duo-node:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 currentColor !important;
+}
+
+.duo-node-inner {
+  width: 68px;
+  height: 68px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.duo-node-chest {
+  width: 68px;
+  height: 60px;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.duo-node-chest:hover {
+  transform: translateY(-2px);
+}
+
+.duo-speech-bubble {
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 8px 20px;
+  border-radius: 14px;
+  white-space: nowrap;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.duo-speech-arrow {
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid;
+}
+
+@keyframes duoBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-duo-bounce {
+  animation: duoBounce 1.5s ease-in-out infinite;
+}
+
 @keyframes avatar-ring-spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

@@ -1,8 +1,8 @@
 import { PlayerState, Section } from './types';
 import { AVATARS } from './ProfileScreen';
 import FloatingParticles from './FloatingParticles';
-import BiomeBackground, { BIOMES } from './BiomeBackground';
-import { Flame, Zap } from 'lucide-react';
+import { BIOMES } from './BiomeBackground';
+import { Flame, Zap, Crown } from 'lucide-react';
 
 const LEAGUE_TIERS = [
   { id: 'bronze', minXp: 0, label: 'Bronze', icon: '🥉', frameClass: 'avatar-frame-bronze' },
@@ -14,6 +14,14 @@ const LEAGUE_TIERS = [
 function getLeagueTier(xp: number) {
   return [...LEAGUE_TIERS].reverse().find(t => xp >= t.minXp) || LEAGUE_TIERS[0];
 }
+
+/* Duolingo-style section colors */
+const SECTION_COLORS = [
+  { bg: 'hsl(152 68% 38%)', bgLight: 'hsl(152 68% 45%)', shadow: 'hsl(152 68% 28%)', ring: 'hsl(152 68% 55%)' },
+  { bg: 'hsl(25 80% 50%)', bgLight: 'hsl(25 80% 58%)', shadow: 'hsl(25 80% 38%)', ring: 'hsl(25 80% 65%)' },
+  { bg: 'hsl(252 85% 58%)', bgLight: 'hsl(252 85% 65%)', shadow: 'hsl(252 85% 42%)', ring: 'hsl(252 85% 72%)' },
+  { bg: 'hsl(200 80% 45%)', bgLight: 'hsl(200 80% 55%)', shadow: 'hsl(200 80% 32%)', ring: 'hsl(200 80% 62%)' },
+];
 
 interface MapScreenProps {
   sections: Section[];
@@ -32,16 +40,16 @@ interface MapScreenProps {
 function buildMapNodes(section: Section) {
   const lessons = section.lessons;
   const nodes: { id: number; icon: string; label: string; x: number; type: 'lesson' | 'chest' | 'trophy' }[] = [];
-  const xPositions = [50, 28, 72, 38, 62];
+  const xPositions = [50, 30, 70, 35, 65];
   lessons.forEach((l, i) => {
     nodes.push({ id: i, icon: l.icon, label: `Lição ${i + 1}`, x: xPositions[i % xPositions.length], type: 'lesson' });
     if (i === 1) nodes.push({ id: -1, icon: '📦', label: 'Bônus', x: 55, type: 'chest' });
   });
-  nodes.push({ id: -2, icon: '🏆', label: 'Teste', x: 50, type: 'trophy' });
+  nodes.push({ id: -2, icon: '🏆', label: 'Prova Final', x: 50, type: 'trophy' });
   return nodes;
 }
 
-const NODE_SPACING = 145;
+const NODE_SPACING = 130;
 
 export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted, onSectionChange }: MapScreenProps) {
   const avatarData = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
@@ -78,51 +86,45 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
   return (
     <div className="flex flex-col items-center min-h-screen bg-background relative overflow-x-hidden">
       <FloatingParticles />
-      {/* Header */}
-      <div className="w-full max-w-[460px] px-5 pt-6 flex flex-col gap-4 relative z-10">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <button onClick={onOpenProfile}
-                className={`avatar-frame ${league.frameClass} w-12 h-12 rounded-full overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-105 active:scale-95`}>
-                <img src={avatarData.src} alt={avatarData.name} width={48} height={48} className="w-full h-full object-cover rounded-full" />
-              </button>
-              <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-card border-2 border-background flex items-center justify-center text-[10px] shadow-sm">
-                {league.icon}
-              </div>
+      
+      {/* ═══ HEADER — Duolingo style ═══ */}
+      <div className="w-full max-w-[460px] px-4 pt-4 pb-2 flex items-center justify-between sticky top-0 bg-background/95 backdrop-blur-sm z-30 border-b border-border/50">
+        <button onClick={onOpenProfile} className="flex items-center gap-2.5">
+          <div className="relative">
+            <div className={`avatar-frame ${league.frameClass} w-11 h-11 rounded-full overflow-hidden shadow-md`}>
+              <img src={avatarData.src} alt={avatarData.name} width={44} height={44} className="w-full h-full object-cover rounded-full" />
             </div>
-            <div>
-              <span className="font-display text-[15px] font-bold text-foreground block leading-tight">NexSkill AI</span>
-              <span className="text-[10px] font-semibold text-muted-foreground">{playerName || 'Estudante IA'}</span>
+            <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-card border-2 border-background flex items-center justify-center text-[9px]">
+              {league.icon}
             </div>
           </div>
-          <div className="flex gap-2">
-            <div className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-extrabold border border-orange-200 bg-orange-50 text-orange-500">
-              <Flame className="w-4 h-4" /><span>{player.streak}</span>
-            </div>
-            <div className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-extrabold border border-primary/20 bg-primary/5 text-primary">
-              <Zap className="w-4 h-4" /><span>{player.xp}</span>
-            </div>
+          <div className="text-left">
+            <div className="text-[13px] font-extrabold text-foreground leading-tight">{playerName || 'Estudante IA'}</div>
+            <div className="text-[10px] font-bold text-muted-foreground">Nível {player.level}</div>
+          </div>
+        </button>
+        <div className="flex items-center gap-1.5">
+          <div className="duo-stat-pill bg-orange-50 border-orange-200 text-orange-500">
+            <Flame className="w-4 h-4" />{player.streak}
+          </div>
+          <div className="duo-stat-pill bg-primary/5 border-primary/20 text-primary">
+            <Zap className="w-4 h-4" />{player.xp}
+          </div>
+          <div className="duo-stat-pill bg-amber-50 border-amber-200 text-amber-500">
+            <Crown className="w-4 h-4" />{league.icon}
           </div>
         </div>
+      </div>
 
-        {/* Level bar */}
-        <div className="bg-card border border-border rounded-2xl p-4 shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center text-[13px] font-black text-primary">
-                {player.level}
-              </div>
-              <span className="text-[12px] font-bold text-foreground">{player.levelTitle}</span>
-            </div>
-            <span className="text-[11px] font-semibold text-muted-foreground">
-              {player.currentXp}/{player.nextLevelXp} XP
-            </span>
+      {/* XP Progress bar */}
+      <div className="w-full max-w-[460px] px-5 pt-3">
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-3 bg-muted rounded-full overflow-hidden">
+            <div className="h-full rounded-full transition-all duration-700 bg-primary" style={{ width: `${levelProgress}%` }} />
           </div>
-          <div className="bg-muted h-3 rounded-full overflow-hidden">
-            <div className="h-full rounded-full transition-all duration-700"
-              style={{ width: `${levelProgress}%`, background: 'linear-gradient(90deg, hsl(var(--primary)), hsl(var(--secondary)))' }} />
-          </div>
+          <span className="text-[11px] font-extrabold text-muted-foreground whitespace-nowrap">
+            {player.currentXp}/{player.nextLevelXp}
+          </span>
         </div>
       </div>
 
@@ -130,66 +132,70 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
       {sections.map((section, sIdx) => {
         const unlocked = isSectionUnlocked(sIdx);
         const biome = BIOMES[sIdx % BIOMES.length];
+        const colors = SECTION_COLORS[sIdx % SECTION_COLORS.length];
         const mapNodes = buildMapNodes(section);
         const sectionChestOpened = player.chestsOpened[section.id] || false;
-        const sectionTestCompleted = player.testsCompleted[section.id] || false;
 
         return (
-          <div key={section.id} className="w-[calc(100%-40px)] max-w-[460px] mx-5 mt-5">
-            {/* Banner */}
-            <div className="rounded-2xl overflow-hidden shadow-md">
-              <div className="p-5 px-6 flex items-center justify-between"
-                style={{ background: biome.bannerGradient, opacity: unlocked ? 1 : 0.6 }}>
-                <div>
-                  <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-white/70 mb-1">
-                    {biome.icon} {section.label}
-                  </div>
-                  <div className="font-display text-xl font-bold text-white">{section.title}</div>
+          <div key={section.id} className="w-full max-w-[460px] mt-4">
+            {/* Section Banner — Duolingo style full-width colored bar */}
+            <div
+              className="mx-4 rounded-2xl px-5 py-4 flex items-center justify-between transition-opacity"
+              style={{ background: biome.bannerGradient, opacity: unlocked ? 1 : 0.5 }}
+            >
+              <div>
+                <div className="text-[10px] font-extrabold uppercase tracking-[0.15em] text-white/60">
+                  {biome.icon} {section.label}
                 </div>
-                <div className="flex items-center gap-2 bg-white/20 rounded-xl py-2.5 px-4 text-[11px] font-extrabold uppercase tracking-wider text-white cursor-pointer hover:bg-white/30 transition-all">
-                  {unlocked ? '📋 Guia' : '🔒 Bloqueado'}
-                </div>
+                <div className="text-[17px] font-extrabold text-white mt-0.5">{section.title}</div>
+              </div>
+              <div className="rounded-xl bg-white/20 hover:bg-white/30 transition-colors px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-wider text-white cursor-pointer">
+                {unlocked ? '📋 Guia' : '🔒'}
               </div>
             </div>
 
-            {/* Map or locked preview */}
+            {/* Map nodes */}
             {unlocked ? (
-              <div className="relative mt-2 pb-8 px-5 rounded-3xl overflow-hidden" style={{ minHeight: `${mapNodes.length * NODE_SPACING + 40}px` }}>
-                <BiomeBackground biomeId={biome.id} height={mapNodes.length * NODE_SPACING + 40} />
-                <svg className="absolute inset-0 w-full h-full pointer-events-none z-[1]" preserveAspectRatio="none">
+              <div className="relative mt-1 pb-4 px-4" style={{ minHeight: `${mapNodes.length * NODE_SPACING + 30}px` }}>
+                {/* Dotted path lines */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none z-[0]" preserveAspectRatio="none">
                   {mapNodes.map((node, i) => {
                     if (i === 0) return null;
                     const prev = mapNodes[i - 1];
-                    const y0 = (i - 1) * NODE_SPACING + 44;
-                    const y1 = i * NODE_SPACING + 10;
+                    const y0 = (i - 1) * NODE_SPACING + 50;
+                    const y1 = i * NODE_SPACING + 20;
                     const x0 = (prev.x / 100) * 100;
                     const x1 = (node.x / 100) * 100;
                     const status = getSectionStatus(section.id, prev.id);
                     const nextStatus = getSectionStatus(section.id, node.id);
                     const done = status === 'completed';
-                    const isCurrent = status === 'current' || (done && nextStatus === 'current');
+                    const isActive = status === 'current' || (done && nextStatus === 'current');
                     const midY = (y0 + y1) / 2;
                     const d = `M ${x0}% ${y0} C ${x0}% ${midY}, ${x1}% ${midY}, ${x1}% ${y1}`;
                     return (
-                      <path key={i} d={d} fill="none" strokeWidth="4" strokeLinecap="round"
-                        strokeDasharray={!done && !isCurrent ? '8 12' : 'none'}
-                        stroke={done ? biome.pathColor : isCurrent ? biome.pathColor : 'hsl(var(--border))'}
-                        opacity={!done && !isCurrent ? 0.4 : done ? 0.7 : 0.5}
+                      <path key={i} d={d} fill="none" strokeWidth="5" strokeLinecap="round"
+                        strokeDasharray={done || isActive ? 'none' : '6 10'}
+                        stroke={done ? colors.bg : isActive ? colors.bg : 'hsl(var(--border))'}
+                        opacity={done ? 0.5 : isActive ? 0.4 : 0.25}
                       />
                     );
                   })}
                 </svg>
+
+                {/* Nodes */}
                 {mapNodes.map((node, i) => {
                   const status = getSectionStatus(section.id, node.id);
                   return (
                     <div key={i} className="absolute z-[2]" style={{ top: `${i * NODE_SPACING}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
                       {node.type === 'chest' ? (
-                        <ChestNode locked={status === 'locked'} opened={sectionChestOpened} onClick={() => { if (status !== 'locked' && onOpenChest) { onSectionChange?.(sIdx); onOpenChest(); } }} />
+                        <DuoChestNode locked={status === 'locked'} opened={sectionChestOpened} colors={colors}
+                          onClick={() => { if (status !== 'locked' && onOpenChest) { onSectionChange?.(sIdx); onOpenChest(); } }} />
                       ) : node.type === 'trophy' ? (
-                        <TrophyNode status={status} onClick={() => { if (status !== 'locked' && onOpenFinalTest) { onSectionChange?.(sIdx); onOpenFinalTest(); } }} />
+                        <DuoTrophyNode status={status} colors={colors}
+                          onClick={() => { if (status !== 'locked' && onOpenFinalTest) { onSectionChange?.(sIdx); onOpenFinalTest(); } }} />
                       ) : (
-                        <LessonNodeButton
-                          icon={node.icon} label={node.label} status={status}
+                        <DuoLessonNode
+                          icon={node.icon} label={node.label} status={status} colors={colors}
                           isFirst={i === 0 && status === 'current'}
                           onClick={() => { if (status !== 'locked' && node.id >= 0) { onSectionChange?.(sIdx); onSelectLesson(sIdx, node.id); } }}
                         />
@@ -199,15 +205,18 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
                 })}
               </div>
             ) : (
-              <div className="relative rounded-2xl overflow-hidden mt-1" style={{ height: 160 }}>
-                <BiomeBackground biomeId={biome.id} height={160} />
-                <div className="absolute inset-0 z-[1] flex items-center justify-center">
-                  <div className="flex flex-col items-center gap-2 bg-card/80 rounded-2xl p-5 border border-border/50 shadow-sm">
-                    <div className="text-3xl">🔒</div>
-                    <div className="text-[11px] font-bold text-muted-foreground text-center max-w-[200px]">
-                      Complete a seção anterior para desbloquear <strong className="text-foreground">{section.title}</strong>
+              <div className="mx-4 mt-2 rounded-2xl bg-muted/50 border border-border/40 p-8 flex flex-col items-center gap-3">
+                <div className="text-4xl opacity-50">🔒</div>
+                <div className="text-[12px] font-bold text-muted-foreground text-center max-w-[220px]">
+                  Complete a seção anterior para desbloquear <strong className="text-foreground">{section.title}</strong>
+                </div>
+                {/* Ghost nodes preview */}
+                <div className="flex items-center gap-2 mt-2 opacity-30">
+                  {['⭐', '🧠', '📦', '💬', '🏆'].map((e, j) => (
+                    <div key={j} className="w-10 h-10 rounded-full bg-muted border-2 border-border/40 flex items-center justify-center text-sm grayscale">
+                      {e}
                     </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -215,15 +224,22 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
         );
       })}
 
-      <div className="h-12" />
+      <div className="h-16" />
     </div>
   );
 }
 
-/* ═══ Sub-components ═══ */
+/* ═══ Duolingo-style Node Components ═══ */
 
-function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
-  icon: string; label: string; status: 'completed' | 'current' | 'locked'; isFirst: boolean; onClick: () => void;
+interface DuoColors {
+  bg: string;
+  bgLight: string;
+  shadow: string;
+  ring: string;
+}
+
+function DuoLessonNode({ icon, label, status, colors, isFirst, onClick }: {
+  icon: string; label: string; status: 'completed' | 'current' | 'locked'; colors: DuoColors; isFirst: boolean; onClick: () => void;
 }) {
   const isCompleted = status === 'completed';
   const isCurrent = status === 'current';
@@ -231,12 +247,12 @@ function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
 
   return (
     <div className="relative flex flex-col items-center">
-      {/* Start bubble */}
+      {/* COMEÇAR speech bubble */}
       {isFirst && (
-        <div className="absolute -top-14 left-1/2 -translate-x-1/2 z-20">
-          <div className="bg-primary text-primary-foreground font-display text-[12px] font-bold py-2 px-5 rounded-2xl tracking-wider whitespace-nowrap animate-bobble shadow-lg relative">
+        <div className="absolute -top-[52px] left-1/2 -translate-x-1/2 z-20">
+          <div className="duo-speech-bubble" style={{ background: colors.bg }}>
             COMEÇAR
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-t-[7px] border-t-primary" />
+            <div className="duo-speech-arrow" style={{ borderTopColor: colors.bg }} />
           </div>
         </div>
       )}
@@ -244,87 +260,110 @@ function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
       <button
         onClick={onClick}
         disabled={isLocked}
-        className={`relative w-[88px] h-[88px] rounded-full flex items-center justify-center transition-all duration-200 ${
-          isCompleted
-            ? 'bg-primary shadow-[0_6px_28px_rgba(var(--primary-rgb),0.35)] cursor-pointer hover:scale-110 active:scale-95'
-            : isCurrent
-            ? 'bg-primary shadow-[0_6px_30px_rgba(var(--primary-rgb),0.4)] cursor-pointer hover:scale-110 active:scale-95 ring-4 ring-primary/20 animate-node-glow'
-            : 'bg-muted border-[3px] border-border/60 shadow-md cursor-default'
-        }`}
+        className={`duo-node ${isCurrent ? 'animate-duo-bounce' : ''}`}
+        style={{
+          background: isLocked ? 'hsl(var(--muted))' : colors.bg,
+          boxShadow: isLocked
+            ? '0 6px 0 hsl(var(--border))'
+            : `0 6px 0 ${colors.shadow}`,
+          cursor: isLocked ? 'default' : 'pointer',
+        }}
       >
-        {(isCompleted || isCurrent) && (
-          <div className="absolute inset-[5px] rounded-full bg-primary flex items-center justify-center">
-            {isCompleted ? (
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            ) : (
-              <span className="text-[32px] leading-none drop-shadow-md">{icon}</span>
-            )}
-          </div>
-        )}
+        <div
+          className="duo-node-inner"
+          style={{
+            background: isLocked ? 'hsl(var(--muted))' : colors.bgLight,
+          }}
+        >
+          {isCompleted ? (
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          ) : isLocked ? (
+            <span className="text-[28px] opacity-40 grayscale">{icon}</span>
+          ) : (
+            <span className="text-[30px] drop-shadow-sm">{icon}</span>
+          )}
+        </div>
 
-        {isLocked && (
-          <span className="text-[30px] leading-none opacity-40 grayscale">{icon}</span>
-        )}
-
+        {/* Active indicator ring */}
         {isCurrent && (
-          <div className="absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-amber-400 border-[3px] border-background flex items-center justify-center shadow-lg animate-pulse">
-            <span className="text-[11px] font-black text-amber-900">!</span>
-          </div>
+          <div className="absolute inset-[-6px] rounded-full border-[4px] animate-pulse opacity-60" style={{ borderColor: colors.ring }} />
         )}
       </button>
 
-      <span className={`mt-3 text-[11px] font-extrabold uppercase tracking-wider ${
-        isLocked ? 'text-muted-foreground/50' : isCompleted ? 'text-primary' : 'text-foreground'
-      }`}>
+      <span className={`mt-2.5 text-[10px] font-extrabold uppercase tracking-wider ${
+        isLocked ? 'text-muted-foreground/40' : isCompleted ? 'opacity-70' : ''
+      }`} style={{ color: isLocked ? undefined : colors.bg }}>
         {label}
       </span>
     </div>
   );
 }
 
-function ChestNode({ locked, opened, onClick }: { locked: boolean; opened?: boolean; onClick?: () => void }) {
+function DuoChestNode({ locked, opened, colors, onClick }: { locked: boolean; opened?: boolean; colors: DuoColors; onClick?: () => void }) {
   return (
     <div className="flex flex-col items-center" onClick={!locked ? onClick : undefined}>
-      <div className={`w-[76px] h-[68px] rounded-2xl flex items-center justify-center border-[2.5px] transition-all duration-200 ${
-        locked
-          ? 'bg-muted border-border/60 cursor-default shadow-sm'
-          : opened
-          ? 'bg-primary/10 border-primary/30 cursor-pointer hover:scale-110 shadow-lg'
-          : 'bg-amber-50 border-amber-300/50 cursor-pointer hover:scale-110 shadow-lg animate-bobble ring-2 ring-amber-200/30'
-      }`}>
-        <span className={`text-[30px] ${locked ? 'opacity-35 grayscale' : 'drop-shadow-md'}`}>
+      <div
+        className={`duo-node-chest ${!locked && !opened ? 'animate-duo-bounce' : ''}`}
+        style={{
+          background: locked ? 'hsl(var(--muted))' : opened ? colors.bgLight : 'hsl(40 96% 53%)',
+          boxShadow: locked
+            ? '0 5px 0 hsl(var(--border))'
+            : opened
+            ? `0 5px 0 ${colors.shadow}`
+            : '0 5px 0 hsl(40 96% 38%)',
+          cursor: locked ? 'default' : 'pointer',
+        }}
+      >
+        <span className={`text-[26px] ${locked ? 'opacity-35 grayscale' : ''}`}>
           {opened ? '📭' : '📦'}
         </span>
       </div>
-      <span className={`mt-2.5 text-[10px] font-extrabold uppercase tracking-wider ${locked ? 'text-muted-foreground/50' : opened ? 'text-primary' : 'text-amber-500'}`}>
+      <span className={`mt-2 text-[10px] font-extrabold uppercase tracking-wider ${
+        locked ? 'text-muted-foreground/40' : opened ? 'text-muted-foreground' : 'text-amber-500'
+      }`}>
         {opened ? 'Coletado' : 'Bônus'}
       </span>
     </div>
   );
 }
 
-function TrophyNode({ status, onClick }: { status: 'completed' | 'current' | 'locked'; onClick?: () => void }) {
+function DuoTrophyNode({ status, colors, onClick }: { status: 'completed' | 'current' | 'locked'; colors: DuoColors; onClick?: () => void }) {
   const isLocked = status === 'locked';
   const isCompleted = status === 'completed';
   const isCurrent = status === 'current';
 
   return (
     <div className="flex flex-col items-center" onClick={!isLocked ? onClick : undefined}>
-      <div className={`w-[88px] h-[88px] rounded-full flex items-center justify-center border-[2.5px] transition-all duration-200 ${
-        isCompleted
-          ? 'border-amber-400/50 bg-amber-50 shadow-[0_6px_28px_rgba(245,158,11,0.25)] cursor-pointer hover:scale-110'
-          : isCurrent
-          ? 'border-amber-300/40 bg-amber-50/50 cursor-pointer hover:scale-110 animate-bobble shadow-lg ring-4 ring-amber-200/20 animate-node-glow'
-          : 'border-dashed border-border/60 bg-muted/40 cursor-default shadow-sm'
-      }`}>
-        <span className={`text-[34px] ${isLocked ? 'opacity-25 grayscale' : 'drop-shadow-md'}`}>🏆</span>
+      <div
+        className={`duo-node ${isCurrent ? 'animate-duo-bounce' : ''}`}
+        style={{
+          background: isLocked ? 'hsl(var(--muted))' : 'hsl(40 96% 53%)',
+          boxShadow: isLocked
+            ? '0 6px 0 hsl(var(--border))'
+            : '0 6px 0 hsl(40 96% 38%)',
+          cursor: isLocked ? 'default' : 'pointer',
+        }}
+      >
+        <div
+          className="duo-node-inner"
+          style={{
+            background: isLocked ? 'hsl(var(--muted))' : 'hsl(40 96% 58%)',
+          }}
+        >
+          <span className={`text-[32px] ${isLocked ? 'opacity-25 grayscale' : ''}`}>🏆</span>
+        </div>
+
+        {isCurrent && (
+          <div className="absolute inset-[-6px] rounded-full border-[4px] border-amber-300 animate-pulse opacity-60" />
+        )}
       </div>
-      <span className={`mt-3 text-[11px] font-extrabold uppercase tracking-wider ${
-        isCompleted ? 'text-amber-500' : isCurrent ? 'text-amber-500' : 'text-muted-foreground/50'
+
+      <span className={`mt-2.5 text-[10px] font-extrabold uppercase tracking-wider ${
+        isCompleted ? 'text-amber-500' : isCurrent ? 'text-amber-500' : 'text-muted-foreground/40'
       }`}>
-        {isCompleted ? 'Aprovado!' : 'Prova Final'}
+        {isCompleted ? '✅ Aprovado!' : 'Prova Final'}
       </span>
     </div>
   );
