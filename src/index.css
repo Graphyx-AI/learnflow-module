@@ -164,7 +164,7 @@
 @keyframes confettiDrop {
   0% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
   25% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(100vh) rotate(${720}deg) scale(0.3); }
+  100% { opacity: 0; transform: translateY(100vh) rotate(720deg) scale(0.3); }
 }
 
 @keyframes particleFloat {
