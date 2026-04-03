@@ -109,9 +109,12 @@ export default function LightningChallenge({ onComplete, onClose, playerLevel = 
           </div>
 
           <div className="text-center">
-            <h1 className="font-display text-2xl font-bold text-foreground mb-2">Desafio Relâmpago!</h1>
+            <h1 className="font-display text-2xl font-bold text-foreground mb-1">Desafio Relâmpago!</h1>
+            <div className={`text-[11px] font-extrabold uppercase tracking-wider ${tier.color} mb-2`}>
+              Dificuldade: {tier.label}
+            </div>
             <p className="text-sm text-muted-foreground max-w-[300px]">
-              3 perguntas, 60 segundos cada. Responda rápido e ganhe <strong className="text-primary">XP TRIPLO</strong>!
+              3 perguntas, {tier.timePerQuestion}s cada. Responda rápido e ganhe <strong className="text-primary">XP TRIPLO</strong>!
             </p>
           </div>
 
@@ -119,7 +122,7 @@ export default function LightningChallenge({ onComplete, onClose, playerLevel = 
             <div className="bg-card border border-border rounded-xl p-4 text-center">
               <Clock className="w-5 h-5 text-muted-foreground mx-auto mb-1" />
               <div className="text-[10px] font-bold text-muted-foreground uppercase">Tempo</div>
-              <div className="text-lg font-black text-foreground">60s</div>
+              <div className={`text-lg font-black ${tier.color}`}>{tier.timePerQuestion}s</div>
             </div>
             <div className="bg-card border border-border rounded-xl p-4 text-center">
               <Zap className="w-5 h-5 text-primary mx-auto mb-1" />
@@ -128,8 +131,8 @@ export default function LightningChallenge({ onComplete, onClose, playerLevel = 
             </div>
             <div className="bg-card border border-border rounded-xl p-4 text-center">
               <Star className="w-5 h-5 text-gold mx-auto mb-1" />
-              <div className="text-[10px] font-bold text-muted-foreground uppercase">Questões</div>
-              <div className="text-lg font-black text-foreground">3</div>
+              <div className="text-[10px] font-bold text-muted-foreground uppercase">Nível</div>
+              <div className={`text-lg font-black ${tier.color}`}>{tier.label}</div>
             </div>
           </div>
 
