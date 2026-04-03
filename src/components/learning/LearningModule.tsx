@@ -175,6 +175,7 @@ export default function LearningModule() {
             playerStreak={player.streak}
             playerBadges={playerBadges}
             playerName={playerName}
+            achievements={computedAchievements}
           />
         </div>
       )}
