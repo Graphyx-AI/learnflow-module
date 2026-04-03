@@ -4,6 +4,7 @@ import { AVATARS } from './ProfileScreen';
 import FloatingParticles from './FloatingParticles';
 import { BIOMES } from './BiomeBackground';
 import { Flame, Zap, Crown } from 'lucide-react';
+import { playUnlockSound, isSoundEnabled } from './sounds';
 
 const LEAGUE_TIERS = [
   { id: 'bronze', minXp: 0, label: 'Bronze', icon: '🥉', frameClass: 'avatar-frame-bronze' },
@@ -72,7 +73,10 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
     if (justUnlockedKey && justUnlockedKey !== prevKeyRef.current) {
       prevKeyRef.current = justUnlockedKey;
       // Small delay so the map renders first, then animate
-      const t = setTimeout(() => setAnimatingKey(justUnlockedKey), 300);
+      const t = setTimeout(() => {
+        setAnimatingKey(justUnlockedKey);
+        if (isSoundEnabled()) playUnlockSound();
+      }, 300);
       const t2 = setTimeout(() => setAnimatingKey(null), 3000);
       return () => { clearTimeout(t); clearTimeout(t2); };
     }
