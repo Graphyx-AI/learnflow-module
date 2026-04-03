@@ -105,9 +105,30 @@ export default function LearningModule() {
     if (result.passed) {
       setTestCompleted(true);
       localStorage.setItem('testCompleted', 'true');
+
+      // Check if ALL sections are complete
+      const updatedTests = { ...player.testsCompleted, [sectionId]: true };
+      const allDone = SECTIONS.every(s => updatedTests[s.id]);
+      if (allDone) {
+        setTestResult(result);
+        setScreen('course-complete');
+        return;
+      }
     }
     setScreen('finaltest-result');
-  }, [activeSectionIdx]);
+  }, [activeSectionIdx, player.testsCompleted]);
+
+  const handleRestartCourse = useCallback(() => {
+    const fresh = { ...INITIAL_PLAYER };
+    setPlayer(fresh);
+    setChestOpened(false);
+    setTestCompleted(false);
+    setTestResult(null);
+    setActiveSectionIdx(0);
+    localStorage.removeItem('chestOpened');
+    localStorage.removeItem('testCompleted');
+    setScreen('map');
+  }, []);
 
   const handleNavigate = useCallback((tab: string) => {
     if (tab === 'map') setScreen('map');
