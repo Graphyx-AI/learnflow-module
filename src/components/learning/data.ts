@@ -750,7 +750,7 @@ export const SECTIONS: Section[] = [
     unlocked: false,
     lessons: [
       {
-        icon: '💼', title: 'Carreiras em IA', description: 'Os caminhos profissionais mais promissores.',
+        icon: '🤖', title: 'Carreiras em IA', description: 'Os caminhos profissionais mais promissores.',
         topics: ['ML Engineer', 'Prompt Engineer', 'AI PM', 'Pesquisador'],
         questions: [
           { icon: '💼', category: 'Carreiras', difficulty: 'Fácil' as const, text: 'Qual carreira mais nova criada pela IA?', options: ['Contador', 'Advogado', 'Prompt Engineer', 'Médico'], correctIndex: 2, explanation: 'Prompt Engineering surgiu com a explosão de LLMs.' },
@@ -764,7 +764,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '📂', title: 'Construindo seu Portfólio', description: 'Crie projetos que impressionam recrutadores.',
+        icon: '🧬', title: 'Construindo seu Portfólio', description: 'Crie projetos que impressionam recrutadores.',
         topics: ['Projetos práticos', 'GitHub', 'Documentação', 'Apresentação'],
         questions: [
           { icon: '📂', category: 'Portfólio', difficulty: 'Fácil' as const, text: 'Por que portfólio é importante?', options: ['Não é', 'Demonstra habilidades práticas melhor que certificados', 'Só para freelancers', 'Só para designers'], correctIndex: 1, explanation: 'Portfólio mostra habilidades aplicadas em problemas reais.' },
@@ -778,7 +778,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🤝', title: 'Networking e Comunidade', description: 'Conecte-se com profissionais de IA.',
+        icon: '🌐', title: 'Networking e Comunidade', description: 'Conecte-se com profissionais de IA.',
         topics: ['Comunidades online', 'Conferências', 'Open source', 'Mentoria'],
         questions: [
           { icon: '🤝', category: 'Networking', difficulty: 'Fácil' as const, text: 'Melhor plataforma para networking em IA?', options: ['TikTok', 'Facebook', 'LinkedIn e Twitter/X para IA', 'Snapchat'], correctIndex: 2, explanation: 'LinkedIn e X são onde a comunidade de IA compartilha pesquisa e oportunidades.' },
@@ -792,7 +792,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🚀', title: 'Empreendendo com IA', description: 'Crie seu negócio usando inteligência artificial.',
+        icon: '⚡', title: 'Empreendendo com IA', description: 'Crie seu negócio usando inteligência artificial.',
         topics: ['Ideação', 'MVP', 'Product-market fit', 'Escalar'],
         questions: [
           { icon: '🚀', category: 'Empreender', difficulty: 'Fácil' as const, text: 'Primeiro passo para empreender com IA?', options: ['Levantar investimento', 'Contratar 100 pessoas', 'Comprar domínio', 'Identificar um problema real'], correctIndex: 3, explanation: 'Comece pelo problema, não pela tecnologia.' },
@@ -806,7 +806,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🏆', title: 'Missão Final: Seu Plano de Ação', description: 'Consolide tudo e trace seu caminho.',
+        icon: '🧠', title: 'Missão Final: Seu Plano de Ação', description: 'Consolide tudo e trace seu caminho.',
         topics: ['Revisão geral', 'Plano de ação', 'Próximos passos', 'Mindset'],
         questions: [
           { icon: '🏆', category: 'Revisão', difficulty: 'Fácil' as const, text: 'Habilidade #1 da era da IA?', options: ['Memorizar fórmulas', 'Digitar rápido', 'Saber todas as linguagens', 'Pensar criticamente e fazer as perguntas certas'], correctIndex: 3, explanation: 'Pensamento crítico e direcionar IA são as skills mais valiosas.' },
