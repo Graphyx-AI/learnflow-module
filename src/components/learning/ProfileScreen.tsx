@@ -10,6 +10,15 @@ import avatarAstro from '@/assets/avatars/avatar-astro.png';
 import avatarDragon from '@/assets/avatars/avatar-dragon.png';
 import avatarBunny from '@/assets/avatars/avatar-bunny.png';
 
+import badgeRocket from '@/assets/badges/badge-rocket.png';
+import badgeFlame from '@/assets/badges/badge-flame.png';
+import badgeTarget from '@/assets/badges/badge-target.png';
+import badgeDiamond from '@/assets/badges/badge-diamond.png';
+import badgeLightning from '@/assets/badges/badge-lightning.png';
+import badgeCrown from '@/assets/badges/badge-crown.png';
+import badgeBrain from '@/assets/badges/badge-brain.png';
+import badgeTrophy from '@/assets/badges/badge-trophy.png';
+
 export const AVATARS = [
   { id: 'robot', src: avatarRobot, name: 'Robô' },
   { id: 'cat', src: avatarCat, name: 'Gatinho' },
@@ -24,6 +33,7 @@ export const AVATARS = [
 export interface Achievement {
   id: string;
   icon: string;
+  badgeImg: string;
   title: string;
   description: string;
   unlocked: boolean;
@@ -32,14 +42,14 @@ export interface Achievement {
 }
 
 export const ACHIEVEMENTS: Achievement[] = [
-  { id: 'a1', icon: '🚀', title: 'Primeiro Passo', description: 'Complete sua primeira lição', unlocked: false, rarity: 'common' },
-  { id: 'a2', icon: '🔥', title: 'Em Chamas', description: 'Atinja um combo de 3x', unlocked: false, rarity: 'common' },
-  { id: 'a3', icon: '🎯', title: 'Precisão Total', description: 'Complete uma lição com 100% de acerto', unlocked: false, rarity: 'rare' },
-  { id: 'a4', icon: '💎', title: 'Caçador de XP', description: 'Acumule 500 XP', unlocked: false, rarity: 'rare' },
-  { id: 'a5', icon: '⚡', title: 'Velocista', description: 'Complete uma lição sem errar', unlocked: false, rarity: 'epic' },
-  { id: 'a6', icon: '👑', title: 'Mestre da IA', description: 'Complete todas as lições da Seção 1', unlocked: false, rarity: 'legendary' },
-  { id: 'a7', icon: '🧠', title: 'Mente Curiosa', description: 'Acerte 20 questões no total', unlocked: false, rarity: 'common' },
-  { id: 'a8', icon: '🏆', title: 'Imparável', description: 'Mantenha um streak de 7 dias', unlocked: false, rarity: 'epic' },
+  { id: 'a1', icon: '🚀', badgeImg: badgeRocket, title: 'Primeiro Passo', description: 'Complete sua primeira lição', unlocked: false, rarity: 'common' },
+  { id: 'a2', icon: '🔥', badgeImg: badgeFlame, title: 'Em Chamas', description: 'Atinja um combo de 3x', unlocked: false, rarity: 'common' },
+  { id: 'a3', icon: '🎯', badgeImg: badgeTarget, title: 'Precisão Total', description: 'Complete uma lição com 100% de acerto', unlocked: false, rarity: 'rare' },
+  { id: 'a4', icon: '💎', badgeImg: badgeDiamond, title: 'Caçador de XP', description: 'Acumule 500 XP', unlocked: false, rarity: 'rare' },
+  { id: 'a5', icon: '⚡', badgeImg: badgeLightning, title: 'Velocista', description: 'Complete uma lição sem errar', unlocked: false, rarity: 'epic' },
+  { id: 'a6', icon: '👑', badgeImg: badgeCrown, title: 'Mestre da IA', description: 'Complete todas as lições da Seção 1', unlocked: false, rarity: 'legendary' },
+  { id: 'a7', icon: '🧠', badgeImg: badgeBrain, title: 'Mente Curiosa', description: 'Acerte 20 questões no total', unlocked: false, rarity: 'common' },
+  { id: 'a8', icon: '🏆', badgeImg: badgeTrophy, title: 'Imparável', description: 'Mantenha um streak de 7 dias', unlocked: false, rarity: 'epic' },
 ];
 
 const RARITY_STYLES = {
