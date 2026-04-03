@@ -5,6 +5,7 @@ interface MapScreenProps {
   sections: Section[];
   player: PlayerState;
   onSelectLesson: (sectionIdx: number, lessonIdx: number) => void;
+  onOpenProfile?: () => void;
 }
 
 const MAP_NODES = [
