@@ -622,7 +622,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🎬', title: 'Vídeo e Animação com IA', description: 'Gere, edite e anime vídeos usando inteligência artificial.',
+        icon: '🤖', title: 'Vídeo e Animação com IA', description: 'Gere, edite e anime vídeos usando inteligência artificial.',
         topics: ['Geração de vídeo', 'Deepfakes', 'Animação automática', 'Efeitos visuais'],
         questions: [
           { icon: '🎬', category: 'Vídeo', difficulty: 'Fácil' as const, text: 'O que é geração de vídeo com IA?', options: ['Edição manual', 'Streaming ao vivo', 'Criar vídeos a partir de texto ou imagens usando IA', 'Converter formatos'], correctIndex: 2, explanation: 'Modelos como Sora geram vídeos fotorrealistas a partir de descrições textuais.' },
