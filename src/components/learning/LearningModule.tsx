@@ -198,7 +198,7 @@ export default function LearningModule() {
       case 'league':
         return <LeagueScreen playerXp={player.xp} playerName={playerName} onClose={handleBackToMap} />;
       case 'lightning':
-        return <LightningChallenge onComplete={handleLightningComplete} onClose={handleBackToMap} />;
+        return <LightningChallenge onComplete={handleLightningComplete} onClose={handleBackToMap} playerLevel={player.level} />;
       default:
         return null;
     }
