@@ -383,8 +383,8 @@ function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJust
   return tooltip ? <MapTooltip text={tooltip}>{content}</MapTooltip> : content;
 }
 
-function DuoChestNode({ locked, opened, colors, isJustUnlocked, onClick }: { locked: boolean; opened?: boolean; colors: DuoColors; isJustUnlocked?: boolean; onClick?: () => void }) {
-  return (
+function DuoChestNode({ locked, opened, colors, isJustUnlocked, tooltip, onClick }: { locked: boolean; opened?: boolean; colors: DuoColors; isJustUnlocked?: boolean; tooltip?: string; onClick?: () => void }) {
+  const content = (
     <div className={`flex flex-col items-center ${isJustUnlocked ? 'animate-node-unlock' : ''}`} onClick={!locked ? onClick : undefined}>
       <div
         className={`duo-node-chest ${!locked && !opened ? 'animate-duo-bounce' : ''}`}
@@ -409,6 +409,7 @@ function DuoChestNode({ locked, opened, colors, isJustUnlocked, onClick }: { loc
       </span>
     </div>
   );
+  return tooltip ? <MapTooltip text={tooltip}>{content}</MapTooltip> : content;
 }
 
 function DuoTrophyNode({ status, colors, isJustUnlocked, onClick }: { status: 'completed' | 'current' | 'locked'; colors: DuoColors; isJustUnlocked?: boolean; onClick?: () => void }) {
