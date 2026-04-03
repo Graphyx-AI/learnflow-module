@@ -159,12 +159,12 @@ export default function MapScreen({ sections, player, onSelectLesson }: MapScree
       </div>
 
       {/* Section 2 Banner (locked) */}
-      <div className="w-[calc(100%-40px)] max-w-[440px] mx-5 rounded-2xl p-4 px-5 flex items-center justify-between border-2 border-blue-500/30 bg-blue-900/20 opacity-50 pointer-events-none">
+      <div className="w-[calc(100%-40px)] max-w-[440px] mx-5 rounded-2xl p-4 px-5 flex items-center justify-between border-2 border-border bg-muted/60 pointer-events-none">
         <div>
-          <div className="text-[10px] font-extrabold uppercase tracking-[0.1em] opacity-60 mb-0.5">Seção 2 · Unidade 2</div>
-          <div className="font-display text-lg font-bold text-foreground/60">Prompting Avançado</div>
+          <div className="text-[10px] font-extrabold uppercase tracking-[0.1em] text-muted-foreground mb-0.5">Seção 2 · Unidade 2</div>
+          <div className="font-display text-lg font-bold text-muted-foreground">Prompting Avançado</div>
         </div>
-        <div className="flex items-center gap-1.5 bg-foreground/5 rounded-xl py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider opacity-50">
+        <div className="flex items-center gap-1.5 bg-muted rounded-xl py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
           🔒 Bloqueado
         </div>
       </div>
