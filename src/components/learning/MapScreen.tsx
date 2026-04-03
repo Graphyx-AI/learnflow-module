@@ -25,7 +25,7 @@ const MAP_NODES = [
   { id: -2, icon: '🏆', label: 'Teste', x: 50, type: 'trophy' as const },
 ];
 
-const NODE_SPACING = 130;
+const NODE_SPACING = 145;
 
 export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted }: MapScreenProps) {
   const section = sections[0];
