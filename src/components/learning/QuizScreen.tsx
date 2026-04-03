@@ -189,8 +189,14 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
               optClass = 'bg-card border-border opacity-40';
             }
           } else if (i === selected) {
-            optClass = 'bg-primary/10 border-primary shadow-[0_0_0_1px_hsl(var(--primary))]';
-            letterClass = 'bg-primary border-primary text-primary-foreground';
+            const selColors = [
+              { opt: 'bg-[hsl(217,91%,60%)]/10 border-[hsl(217,91%,60%)] shadow-[0_0_0_1px_hsl(217,91%,60%)]', letter: 'bg-[hsl(217,91%,60%)] border-[hsl(217,91%,60%)] text-white' },
+              { opt: 'bg-[hsl(280,80%,55%)]/10 border-[hsl(280,80%,55%)] shadow-[0_0_0_1px_hsl(280,80%,55%)]', letter: 'bg-[hsl(280,80%,55%)] border-[hsl(280,80%,55%)] text-white' },
+              { opt: 'bg-[hsl(35,95%,55%)]/10 border-[hsl(35,95%,55%)] shadow-[0_0_0_1px_hsl(35,95%,55%)]', letter: 'bg-[hsl(35,95%,55%)] border-[hsl(35,95%,55%)] text-white' },
+              { opt: 'bg-[hsl(170,70%,45%)]/10 border-[hsl(170,70%,45%)] shadow-[0_0_0_1px_hsl(170,70%,45%)]', letter: 'bg-[hsl(170,70%,45%)] border-[hsl(170,70%,45%)] text-white' },
+            ];
+            optClass = selColors[i].opt;
+            letterClass = selColors[i].letter;
           }
 
           return (
