@@ -806,7 +806,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🏆', title: 'Missão Final: Seu Plano de Ação', description: 'Consolide tudo e trace seu caminho.',
+        icon: '🧠', title: 'Missão Final: Seu Plano de Ação', description: 'Consolide tudo e trace seu caminho.',
         topics: ['Revisão geral', 'Plano de ação', 'Próximos passos', 'Mindset'],
         questions: [
           { icon: '🏆', category: 'Revisão', difficulty: 'Fácil' as const, text: 'Habilidade #1 da era da IA?', options: ['Memorizar fórmulas', 'Digitar rápido', 'Saber todas as linguagens', 'Pensar criticamente e fazer as perguntas certas'], correctIndex: 3, explanation: 'Pensamento crítico e direcionar IA são as skills mais valiosas.' },
