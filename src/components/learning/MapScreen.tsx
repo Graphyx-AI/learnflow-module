@@ -45,7 +45,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
             </button>
             <div>
               <span className="font-display text-base font-bold text-foreground block leading-tight">NexSkill AI</span>
-              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Trilha de IA</span>
+              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">{playerName || 'Estudante IA'}</span>
             </div>
           </div>
           <div className="flex gap-2">
