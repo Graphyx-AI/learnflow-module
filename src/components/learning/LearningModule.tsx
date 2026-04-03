@@ -108,8 +108,8 @@ export default function LearningModule() {
 
   const lesson = selectedLesson ? SECTIONS[selectedLesson.sectionIdx]?.lessons[selectedLesson.lessonIdx] : null;
 
-  const showSidebar = screen === 'map' || screen === 'profile' || screen === 'missions' || screen === 'ranking' || screen === 'achievements';
-  const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : screen === 'ranking' ? 'ranking' : screen === 'achievements' ? 'achievements' : 'map';
+  const showSidebar = ['map', 'profile', 'missions', 'ranking', 'achievements', 'league'].includes(screen);
+  const activeTab = screen === 'profile' ? 'profile' : screen === 'missions' ? 'missions' : screen === 'ranking' ? 'ranking' : screen === 'achievements' ? 'achievements' : screen === 'league' ? 'league' : 'map';
 
   // Compute achievements
   const computedAchievements = ACHIEVEMENTS.map(a => {
