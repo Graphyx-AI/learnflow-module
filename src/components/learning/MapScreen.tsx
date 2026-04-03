@@ -205,19 +205,44 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
                 })}
               </div>
             ) : (
-              <div className="mx-4 mt-2 rounded-2xl bg-muted/50 border border-border/40 p-8 flex flex-col items-center gap-3">
-                <div className="text-4xl opacity-50">🔒</div>
-                <div className="text-[12px] font-bold text-muted-foreground text-center max-w-[220px]">
-                  Complete a seção anterior para desbloquear <strong className="text-foreground">{section.title}</strong>
-                </div>
-                {/* Ghost nodes preview */}
-                <div className="flex items-center gap-2 mt-2 opacity-30">
-                  {['⭐', '🧠', '📦', '💬', '🏆'].map((e, j) => (
-                    <div key={j} className="w-10 h-10 rounded-full bg-muted border-2 border-border/40 flex items-center justify-center text-sm grayscale">
-                      {e}
+              <div className="relative mt-1 pb-4 px-4 opacity-50 grayscale pointer-events-none" style={{ minHeight: `${mapNodes.length * NODE_SPACING + 30}px` }}>
+                {/* Ghost dotted paths */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none z-[0]" preserveAspectRatio="none">
+                  {mapNodes.map((node, i) => {
+                    if (i === 0) return null;
+                    const prev = mapNodes[i - 1];
+                    const y0 = (i - 1) * NODE_SPACING + 50;
+                    const y1 = i * NODE_SPACING + 20;
+                    const x0 = (prev.x / 100) * 100;
+                    const x1 = (node.x / 100) * 100;
+                    const midY = (y0 + y1) / 2;
+                    const d = `M ${x0}% ${y0} C ${x0}% ${midY}, ${x1}% ${midY}, ${x1}% ${y1}`;
+                    return <path key={i} d={d} fill="none" strokeWidth="5" strokeLinecap="round" strokeDasharray="6 10" stroke="hsl(var(--border))" opacity="0.4" />;
+                  })}
+                </svg>
+
+                {/* Ghost nodes in actual positions */}
+                {mapNodes.map((node, i) => (
+                  <div key={i} className="absolute z-[2]" style={{ top: `${i * NODE_SPACING}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
+                    <div className="flex flex-col items-center">
+                      <div
+                        className={node.type === 'chest' ? 'duo-node-chest' : 'duo-node'}
+                        style={{
+                          background: 'hsl(var(--muted))',
+                          boxShadow: '0 6px 0 hsl(var(--border))',
+                        }}
+                      >
+                        {node.type !== 'chest' ? (
+                          <div className="duo-node-inner" style={{ background: 'hsl(var(--muted))' }}>
+                            <span className="text-[28px] opacity-40">{node.icon}</span>
+                          </div>
+                        ) : (
+                          <span className="text-[24px] opacity-40">{node.icon}</span>
+                        )}
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
