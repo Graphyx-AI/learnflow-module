@@ -124,7 +124,7 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
                 className={`w-full text-left p-4 rounded-xl border-[1.5px] transition-all ${style}`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="w-7 h-7 rounded-lg bg-muted flex items-center justify-center text-[12px] font-black text-muted-foreground flex-shrink-0">
+                  <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-[12px] font-black flex-shrink-0 transition-all ${!answered && isSelected ? selColors[i].letter : 'bg-muted text-muted-foreground'}`}>
                     {String.fromCharCode(65 + i)}
                   </span>
                   <span className="text-[13px] font-semibold text-foreground">{opt}</span>
