@@ -22,6 +22,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
   const [deadHearts, setDeadHearts] = useState<number[]>([]);
   const [shakingHeart, setShakingHeart] = useState<number | null>(null);
   const [showQuitModal, setShowQuitModal] = useState(false);
+  const [shaking, setShaking] = useState(false);
 
   // Use refs for values needed in onComplete to avoid stale closures
   const xpRef = useRef(0);
@@ -78,6 +79,8 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
         return prev;
       });
       setLives(l => l - 1);
+      setShaking(true);
+      setTimeout(() => setShaking(false), 500);
     }
   };
 
@@ -173,7 +176,7 @@ export default function QuizScreen({ questions, onComplete, onQuit }: QuizScreen
       </div>
 
       {/* Options */}
-      <div className="w-full max-w-[680px] grid gap-2.5 mt-4 relative z-10">
+      <div className={`w-full max-w-[680px] grid gap-2.5 mt-4 relative z-10 ${shaking ? 'animate-wrong-shake' : ''}`}>
         {q.options.map((opt, i) => {
           let optClass = 'bg-card border-border hover:border-primary hover:-translate-y-px';
           let letterClass = 'bg-muted border-border text-muted-foreground';

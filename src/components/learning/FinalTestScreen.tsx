@@ -15,6 +15,7 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
   const [correct, setCorrect] = useState(0);
   const [streak, setStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
+  const [shaking, setShaking] = useState(false);
 
   const q = questions[currentQ];
   const progress = ((currentQ + (answered ? 1 : 0)) / questions.length) * 100;
@@ -33,6 +34,8 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
       });
     } else {
       setStreak(0);
+      setShaking(true);
+      setTimeout(() => setShaking(false), 500);
     }
   };
 
@@ -98,7 +101,7 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
         </div>
 
         {/* Options */}
-        <div className="flex flex-col gap-3 mb-6">
+        <div className={`flex flex-col gap-3 mb-6 ${shaking ? 'animate-wrong-shake' : ''}`}>
           {q.options.map((opt, i) => {
             const isSelected = selected === i;
             const isCorrectOpt = i === q.correctIndex;
