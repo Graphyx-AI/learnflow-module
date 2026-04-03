@@ -1,5 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { Question, QuizResult } from './types';
+import { playCorrectSound, playWrongSound, playSelectSound, isSoundEnabled, setSoundEnabled } from './sounds';
+import { Volume2, VolumeX } from 'lucide-react';
 
 interface QuizScreenProps {
   questions: Question[];

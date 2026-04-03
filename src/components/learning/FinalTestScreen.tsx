@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Question } from './types';
-import { CheckCircle, XCircle, ArrowRight, Trophy, Star } from 'lucide-react';
+import { CheckCircle, XCircle, ArrowRight, Trophy, Star, Volume2, VolumeX } from 'lucide-react';
+import { playCorrectSound, playWrongSound, isSoundEnabled, setSoundEnabled } from './sounds';
 
 interface FinalTestScreenProps {
   questions: Question[];
