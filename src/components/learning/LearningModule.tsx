@@ -32,6 +32,7 @@ export default function LearningModule() {
   const [testCompleted, setTestCompleted] = useState(() => localStorage.getItem('testCompleted') === 'true');
   const [testResult, setTestResult] = useState<{ score: number; total: number; passed: boolean; xpGained: number } | null>(null);
   const [streakDismissed, setStreakDismissed] = useState(false);
+  const [activeSectionIdx, setActiveSectionIdx] = useState(0);
   const [lightningDone, setLightningDone] = useState(() => {
     const saved = localStorage.getItem('lightningDate');
     return saved === new Date().toDateString();
