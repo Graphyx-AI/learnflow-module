@@ -25,7 +25,7 @@ const MAP_NODES = [
   { id: -2, icon: '🏆', label: 'Teste', x: 50, type: 'trophy' as const },
 ];
 
-const NODE_SPACING = 130;
+const NODE_SPACING = 145;
 
 export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted }: MapScreenProps) {
   const section = sections[0];
@@ -204,43 +204,39 @@ function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
       <button
         onClick={onClick}
         disabled={isLocked}
-        className={`relative w-[76px] h-[76px] rounded-full flex items-center justify-center transition-all duration-200 ${
+        className={`relative w-[88px] h-[88px] rounded-full flex items-center justify-center transition-all duration-200 ${
           isCompleted
-            ? 'bg-primary shadow-[0_4px_20px_rgba(var(--primary-rgb),0.3)] cursor-pointer hover:scale-110 active:scale-95'
+            ? 'bg-primary shadow-[0_6px_28px_rgba(var(--primary-rgb),0.35)] cursor-pointer hover:scale-110 active:scale-95'
             : isCurrent
-            ? 'bg-primary shadow-[0_4px_24px_rgba(var(--primary-rgb),0.35)] cursor-pointer hover:scale-110 active:scale-95'
-            : 'bg-muted/80 border-2 border-border shadow-sm cursor-default'
+            ? 'bg-primary shadow-[0_6px_30px_rgba(var(--primary-rgb),0.4)] cursor-pointer hover:scale-110 active:scale-95 ring-4 ring-primary/20'
+            : 'bg-muted border-[3px] border-border/60 shadow-md cursor-default'
         }`}
       >
-        {/* Inner white circle for current/completed */}
         {(isCompleted || isCurrent) && (
-          <div className="absolute inset-[4px] rounded-full bg-primary flex items-center justify-center">
+          <div className="absolute inset-[5px] rounded-full bg-primary flex items-center justify-center">
             {isCompleted ? (
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             ) : (
-              <span className="text-[28px] leading-none drop-shadow-sm">{icon}</span>
+              <span className="text-[32px] leading-none drop-shadow-md">{icon}</span>
             )}
           </div>
         )}
 
-        {/* Locked state */}
         {isLocked && (
-          <span className="text-[26px] leading-none opacity-30 grayscale">{icon}</span>
+          <span className="text-[30px] leading-none opacity-40 grayscale">{icon}</span>
         )}
 
-        {/* Current indicator badge */}
         {isCurrent && (
-          <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-amber-400 border-[3px] border-background flex items-center justify-center shadow-md">
-            <span className="text-[10px] font-black text-amber-900">!</span>
+          <div className="absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-amber-400 border-[3px] border-background flex items-center justify-center shadow-lg animate-pulse">
+            <span className="text-[11px] font-black text-amber-900">!</span>
           </div>
         )}
       </button>
 
-      {/* Label */}
-      <span className={`mt-2.5 text-[10px] font-bold uppercase tracking-wider ${
-        isLocked ? 'text-muted-foreground/60' : isCompleted ? 'text-primary' : 'text-foreground'
+      <span className={`mt-3 text-[11px] font-extrabold uppercase tracking-wider ${
+        isLocked ? 'text-muted-foreground/50' : isCompleted ? 'text-primary' : 'text-foreground'
       }`}>
         {label}
       </span>
@@ -251,18 +247,18 @@ function LessonNodeButton({ icon, label, status, isFirst, onClick }: {
 function ChestNode({ locked, opened, onClick }: { locked: boolean; opened?: boolean; onClick?: () => void }) {
   return (
     <div className="flex flex-col items-center" onClick={!locked ? onClick : undefined}>
-      <div className={`w-[64px] h-[56px] rounded-2xl flex items-center justify-center border-2 transition-transform duration-150 ${
+      <div className={`w-[76px] h-[68px] rounded-2xl flex items-center justify-center border-[2.5px] transition-all duration-200 ${
         locked
-          ? 'bg-muted/60 border-border cursor-default'
+          ? 'bg-muted border-border/60 cursor-default shadow-sm'
           : opened
-          ? 'bg-primary/10 border-primary/30 cursor-pointer hover:scale-105 shadow-md'
-          : 'bg-gold/10 border-gold/30 cursor-pointer hover:scale-105 shadow-md animate-bobble'
+          ? 'bg-primary/10 border-primary/30 cursor-pointer hover:scale-110 shadow-lg'
+          : 'bg-amber-50 border-amber-300/50 cursor-pointer hover:scale-110 shadow-lg animate-bobble ring-2 ring-amber-200/30'
       }`}>
-        <span className={`text-[24px] ${locked ? 'opacity-25 grayscale' : 'drop-shadow-sm'}`}>
+        <span className={`text-[30px] ${locked ? 'opacity-35 grayscale' : 'drop-shadow-md'}`}>
           {opened ? '📭' : '📦'}
         </span>
       </div>
-      <span className={`mt-2 text-[9px] font-bold uppercase tracking-wider ${locked ? 'text-muted-foreground/60' : opened ? 'text-primary' : 'text-gold'}`}>
+      <span className={`mt-2.5 text-[10px] font-extrabold uppercase tracking-wider ${locked ? 'text-muted-foreground/50' : opened ? 'text-primary' : 'text-amber-500'}`}>
         {opened ? 'Coletado' : 'Bônus'}
       </span>
     </div>
@@ -276,17 +272,17 @@ function TrophyNode({ status, onClick }: { status: 'completed' | 'current' | 'lo
 
   return (
     <div className="flex flex-col items-center" onClick={!isLocked ? onClick : undefined}>
-      <div className={`w-[76px] h-[76px] rounded-full flex items-center justify-center border-2 transition-all duration-200 ${
+      <div className={`w-[88px] h-[88px] rounded-full flex items-center justify-center border-[2.5px] transition-all duration-200 ${
         isCompleted
-          ? 'border-gold/40 bg-gold/10 shadow-[0_0_20px_rgba(var(--gold-rgb),0.2)] cursor-pointer hover:scale-110'
+          ? 'border-amber-400/50 bg-amber-50 shadow-[0_6px_28px_rgba(245,158,11,0.25)] cursor-pointer hover:scale-110'
           : isCurrent
-          ? 'border-gold/30 bg-gold/5 cursor-pointer hover:scale-110 animate-bobble shadow-md'
-          : 'border-dashed border-border bg-muted/30 cursor-default'
+          ? 'border-amber-300/40 bg-amber-50/50 cursor-pointer hover:scale-110 animate-bobble shadow-lg ring-4 ring-amber-200/20'
+          : 'border-dashed border-border/60 bg-muted/40 cursor-default shadow-sm'
       }`}>
-        <span className={`text-[28px] ${isLocked ? 'opacity-20 grayscale' : 'drop-shadow-sm'}`}>🏆</span>
+        <span className={`text-[34px] ${isLocked ? 'opacity-25 grayscale' : 'drop-shadow-md'}`}>🏆</span>
       </div>
-      <span className={`mt-2.5 text-[10px] font-bold uppercase tracking-wider ${
-        isCompleted ? 'text-gold' : isCurrent ? 'text-gold' : 'text-muted-foreground/60'
+      <span className={`mt-3 text-[11px] font-extrabold uppercase tracking-wider ${
+        isCompleted ? 'text-amber-500' : isCurrent ? 'text-amber-500' : 'text-muted-foreground/50'
       }`}>
         {isCompleted ? 'Aprovado!' : 'Prova Final'}
       </span>
