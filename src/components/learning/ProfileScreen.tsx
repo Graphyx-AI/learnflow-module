@@ -97,7 +97,34 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
               <img src={currentAvatar.src} alt={currentAvatar.name} width={64} height={64} className="w-full h-full object-cover" />
             </div>
             <div>
-              <h2 className="font-display text-xl font-bold text-foreground">Estudante IA</h2>
+              {editing ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    value={nameInput}
+                    onChange={e => setNameInput(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter') { onChangeName(nameInput.trim() || playerName); setEditing(false); } }}
+                    className="font-display text-xl font-bold text-foreground bg-muted rounded-lg px-2 py-1 outline-none border border-primary/30 w-40"
+                    autoFocus
+                    maxLength={20}
+                  />
+                  <button
+                    onClick={() => { onChangeName(nameInput.trim() || playerName); setEditing(false); }}
+                    className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary hover:bg-primary/20 transition-colors cursor-pointer"
+                  >
+                    <Check className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <h2 className="font-display text-xl font-bold text-foreground">{playerName}</h2>
+                  <button
+                    onClick={() => { setNameInput(playerName); setEditing(true); }}
+                    className="w-6 h-6 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+                  >
+                    <Pencil className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-[11px] font-bold bg-primary/10 text-primary py-0.5 px-2 rounded-full">
                   Nível {player.level}
