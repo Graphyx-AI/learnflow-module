@@ -34,7 +34,10 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
 
   const getStatus = (id: number) => {
     if (id === -1) return player.completedLessons.length >= 2 ? (chestOpened ? 'completed' as const : 'current' as const) : 'locked' as const;
-    if (id === -2) return 'locked' as const;
+    if (id === -2) {
+      const allLessons = [0, 1, 2, 3, 4].every(l => player.completedLessons.includes(l));
+      return allLessons ? (testCompleted ? 'completed' as const : 'current' as const) : 'locked' as const;
+    }
     if (player.completedLessons.includes(id)) return 'completed' as const;
     if (id === 0 && !player.completedLessons.includes(0)) return 'current' as const;
     if (id > 0 && player.completedLessons.includes(id - 1)) return 'current' as const;
