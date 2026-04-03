@@ -362,8 +362,14 @@ function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, isJust
 
       {/* Perfect badge */}
       {isCompleted && isPerfect && (
-        <div className="absolute -top-1.5 -right-1.5 z-10 flex items-center justify-center w-7 h-7 rounded-full bg-gold shadow-[0_2px_8px_rgba(251,191,36,0.5)] border-2 border-background animate-bounce-in">
+        <div className="group/badge absolute -top-1.5 -right-1.5 z-10 flex items-center justify-center w-7 h-7 rounded-full bg-gold shadow-[0_2px_8px_rgba(251,191,36,0.5)] border-2 border-background animate-bounce-in cursor-default">
           <span className="text-[14px] leading-none">⭐</span>
+          <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-1 -translate-y-full opacity-0 group-hover/badge:opacity-100 transition-all duration-200 scale-90 group-hover/badge:scale-100 z-50">
+            <div className="bg-foreground text-background text-[10px] font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap shadow-lg">
+              Perfeito! 100% de acertos
+            </div>
+            <div className="w-2 h-2 bg-foreground rotate-45 mx-auto -mt-1.5" />
+          </div>
         </div>
       )}
 
