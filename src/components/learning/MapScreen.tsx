@@ -2,6 +2,17 @@ import { PlayerState, Section } from './types';
 import { AVATARS } from './ProfileScreen';
 import { Flame, Zap } from 'lucide-react';
 
+const LEAGUE_TIERS = [
+  { id: 'bronze', minXp: 0, label: 'Bronze', icon: '🥉', frameClass: 'avatar-frame-bronze' },
+  { id: 'silver', minXp: 1000, label: 'Prata', icon: '🥈', frameClass: 'avatar-frame-silver' },
+  { id: 'gold', minXp: 3000, label: 'Ouro', icon: '🥇', frameClass: 'avatar-frame-gold' },
+  { id: 'diamond', minXp: 6000, label: 'Diamante', icon: '💎', frameClass: 'avatar-frame-diamond' },
+];
+
+function getLeagueTier(xp: number) {
+  return [...LEAGUE_TIERS].reverse().find(t => xp >= t.minXp) || LEAGUE_TIERS[0];
+}
+
 interface MapScreenProps {
   sections: Section[];
   player: PlayerState;
@@ -31,6 +42,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
   const section = sections[0];
   const avatarData = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
   const levelProgress = (player.currentXp / player.nextLevelXp) * 100;
+  const league = getLeagueTier(player.xp);
 
   const getStatus = (id: number) => {
     if (id === -1) return player.completedLessons.length >= 2 ? (chestOpened ? 'completed' as const : 'current' as const) : 'locked' as const;
@@ -50,10 +62,15 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
       <div className="w-full max-w-[460px] px-5 pt-6 flex flex-col gap-4 relative z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button onClick={onOpenProfile}
-              className="w-11 h-11 rounded-full overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-105 active:scale-95 ring-2 ring-primary/20">
-              <img src={avatarData.src} alt={avatarData.name} width={44} height={44} className="w-full h-full object-cover" />
-            </button>
+            <div className="relative">
+              <button onClick={onOpenProfile}
+                className={`avatar-frame ${league.frameClass} w-12 h-12 rounded-full overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-105 active:scale-95`}>
+                <img src={avatarData.src} alt={avatarData.name} width={48} height={48} className="w-full h-full object-cover rounded-full" />
+              </button>
+              <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-card border-2 border-background flex items-center justify-center text-[10px] shadow-sm">
+                {league.icon}
+              </div>
+            </div>
             <div>
               <span className="font-display text-[15px] font-bold text-foreground block leading-tight">NexSkill AI</span>
               <span className="text-[10px] font-semibold text-muted-foreground">{playerName || 'Estudante IA'}</span>
