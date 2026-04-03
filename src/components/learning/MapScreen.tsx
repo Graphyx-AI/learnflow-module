@@ -4,6 +4,7 @@ import { AVATARS } from './ProfileScreen';
 import FloatingParticles from './FloatingParticles';
 import { BIOMES } from './BiomeBackground';
 import { Flame, Zap, Crown } from 'lucide-react';
+import { playUnlockSound, isSoundEnabled } from './sounds';
 
 const LEAGUE_TIERS = [
   { id: 'bronze', minXp: 0, label: 'Bronze', icon: '🥉', frameClass: 'avatar-frame-bronze' },
