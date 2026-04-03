@@ -57,6 +57,15 @@ export default function LearningModule() {
   }, []);
 
   const handleOpenProfile = useCallback(() => setScreen('profile'), []);
+  const handleOpenChest = useCallback(() => setScreen('chest'), []);
+  const handleClaimChest = useCallback((reward: ChestReward) => {
+    setChestOpened(true);
+    localStorage.setItem('chestOpened', 'true');
+    if (reward.type === 'xp' && reward.amount) {
+      setPlayer(prev => ({ ...prev, xp: prev.xp + reward.amount!, currentXp: prev.currentXp + reward.amount! }));
+    }
+    setScreen('map');
+  }, []);
 
   const handleNavigate = useCallback((tab: string) => {
     if (tab === 'map') setScreen('map');
