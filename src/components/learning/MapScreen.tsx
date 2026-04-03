@@ -223,18 +223,18 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
                     <div key={i} className="absolute z-[2]" style={{ top: `${i * NODE_SPACING}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
                       {node.type === 'chest' ? (
                         <DuoChestNode locked={status === 'locked'} opened={sectionChestOpened} colors={colors}
-                          isJustUnlocked={isJustUnlocked}
+                          isJustUnlocked={isJustUnlocked} tooltip={node.title}
                           onClick={() => { if (status !== 'locked' && onOpenChest) { onSectionChange?.(sIdx); onOpenChest(); } }} />
                       ) : node.type === 'trophy' ? (
                         <DuoTrophyNode status={status} colors={colors}
-                          isJustUnlocked={isJustUnlocked}
+                          isJustUnlocked={isJustUnlocked} tooltip={node.title}
                           onClick={() => { if (status !== 'locked' && onOpenFinalTest) { onSectionChange?.(sIdx); onOpenFinalTest(); } }} />
                       ) : (
                         <DuoLessonNode
                           icon={node.icon} label={node.label} status={status} colors={colors}
                           isFirst={i === 0 && status === 'current'}
                           isPerfect={(player.perfectLessons[section.id] || []).includes(node.id)}
-                          isJustUnlocked={isJustUnlocked}
+                          isJustUnlocked={isJustUnlocked} tooltip={node.title}
                           onClick={() => { if (status !== 'locked' && node.id >= 0) { onSectionChange?.(sIdx); onSelectLesson(sIdx, node.id); } }}
                         />
                       )}
