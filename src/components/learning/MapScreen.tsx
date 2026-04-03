@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import { PlayerState, Section } from './types';
 import { AVATARS } from './ProfileScreen';
 import FloatingParticles from './FloatingParticles';
