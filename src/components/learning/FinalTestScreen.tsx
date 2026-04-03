@@ -64,6 +64,11 @@ export default function FinalTestScreen({ questions, onComplete, onQuit }: Final
           <button onClick={onQuit} className="text-muted-foreground text-sm font-bold hover:text-foreground transition-colors cursor-pointer">
             ✕ Sair
           </button>
+          <button onClick={() => { const v = !soundOn; setSoundOn(v); setSoundEnabled(v); }}
+            className="w-8 h-8 bg-surface border border-border rounded-full flex items-center justify-center text-muted-foreground cursor-pointer transition-all hover:text-foreground"
+            title={soundOn ? 'Desativar som' : 'Ativar som'}>
+            {soundOn ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+          </button>
           <div className="flex items-center gap-2">
             <Trophy className="w-4 h-4 text-gold" />
             <span className="text-[12px] font-extrabold text-foreground">PROVA FINAL</span>
