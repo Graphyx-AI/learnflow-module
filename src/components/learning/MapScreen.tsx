@@ -2,6 +2,17 @@ import { PlayerState, Section } from './types';
 import { AVATARS } from './ProfileScreen';
 import { Flame, Zap } from 'lucide-react';
 
+const LEAGUE_TIERS = [
+  { id: 'bronze', minXp: 0, label: 'Bronze', icon: '🥉', frameClass: 'avatar-frame-bronze' },
+  { id: 'silver', minXp: 1000, label: 'Prata', icon: '🥈', frameClass: 'avatar-frame-silver' },
+  { id: 'gold', minXp: 3000, label: 'Ouro', icon: '🥇', frameClass: 'avatar-frame-gold' },
+  { id: 'diamond', minXp: 6000, label: 'Diamante', icon: '💎', frameClass: 'avatar-frame-diamond' },
+];
+
+function getLeagueTier(xp: number) {
+  return [...LEAGUE_TIERS].reverse().find(t => xp >= t.minXp) || LEAGUE_TIERS[0];
+}
+
 interface MapScreenProps {
   sections: Section[];
   player: PlayerState;
