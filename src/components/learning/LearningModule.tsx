@@ -31,6 +31,11 @@ export default function LearningModule() {
   const [chestOpened, setChestOpened] = useState(() => localStorage.getItem('chestOpened') === 'true');
   const [testCompleted, setTestCompleted] = useState(() => localStorage.getItem('testCompleted') === 'true');
   const [testResult, setTestResult] = useState<{ score: number; total: number; passed: boolean; xpGained: number } | null>(null);
+  const [streakDismissed, setStreakDismissed] = useState(false);
+  const [lightningDone, setLightningDone] = useState(() => {
+    const saved = localStorage.getItem('lightningDate');
+    return saved === new Date().toDateString();
+  });
   const handleChangeName = useCallback((name: string) => {
     setPlayerName(name);
     localStorage.setItem('playerName', name);
