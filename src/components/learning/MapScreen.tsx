@@ -1,10 +1,12 @@
 import { PlayerState, Section } from './types';
+import { AVATARS } from './ProfileScreen';
 
 interface MapScreenProps {
   sections: Section[];
   player: PlayerState;
   onSelectLesson: (sectionIdx: number, lessonIdx: number) => void;
   onOpenProfile?: () => void;
+  selectedAvatar?: string;
 }
 
 const MAP_NODES = [
