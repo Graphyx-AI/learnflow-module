@@ -686,7 +686,7 @@ export const SECTIONS: Section[] = [
         ],
       },
       {
-        icon: '🏗️', title: 'Arquiteturas Avançadas', description: 'Modelos de ponta que definem o futuro.',
+        icon: '⚙️', title: 'Arquiteturas Avançadas', description: 'Modelos de ponta que definem o futuro.',
         topics: ['Mixture of Experts', 'State Space Models', 'Multimodal', 'Sparse models'],
         questions: [
           { icon: '🏗️', category: 'Arquiteturas', difficulty: 'Difícil' as const, text: 'O que é Mixture of Experts?', options: ['Equipe de cientistas', 'Ensemble de modelos', 'Modelo que ativa subconjuntos de parâmetros por input', 'Votação'], correctIndex: 2, explanation: 'MoE usa roteamento para ativar especialistas relevantes.' },
