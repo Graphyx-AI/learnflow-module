@@ -58,6 +58,13 @@ export default function LearningModule() {
       const newSectionLessons = selectedLesson && !prevSectionLessons.includes(selectedLesson.lessonIdx)
         ? [...prevSectionLessons, selectedLesson.lessonIdx]
         : prevSectionLessons;
+
+      // Track perfect lessons (100% accuracy)
+      const prevPerfect = prev.perfectLessons[sectionId] || [];
+      const newPerfect = selectedLesson && result.accuracy === 100 && !prevPerfect.includes(selectedLesson.lessonIdx)
+        ? [...prevPerfect, selectedLesson.lessonIdx]
+        : prevPerfect;
+
       return {
         ...prev,
         xp: prev.xp + result.xpGained,
@@ -66,6 +73,7 @@ export default function LearningModule() {
           ? [...prev.completedLessons, selectedLesson.lessonIdx]
           : prev.completedLessons,
         sectionProgress: { ...prev.sectionProgress, [sectionId]: newSectionLessons },
+        perfectLessons: { ...prev.perfectLessons, [sectionId]: newPerfect },
       };
     });
     setScreen('victory');

@@ -213,6 +213,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
                         <DuoLessonNode
                           icon={node.icon} label={node.label} status={status} colors={colors}
                           isFirst={i === 0 && status === 'current'}
+                          isPerfect={(player.perfectLessons[section.id] || []).includes(node.id)}
                           onClick={() => { if (status !== 'locked' && node.id >= 0) { onSectionChange?.(sIdx); onSelectLesson(sIdx, node.id); } }}
                         />
                       )}
@@ -279,8 +280,8 @@ interface DuoColors {
   ring: string;
 }
 
-function DuoLessonNode({ icon, label, status, colors, isFirst, onClick }: {
-  icon: string; label: string; status: 'completed' | 'current' | 'locked'; colors: DuoColors; isFirst: boolean; onClick: () => void;
+function DuoLessonNode({ icon, label, status, colors, isFirst, isPerfect, onClick }: {
+  icon: string; label: string; status: 'completed' | 'current' | 'locked'; colors: DuoColors; isFirst: boolean; isPerfect?: boolean; onClick: () => void;
 }) {
   const isCompleted = status === 'completed';
   const isCurrent = status === 'current';
@@ -323,6 +324,13 @@ function DuoLessonNode({ icon, label, status, colors, isFirst, onClick }: {
           <div className="absolute inset-[-6px] rounded-full border-[4px] animate-pulse opacity-60" style={{ borderColor: colors.ring }} />
         )}
       </button>
+
+      {/* Perfect badge */}
+      {isCompleted && isPerfect && (
+        <div className="absolute -top-1.5 -right-1.5 z-10 flex items-center justify-center w-7 h-7 rounded-full bg-gold shadow-[0_2px_8px_rgba(251,191,36,0.5)] border-2 border-background animate-bounce-in">
+          <span className="text-[14px] leading-none">⭐</span>
+        </div>
+      )}
 
       <span className={`mt-2.5 text-[10px] font-extrabold uppercase tracking-wider ${
         isLocked ? 'text-muted-foreground/40' : isCompleted ? 'opacity-70' : ''
