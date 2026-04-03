@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { QuizResult, PlayerState } from './types';
 import Confetti from './Confetti';
+import { playVictorySound, isSoundEnabled } from './sounds';
 
 interface VictoryScreenProps {
   result: QuizResult;
