@@ -1,6 +1,7 @@
 import { PlayerState, Section } from './types';
 import { AVATARS } from './ProfileScreen';
 import FloatingParticles from './FloatingParticles';
+import BiomeBackground, { BIOMES } from './BiomeBackground';
 import { Flame, Zap } from 'lucide-react';
 
 const LEAGUE_TIERS = [
@@ -108,24 +109,28 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
         </div>
       </div>
 
-      {/* Section Banner */}
+      {/* Section 1 — Forest Biome */}
       <div className="w-[calc(100%-40px)] max-w-[460px] mx-5 mt-5 rounded-2xl overflow-hidden shadow-md">
         <div className="p-5 px-6 flex items-center justify-between"
-          style={{ background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))' }}>
+          style={{ background: BIOMES[0].bannerGradient }}>
           <div>
-            <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-primary-foreground/70 mb-1">{section.label}</div>
-            <div className="font-display text-xl font-bold text-primary-foreground">{section.title}</div>
+            <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-white/70 mb-1">
+              {BIOMES[0].icon} {section.label}
+            </div>
+            <div className="font-display text-xl font-bold text-white">{section.title}</div>
           </div>
-          <div className="flex items-center gap-2 bg-primary-foreground/20 backdrop-blur-sm rounded-xl py-2.5 px-4 text-[11px] font-extrabold uppercase tracking-wider text-primary-foreground cursor-pointer hover:bg-primary-foreground/30 transition-all">
+          <div className="flex items-center gap-2 bg-white/20 rounded-xl py-2.5 px-4 text-[11px] font-extrabold uppercase tracking-wider text-white cursor-pointer hover:bg-white/30 transition-all">
             📋 Guia
           </div>
         </div>
       </div>
 
-      {/* ═══ MAP ═══ */}
-      <div className="w-full max-w-[460px] relative mt-10 pb-8 px-5" style={{ minHeight: `${MAP_NODES.length * NODE_SPACING + 40}px` }}>
+      {/* ═══ MAP — FOREST ═══ */}
+      <div className="w-full max-w-[460px] relative mt-4 pb-8 px-5 rounded-3xl overflow-hidden" style={{ minHeight: `${MAP_NODES.length * NODE_SPACING + 40}px` }}>
+        <BiomeBackground biomeId="forest" height={MAP_NODES.length * NODE_SPACING + 40} />
+
         {/* SVG paths */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" preserveAspectRatio="none">
+        <svg className="absolute inset-0 w-full h-full pointer-events-none z-[1]" preserveAspectRatio="none">
           {MAP_NODES.map((node, i) => {
             if (i === 0) return null;
             const prev = MAP_NODES[i - 1];
@@ -144,7 +149,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
             return (
               <path key={i} d={d} fill="none" strokeWidth="4" strokeLinecap="round"
                 strokeDasharray={!done && !isCurrent ? '8 12' : 'none'}
-                stroke={done ? 'hsl(var(--primary))' : isCurrent ? 'hsl(var(--primary))' : 'hsl(var(--border))'}
+                stroke={done ? BIOMES[0].pathColor : isCurrent ? BIOMES[0].pathColor : 'hsl(var(--border))'}
                 opacity={!done && !isCurrent ? 0.4 : done ? 0.7 : 0.5}
               />
             );
@@ -155,7 +160,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
         {MAP_NODES.map((node, i) => {
           const status = getStatus(node.id);
           return (
-            <div key={i} className="absolute" style={{ top: `${i * NODE_SPACING}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
+            <div key={i} className="absolute z-[2]" style={{ top: `${i * NODE_SPACING}px`, left: `${node.x}%`, transform: 'translateX(-50%)' }}>
               {node.type === 'chest' ? (
                 <ChestNode locked={status === 'locked'} opened={chestOpened} onClick={() => { if (status !== 'locked' && onOpenChest) onOpenChest(); }} />
               ) : node.type === 'trophy' ? (
@@ -174,27 +179,54 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
         })}
       </div>
 
-      {/* Section 2 (locked) */}
-      <div className="w-[calc(100%-40px)] max-w-[460px] mx-5 rounded-2xl overflow-hidden">
-        <div className="p-5 px-6 flex items-center justify-between bg-muted/50 border border-border">
-          <div>
-            <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted-foreground mb-1">Seção 2 · Unidade 2</div>
-            <div className="font-display text-lg font-bold text-muted-foreground">Prompting Avançado</div>
+      {/* Locked Sections with Biome Previews */}
+      {[
+        { biome: BIOMES[1], label: 'Seção 2 · Unidade 2', title: 'Prompting Avançado', desc: 'Chain-of-Thought, Few-Shot e RAG' },
+        { biome: BIOMES[2], label: 'Seção 3 · Unidade 3', title: 'IA Generativa', desc: 'GPT, DALL-E, Midjourney e Stable Diffusion' },
+        { biome: BIOMES[3], label: 'Seção 4 · Unidade 4', title: 'IA na Prática', desc: 'APIs, automações e projetos reais' },
+      ].map((s, i) => (
+        <div key={i} className="w-[calc(100%-40px)] max-w-[460px] mx-5 mt-5">
+          {/* Banner */}
+          <div className="rounded-2xl overflow-hidden relative">
+            <div className="p-5 px-6 flex items-center justify-between relative z-10"
+              style={{ background: s.biome.bannerGradient, opacity: 0.6 }}>
+              <div>
+                <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-white/70 mb-1">
+                  {s.biome.icon} {s.label}
+                </div>
+                <div className="font-display text-lg font-bold text-white">{s.title}</div>
+              </div>
+              <div className="flex items-center gap-2 bg-white/20 rounded-xl py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider text-white">
+                🔒 Bloqueado
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-2 bg-muted rounded-xl py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider text-muted-foreground">
-            🔒 Bloqueado
-          </div>
-        </div>
-      </div>
 
-      {/* Lock wall */}
-      <div className="w-[calc(100%-40px)] max-w-[460px] bg-card border border-border rounded-2xl p-7 text-center flex flex-col items-center gap-3 mx-5 mt-3 mb-12 shadow-sm">
-        <div className="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center text-2xl">🔒</div>
-        <div className="font-display text-base font-bold text-foreground">Seção bloqueada</div>
-        <div className="text-sm text-muted-foreground leading-relaxed max-w-[300px]">
-          Complete a Seção 1 para desbloquear <strong className="text-primary font-bold">Prompting Avançado</strong> e técnicas como Chain-of-Thought e RAG.
+          {/* Locked preview nodes */}
+          <div className="relative rounded-2xl overflow-hidden mt-1" style={{ height: 180 }}>
+            <BiomeBackground biomeId={s.biome.id} height={180} />
+            <div className="absolute inset-0 z-[1] flex items-center justify-center">
+              <div className="flex flex-col items-center gap-2 bg-card/80 rounded-2xl p-5 border border-border/50 shadow-sm">
+                <div className="text-3xl">🔒</div>
+                <div className="text-[11px] font-bold text-muted-foreground text-center max-w-[200px]">
+                  Complete a seção anterior para desbloquear <strong className="text-foreground">{s.title}</strong>
+                </div>
+                <div className="text-[10px] text-muted-foreground/70">{s.desc}</div>
+              </div>
+            </div>
+            {/* Ghost nodes */}
+            <div className="absolute inset-0 z-0 flex items-center justify-around px-8 opacity-20">
+              {['⭐', '🧠', '📦', '💬', '🏆'].map((e, j) => (
+                <div key={j} className="w-12 h-12 rounded-full bg-muted border-2 border-border/40 flex items-center justify-center text-lg grayscale">
+                  {e}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      ))}
+
+      <div className="h-12" />
     </div>
   );
 }
