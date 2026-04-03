@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { Home, Target, User } from 'lucide-react';
 import { Screen, QuizResult, PlayerState } from './types';
 import { SECTIONS, INITIAL_PLAYER } from './data';
 import MapScreen from './MapScreen';
@@ -96,10 +97,16 @@ export default function LearningModule() {
     }
   };
 
+  const mobileNavItems = [
+    { id: 'map', icon: Home, label: 'Aprender' },
+    { id: 'missions', icon: Target, label: 'Missões' },
+    { id: 'profile', icon: User, label: 'Perfil' },
+  ];
+
   return (
     <div className="flex min-h-screen bg-background">
       {/* Main content */}
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 pb-20 lg:pb-0">
         {renderContent()}
       </div>
 
@@ -111,6 +118,32 @@ export default function LearningModule() {
             activeTab={activeTab}
             onNavigate={handleNavigate}
           />
+        </div>
+      )}
+
+      {/* Mobile bottom tab bar — visible on mobile, hidden on lg+ */}
+      {showSidebar && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-card border-t border-border">
+          <div className="flex items-center justify-around h-16 max-w-[460px] mx-auto">
+            {mobileNavItems.map(item => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavigate(item.id)}
+                  className={`flex flex-col items-center justify-center gap-1 py-2 px-4 rounded-xl transition-all cursor-pointer ${
+                    isActive ? 'text-primary' : 'text-muted-foreground'
+                  }`}
+                >
+                  <Icon className={`w-5 h-5 ${isActive ? 'stroke-[2.5]' : ''}`} />
+                  <span className={`text-[10px] font-bold uppercase tracking-wider ${isActive ? 'text-primary' : ''}`}>
+                    {item.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
