@@ -214,6 +214,15 @@ export default function LearningModule() {
 
   return (
     <div className="flex min-h-screen bg-background">
+      {/* Streak notification */}
+      {screen === 'map' && player.streak >= 1 && !streakDismissed && (
+        <StreakNotification
+          streak={player.streak}
+          onDismiss={() => setStreakDismissed(true)}
+          onStartLesson={() => { setStreakDismissed(true); handleSelectLesson(0, 0); }}
+        />
+      )}
+
       <div className="flex-1 min-w-0 pb-20 lg:pb-0">
         {renderContent()}
       </div>
@@ -229,6 +238,7 @@ export default function LearningModule() {
             playerBadges={playerBadges}
             playerName={playerName}
             achievements={computedAchievements}
+            lightningAvailable={!lightningDone}
           />
         </div>
       )}
