@@ -261,7 +261,7 @@ function BadgeCard({ achievement }: { achievement: Achievement }) {
     }`}>
       <div className="flex items-start justify-between mb-2">
         <span className={`text-3xl ${achievement.unlocked ? 'drop-shadow-sm' : 'opacity-40'}`}>
-          {achievement.unlocked ? achievement.icon : '🔒'}
+          {achievement.unlocked ? achievement.icon : <Lock className="w-7 h-7 text-muted-foreground" />}
         </span>
         <span className={`text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full border ${style.border} ${style.labelColor}`}>
           {style.label}
