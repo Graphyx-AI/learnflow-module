@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Screen, QuizResult, PlayerState } from './types';
 import { SECTIONS, INITIAL_PLAYER } from './data';
 import MapScreen from './MapScreen';
+import DailyMissions from './DailyMissions';
 import LessonIntro from './LessonIntro';
 import QuizScreen from './QuizScreen';
 import VictoryScreen from './VictoryScreen';
