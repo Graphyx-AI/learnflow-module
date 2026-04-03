@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { QuizResult, PlayerState } from './types';
+import Confetti from './Confetti';
 
 interface VictoryScreenProps {
   result: QuizResult;
@@ -54,6 +55,7 @@ export default function VictoryScreen({ result, player, onContinue }: VictoryScr
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background px-5 py-10">
+      <Confetti />
       {/* Trophy */}
       <div className="text-[72px] mb-4 animate-bounce-trophy">🏆</div>
 

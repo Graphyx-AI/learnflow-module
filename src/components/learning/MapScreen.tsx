@@ -1,5 +1,6 @@
 import { PlayerState, Section } from './types';
 import { AVATARS } from './ProfileScreen';
+import FloatingParticles from './FloatingParticles';
 import { Flame, Zap } from 'lucide-react';
 
 const LEAGUE_TIERS = [
@@ -58,6 +59,7 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-background relative overflow-x-hidden">
+      <FloatingParticles />
       {/* Header */}
       <div className="w-full max-w-[460px] px-5 pt-6 flex flex-col gap-4 relative z-10">
         <div className="flex items-center justify-between">
