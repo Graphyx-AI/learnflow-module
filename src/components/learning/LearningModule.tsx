@@ -14,6 +14,7 @@ import FinalTestScreen, { FinalTestResultScreen } from './FinalTestScreen';
 import LeagueScreen from './LeagueScreen';
 import LightningChallenge from './LightningChallenge';
 import StreakNotification from './StreakNotification';
+import CourseCompletionScreen from './CourseCompletionScreen';
 
 export default function LearningModule() {
   const [screen, setScreen] = useState<Screen>('map');
