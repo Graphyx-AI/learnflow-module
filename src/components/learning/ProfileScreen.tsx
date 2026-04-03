@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Trophy, BarChart3, UserCircle, Pencil, Check } from 'lucide-react';
+import { Trophy, BarChart3, UserCircle, Pencil, Check, Zap, Flame, Award, BookOpen, Target, TrendingUp, Lock, CheckCircle } from 'lucide-react';
 
 import avatarRobot from '@/assets/avatars/avatar-robot.png';
 import avatarCat from '@/assets/avatars/avatar-cat.png';
@@ -136,9 +136,9 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
 
           {/* Quick stats */}
           <div className="grid grid-cols-3 gap-3">
-            <QuickStat icon="⚡" value={player.xp} label="XP Total" />
-            <QuickStat icon="🔥" value={player.streak} label="Streak" />
-            <QuickStat icon="🏅" value={unlockedCount} label="Badges" />
+            <QuickStat icon={<Zap className="w-4 h-4 text-primary" />} value={player.xp} label="XP Total" />
+            <QuickStat icon={<Flame className="w-4 h-4 text-orange-500" />} value={player.streak} label="Streak" />
+            <QuickStat icon={<Award className="w-4 h-4 text-amber-500" />} value={unlockedCount} label="Badges" />
           </div>
         </div>
       </div>
@@ -190,12 +190,12 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
           </>
         ) : tab === 'stats' ? (
           <div className="flex flex-col gap-3">
-            <StatRow icon="📚" label="Lições completas" value={player.completedLessons.length} />
-            <StatRow icon="⚡" label="XP total" value={player.xp} />
-            <StatRow icon="🔥" label="Maior streak" value={`${player.streak} dias`} />
-            <StatRow icon="🎯" label="Questões respondidas" value={player.completedLessons.length * 8} />
-            <StatRow icon="🏅" label="Conquistas" value={`${unlockedCount}/${achievements.length}`} />
-            <StatRow icon="📈" label="Nível atual" value={`${player.level} — ${player.levelTitle}`} />
+            <StatRow icon={<BookOpen className="w-[18px] h-[18px] text-blue-500" />} label="Lições completas" value={player.completedLessons.length} />
+            <StatRow icon={<Zap className="w-[18px] h-[18px] text-primary" />} label="XP total" value={player.xp} />
+            <StatRow icon={<Flame className="w-[18px] h-[18px] text-orange-500" />} label="Maior streak" value={`${player.streak} dias`} />
+            <StatRow icon={<Target className="w-[18px] h-[18px] text-emerald-500" />} label="Questões respondidas" value={player.completedLessons.length * 8} />
+            <StatRow icon={<Trophy className="w-[18px] h-[18px] text-amber-500" />} label="Conquistas" value={`${unlockedCount}/${achievements.length}`} />
+            <StatRow icon={<TrendingUp className="w-[18px] h-[18px] text-violet-500" />} label="Nível atual" value={`${player.level} — ${player.levelTitle}`} />
           </div>
         ) : (
           <>
@@ -243,10 +243,10 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
   );
 }
 
-function QuickStat({ icon, value, label }: { icon: string; value: number; label: string }) {
+function QuickStat({ icon, value, label }: { icon: React.ReactNode; value: number; label: string }) {
   return (
     <div className="bg-muted/50 rounded-xl p-3 text-center">
-      <span className="text-base">{icon}</span>
+      <div className="flex justify-center">{icon}</div>
       <div className="text-lg font-black text-foreground mt-0.5">{value}</div>
       <div className="text-[10px] font-semibold text-muted-foreground">{label}</div>
     </div>
@@ -261,7 +261,7 @@ function BadgeCard({ achievement }: { achievement: Achievement }) {
     }`}>
       <div className="flex items-start justify-between mb-2">
         <span className={`text-3xl ${achievement.unlocked ? 'drop-shadow-sm' : 'opacity-40'}`}>
-          {achievement.unlocked ? achievement.icon : '🔒'}
+          {achievement.unlocked ? achievement.icon : <Lock className="w-7 h-7 text-muted-foreground" />}
         </span>
         <span className={`text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full border ${style.border} ${style.labelColor}`}>
           {style.label}
@@ -271,18 +271,20 @@ function BadgeCard({ achievement }: { achievement: Achievement }) {
       <p className="text-[11px] text-muted-foreground leading-relaxed">{achievement.description}</p>
       {achievement.unlocked && achievement.unlockedAt && (
         <div className="mt-2 text-[10px] font-semibold text-green flex items-center gap-1">
-          ✅ {achievement.unlockedAt}
+          <CheckCircle className="w-3 h-3" /> {achievement.unlockedAt}
         </div>
       )}
     </div>
   );
 }
 
-function StatRow({ icon, label, value }: { icon: string; label: string; value: string | number }) {
+function StatRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string | number }) {
   return (
     <div className="bg-card border border-border rounded-xl p-4 flex items-center justify-between">
       <div className="flex items-center gap-3">
-        <span className="text-lg">{icon}</span>
+        <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
+          {icon}
+        </div>
         <span className="text-[13px] font-semibold text-foreground">{label}</span>
       </div>
       <span className="text-[14px] font-extrabold text-primary">{value}</span>
