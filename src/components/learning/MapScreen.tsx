@@ -26,35 +26,52 @@ interface MapScreenProps {
   playerName?: string;
   chestOpened?: boolean;
   testCompleted?: boolean;
+  onSectionChange?: (idx: number) => void;
 }
 
-const MAP_NODES = [
-  { id: 0, icon: '⭐', label: 'Lição 1', x: 50, type: 'lesson' as const },
-  { id: 1, icon: '🧠', label: 'Lição 2', x: 28, type: 'lesson' as const },
-  { id: -1, icon: '📦', label: 'Bônus', x: 55, type: 'chest' as const },
-  { id: 2, icon: '💬', label: 'Lição 3', x: 72, type: 'lesson' as const },
-  { id: 3, icon: '⚙️', label: 'Lição 4', x: 38, type: 'lesson' as const },
-  { id: 4, icon: '🎯', label: 'Lição 5', x: 62, type: 'lesson' as const },
-  { id: -2, icon: '🏆', label: 'Teste', x: 50, type: 'trophy' as const },
-];
+function buildMapNodes(section: Section) {
+  const lessons = section.lessons;
+  const nodes: { id: number; icon: string; label: string; x: number; type: 'lesson' | 'chest' | 'trophy' }[] = [];
+  const xPositions = [50, 28, 72, 38, 62];
+  lessons.forEach((l, i) => {
+    nodes.push({ id: i, icon: l.icon, label: `Lição ${i + 1}`, x: xPositions[i % xPositions.length], type: 'lesson' });
+    if (i === 1) nodes.push({ id: -1, icon: '📦', label: 'Bônus', x: 55, type: 'chest' });
+  });
+  nodes.push({ id: -2, icon: '🏆', label: 'Teste', x: 50, type: 'trophy' });
+  return nodes;
+}
 
 const NODE_SPACING = 145;
 
-export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted }: MapScreenProps) {
-  const section = sections[0];
+export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted, onSectionChange }: MapScreenProps) {
   const avatarData = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
   const levelProgress = (player.currentXp / player.nextLevelXp) * 100;
   const league = getLeagueTier(player.xp);
 
-  const getStatus = (id: number) => {
-    if (id === -1) return player.completedLessons.length >= 2 ? (chestOpened ? 'completed' as const : 'current' as const) : 'locked' as const;
-    if (id === -2) {
-      const allLessons = [0, 1, 2, 3, 4].every(l => player.completedLessons.includes(l));
-      return allLessons ? (testCompleted ? 'completed' as const : 'current' as const) : 'locked' as const;
+  const isSectionUnlocked = (sIdx: number) => {
+    if (sIdx === 0) return true;
+    const prevSection = sections[sIdx - 1];
+    if (!prevSection) return false;
+    const prevId = prevSection.id;
+    const prevCompleted = player.sectionProgress[prevId] || [];
+    return prevCompleted.length >= prevSection.lessons.length && (player.testsCompleted[prevId] || false);
+  };
+
+  const getSectionStatus = (sectionId: string, nodeId: number) => {
+    const completed = player.sectionProgress[sectionId] || [];
+    const sectionChestOpened = player.chestsOpened[sectionId] || false;
+    const sectionTestCompleted = player.testsCompleted[sectionId] || false;
+    const section = sections.find(s => s.id === sectionId);
+    const lessonCount = section?.lessons.length || 5;
+
+    if (nodeId === -1) return completed.length >= 2 ? (sectionChestOpened ? 'completed' as const : 'current' as const) : 'locked' as const;
+    if (nodeId === -2) {
+      const allDone = Array.from({ length: lessonCount }, (_, i) => i).every(l => completed.includes(l));
+      return allDone ? (sectionTestCompleted ? 'completed' as const : 'current' as const) : 'locked' as const;
     }
-    if (player.completedLessons.includes(id)) return 'completed' as const;
-    if (id === 0 && !player.completedLessons.includes(0)) return 'current' as const;
-    if (id > 0 && player.completedLessons.includes(id - 1)) return 'current' as const;
+    if (completed.includes(nodeId)) return 'completed' as const;
+    if (nodeId === 0 && !completed.includes(0)) return 'current' as const;
+    if (nodeId > 0 && completed.includes(nodeId - 1)) return 'current' as const;
     return 'locked' as const;
   };
 
