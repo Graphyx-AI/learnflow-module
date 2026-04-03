@@ -190,12 +190,12 @@ export default function ProfileScreen({ player, selectedAvatar, onSelectAvatar, 
           </>
         ) : tab === 'stats' ? (
           <div className="flex flex-col gap-3">
-            <StatRow icon="📚" label="Lições completas" value={player.completedLessons.length} />
-            <StatRow icon="⚡" label="XP total" value={player.xp} />
-            <StatRow icon="🔥" label="Maior streak" value={`${player.streak} dias`} />
-            <StatRow icon="🎯" label="Questões respondidas" value={player.completedLessons.length * 8} />
-            <StatRow icon="🏅" label="Conquistas" value={`${unlockedCount}/${achievements.length}`} />
-            <StatRow icon="📈" label="Nível atual" value={`${player.level} — ${player.levelTitle}`} />
+            <StatRow icon={<BookOpen className="w-[18px] h-[18px] text-blue-500" />} label="Lições completas" value={player.completedLessons.length} />
+            <StatRow icon={<Zap className="w-[18px] h-[18px] text-primary" />} label="XP total" value={player.xp} />
+            <StatRow icon={<Flame className="w-[18px] h-[18px] text-orange-500" />} label="Maior streak" value={`${player.streak} dias`} />
+            <StatRow icon={<Target className="w-[18px] h-[18px] text-emerald-500" />} label="Questões respondidas" value={player.completedLessons.length * 8} />
+            <StatRow icon={<Trophy className="w-[18px] h-[18px] text-amber-500" />} label="Conquistas" value={`${unlockedCount}/${achievements.length}`} />
+            <StatRow icon={<TrendingUp className="w-[18px] h-[18px] text-violet-500" />} label="Nível atual" value={`${player.level} — ${player.levelTitle}`} />
           </div>
         ) : (
           <>
