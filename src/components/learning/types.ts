@@ -52,7 +52,7 @@ export interface PlayerState {
   perfectLessons: Record<string, number[]>;
 }
 
-export type Screen = 'map' | 'intro' | 'quiz' | 'victory' | 'profile' | 'missions' | 'ranking' | 'achievements' | 'chest' | 'finaltest' | 'finaltest-result' | 'league' | 'lightning' | 'course-complete';
+export type Screen = 'map' | 'intro' | 'quiz' | 'victory' | 'profile' | 'missions' | 'ranking' | 'achievements' | 'chest' | 'finaltest' | 'finaltest-result' | 'league' | 'lightning' | 'course-complete' | 'guide';
 
 export interface ChestReward {
   type: 'xp' | 'life' | 'achievement';
