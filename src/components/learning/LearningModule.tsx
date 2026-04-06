@@ -15,6 +15,7 @@ import LeagueScreen from './LeagueScreen';
 import LightningChallenge from './LightningChallenge';
 import StreakNotification from './StreakNotification';
 import CourseCompletionScreen from './CourseCompletionScreen';
+import SectionGuideScreen from './SectionGuideScreen';
 
 export default function LearningModule() {
   const [screen, setScreen] = useState<Screen>('map');
@@ -159,6 +160,11 @@ export default function LearningModule() {
     else if (tab === 'achievements') setScreen('achievements');
     else if (tab === 'league') setScreen('league');
     else if (tab === 'lightning') setScreen('lightning');
+  }, []);
+
+  const handleOpenGuide = useCallback((sIdx: number) => {
+    setActiveSectionIdx(sIdx);
+    setScreen('guide');
   }, []);
 
   const handleLightningComplete = useCallback((xpGained: number) => {
