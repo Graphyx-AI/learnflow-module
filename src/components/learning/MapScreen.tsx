@@ -62,7 +62,7 @@ function buildMapNodes(section: Section) {
 
 const NODE_SPACING = 130;
 
-export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted, onSectionChange, justUnlockedKey }: MapScreenProps) {
+export default function MapScreen({ sections, player, onSelectLesson, onOpenProfile, onOpenChest, onOpenFinalTest, selectedAvatar, playerName, chestOpened, testCompleted, onSectionChange, justUnlockedKey, onOpenGuide }: MapScreenProps) {
   const avatarData = AVATARS.find(a => a.id === selectedAvatar) || AVATARS[0];
   const levelProgress = (player.currentXp / player.nextLevelXp) * 100;
   const league = getLeagueTier(player.xp);
@@ -191,7 +191,10 @@ export default function MapScreen({ sections, player, onSelectLesson, onOpenProf
                           COMEÇAR
                         </button>
                       )}
-                      <div className="rounded-xl bg-white/20 hover:bg-white/30 transition-colors px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-wider text-white cursor-pointer">
+                      <div
+                        onClick={() => unlocked && onOpenGuide?.(sIdx)}
+                        className="rounded-xl bg-white/20 hover:bg-white/30 transition-colors px-3.5 py-2 text-[11px] font-extrabold uppercase tracking-wider text-white cursor-pointer"
+                      >
                         {unlocked ? '📋 Guia' : '🔒'}
                       </div>
                     </div>
