@@ -45,6 +45,7 @@ interface MapScreenProps {
   onSectionChange?: (idx: number) => void;
   /** Recently unlocked node key e.g. "section-1:2" */
   justUnlockedKey?: string | null;
+  onOpenGuide?: (sectionIdx: number) => void;
 }
 
 function buildMapNodes(section: Section) {
