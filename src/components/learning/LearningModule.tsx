@@ -193,7 +193,7 @@ export default function LearningModule() {
   const renderContent = () => {
     switch (screen) {
       case 'map':
-        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} onOpenChest={handleOpenChest} onOpenFinalTest={handleOpenFinalTest} selectedAvatar={selectedAvatar} playerName={playerName} chestOpened={chestOpened} testCompleted={testCompleted} onSectionChange={setActiveSectionIdx} justUnlockedKey={justUnlockedKey} />;
+        return <MapScreen sections={SECTIONS} player={player} onSelectLesson={handleSelectLesson} onOpenProfile={handleOpenProfile} onOpenChest={handleOpenChest} onOpenFinalTest={handleOpenFinalTest} selectedAvatar={selectedAvatar} playerName={playerName} chestOpened={chestOpened} testCompleted={testCompleted} onSectionChange={setActiveSectionIdx} justUnlockedKey={justUnlockedKey} onOpenGuide={handleOpenGuide} />;
       case 'intro':
         return lesson ? <LessonIntro lesson={lesson} lessonNumber={(selectedLesson?.lessonIdx ?? 0) + 1} onStart={handleStartQuiz} onClose={handleBackToMap} /> : null;
       case 'quiz':
@@ -271,6 +271,16 @@ export default function LearningModule() {
         return <LightningChallenge onComplete={handleLightningComplete} onClose={handleBackToMap} playerLevel={player.level} />;
       case 'course-complete':
         return <CourseCompletionScreen player={player} playerName={playerName} onRestart={handleRestartCourse} />;
+      case 'guide':
+        return SECTIONS[activeSectionIdx] ? (
+          <SectionGuideScreen
+            section={SECTIONS[activeSectionIdx]}
+            sectionIdx={activeSectionIdx}
+            player={player}
+            onClose={handleBackToMap}
+            onSelectLesson={(lessonIdx) => handleSelectLesson(activeSectionIdx, lessonIdx)}
+          />
+        ) : null;
       default:
         return null;
     }
